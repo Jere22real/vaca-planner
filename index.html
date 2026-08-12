@@ -2019,6 +2019,11 @@ function viewMail(hospId) {
 // ADD HOSPEDAJE MODAL
 // ============================================================
 function openAddHosp(destinoId) {
+  if (!state.config.api_key) {
+    toast('Primero configurá tu API Key en ⚙️ Config para analizar hospedajes con IA', 'error', 4500);
+    openConfig();
+    return;
+  }
   const trip = getCurrentTrip();
   if (!trip) return;
   const destinos = trip.destinos || [];
