@@ -6,6 +6,7 @@
   <title>VacaPlanner — Comparador de Hospedajes</title>
   <meta name="description" content="Compará hospedajes para tus vacaciones pegando los mails de los alojamientos. La IA los analiza y arma un comparador visual.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     /* ===== RESET & BASE ===== */
@@ -81,13 +82,14 @@
 
     /* ===== BUTTONS ===== */
     .btn {
-      display: inline-flex; align-items: center; gap: 6px;
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
       padding: 9px 18px; border-radius: var(--radius2); border: none;
       font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 600;
-      cursor: pointer; transition: var(--trans); white-space: nowrap;
+      line-height: 1.2; cursor: pointer; transition: var(--trans); white-space: nowrap;
+      text-decoration: none; box-sizing: border-box;
     }
     .btn-primary {
-      background: var(--grad1); color: #fff;
+      background: var(--grad1); color: #ffffff;
       box-shadow: 0 4px 18px rgba(124,111,247,0.4);
     }
     .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,111,247,0.55); }
@@ -102,8 +104,8 @@
     .btn-icon { padding: 8px; border-radius: var(--radius3); min-width: 36px; justify-content: center; }
 
     /* ===== VIEWS ===== */
-    .view { display: none; padding: 28px; max-width: 1400px; margin: 0 auto; }
-    .view.active { display: block; animation: fadeIn 0.3s ease; }
+    .view { display: none !important; padding: 28px; max-width: 1400px; margin: 0 auto; }
+    .view.active { display: block !important; animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
 
     /* ===== HOME VIEW ===== */
