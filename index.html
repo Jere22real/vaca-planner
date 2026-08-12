@@ -576,18 +576,23 @@
       </div>
       <div class="divider"></div>
       <div class="form-group">
-        <label>☁️ Sincronización en la nube (JSONBlob gratis)</label>
-        <input type="text" id="cfg-cloud-url" placeholder="https://jsonblob.com/api/jsonBlob/... (vacío = crear uno nuevo)" style="font-size:0.8rem;">
+        <label>🗝️ Token de GitHub (para publicar)</label>
+        <input type="password" id="cfg-gh-token" placeholder="ghp_... (tu token personal)">
         <p class="form-hint">
-          🔹 <strong>Una sola vez:</strong> dale "➕ Crear" y tus datos quedan publicados (la URL se copia sola).<br>
-          🔹 Desde cualquier dispositivo: entrá a Config, pegá la misma URL y los verás siempre.<br>
-          🔹 La app muestra siempre lo publicado. Usá "⬆️ Publicar de nuevo" solo si cambiás datos y querés actualizar la nube.
+          Creá tu token en <a href="https://github.com/settings/tokens" target="_blank" style="color:var(--accent)">github.com/settings/tokens</a> → "Generate new token (classic)" → marcá el scope <strong>repo</strong> → copiá el token. Se guarda solo en este dispositivo.
+        </p>
+      </div>
+      <div class="form-group">
+        <label>📦 Repositorio</label>
+        <input type="text" id="cfg-gh-repo" placeholder="Jere22real/vaca-planner">
+        <p class="form-hint">
+          🔹 El botón <strong>"⬆️ Actualizar / Publicar"</strong> sube lo que tenés <strong>en este dispositivo</strong> al archivo <em>data.json</em> del repo, y la web lo muestra.<br>
+          🔹 En un dispositivo nuevo: abrí la web y, si está vacío, ya te baja la data publicada sola. También podés usar <strong>"⬇️ Traer lo publicado"</strong>.
         </p>
       </div>
       <div class="config-row">
-        <button class="btn btn-primary btn-sm" onclick="createCloudBlob()">➕ Crear / Publicar</button>
-        <button class="btn btn-ghost btn-sm" onclick="pushDataToCloud(true)">⬆️ Publicar de nuevo</button>
-        <button class="btn btn-ghost btn-sm" onclick="pullDataFromCloud(true)">⬇️ Mostrar lo publicado</button>
+        <button class="btn btn-primary btn-sm" onclick="publishToGithub()">⬆️ Actualizar / Publicar</button>
+        <button class="btn btn-ghost btn-sm" onclick="pullFromGithub(true)">⬇️ Traer lo publicado</button>
       </div>
     </div>
     <div class="modal-footer">
@@ -889,82 +894,87 @@ function loadState() {
 }
 
 // ============================================================
-// CLOUD SYNC (JSONBlob - gratis, sin registro)
-// Modelo: 1 subida única publica tus datos. Todos los dispositivos
-// muestran SIEMPRE lo publicado (se baja automáticamente al abrir).
+// PUBLICAR A GITHUB / SINCRONIZAR
+// Modelo simple: un botón "Actualizar" sube lo que tenés en el
+// dispositivo al archivo data.json del repo. La web muestra eso.
 // ============================================================
-function sanitizeForCloud() {
-  return {
-    version: 1,
-    viajes: state.viajes,
-    config: { ...state.config, api_key: '', cloud_url: '' }
-  };
-}
-
 function isValidCloudData(data) {
   return data && typeof data === 'object' && Array.isArray(data.viajes);
 }
 
-async function createCloudBlob() {
-  const body = JSON.stringify(sanitizeForCloud());
-  try {
-    const res = await fetch('https://jsonblob.com/api/jsonBlob', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body
-    });
-    const loc = res.headers.get('Location');
-    if (!loc || !res.ok) throw new Error('JSONBlob no devolvió una URL (HTTP ' + res.status + ')');
-    state.config.cloud_url = loc;
-    document.getElementById('cfg-cloud-url').value = loc;
-    saveState();
-    toast('☁️ Tus datos quedaron publicados. Copiá esta URL: ' + loc, 'success', 10000);
-    navigator.clipboard.writeText(loc).catch(() => {});
-  } catch(e) {
-    toast('Error al publicar: ' + e.message, 'error', 7000);
-  }
-}
+async function publishToGithub() {
+  const token = (document.getElementById('cfg-gh-token').value || state.config.gh_token || '').trim();
+  if (!token) { toast('Pegá tu token de GitHub en ⚙️ Config 🗝️', 'error'); return false; }
+  const repo = (document.getElementById('cfg-gh-repo').value || state.config.gh_repo || 'Jere22real/vaca-planner').trim().replace(/\.git$/, '');
+  const parts = repo.split('/');
+  if (parts.length !== 2) { toast('Repo inválido. Formato: usuario/repo', 'error'); return false; }
+  const owner = parts[0], name = parts[1];
+  const branch = 'main';
+  const path = 'data.json';
+  const api = `https://api.github.com/repos/${owner}/${name}/contents/${path}`;
+  const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' };
+  const payload = JSON.stringify({ version: 1, viajes: state.viajes }, null, 2);
 
-async function pushDataToCloud(notify = false) {
-  const url = state.config.cloud_url;
-  if (!url) { if (notify) toast('☁️ Publicá tus datos desde Config primero', 'error'); return false; }
   try {
-    const res = await fetch(url, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(sanitizeForCloud())
-    });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    if (notify) toast('☁️ Datos actualizados en la nube', 'success');
+    let sha = null;
+    const getRes = await fetch(api, { headers });
+    if (getRes.ok) { const info = await getRes.json(); sha = info.sha; }
+    else if (getRes.status !== 404) throw new Error('No se pudo leer data.json (HTTP ' + getRes.status + ')');
+
+    const body = { message: 'Actualizar datos VacaPlanner 🏖️', content: btoa(unescape(encodeURIComponent(payload))), branch };
+    if (sha) body.sha = sha;
+
+    const putRes = await fetch(api, { method: 'PUT', headers: { ...headers, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    if (!putRes.ok) {
+      const e = await putRes.json().catch(() => null);
+      throw new Error((e && e.message) || 'HTTP ' + putRes.status);
+    }
+    state.config.gh_token = token;
+    state.config.gh_repo = repo;
+    saveState();
+    toast('✅ Publicado en GitHub. Esperá ~1 minuto y se verá en la web.', 'success', 9000);
     return true;
   } catch(e) {
-    if (notify) toast('No se pudo publicar: ' + e.message, 'error', 6000);
+    toast('Error al publicar: ' + e.message, 'error', 7000);
     return false;
   }
 }
 
-async function pullDataFromCloud(notify = false) {
-  const url = state.config.cloud_url;
-  if (!url) { if (notify) toast('☁️ Publicá tus datos desde Config primero', 'error'); return false; }
+async function pullFromGithub(notify = true) {
   try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const res = await fetch('data.json');
+    if (!res.ok) throw new Error('Todavía no hay data.json publicado');
     const data = await res.json();
-    if (!isValidCloudData(data)) throw new Error('El contenido de la nube no es válido');
+    if (!isValidCloudData(data)) throw new Error('data.json no es válido');
     if (notify) {
       const n = (data.viajes || []).length;
-      if (!window.confirm(`¿Mostrar lo publicado en la nube (${n} viajes), reemplazando lo local (${state.viajes.length})?`)) return false;
+      if (!window.confirm(`¿Reemplazás lo local (${state.viajes.length} viajes) por lo publicado (${n} viajes)?`)) return false;
     }
     state.viajes = data.viajes || [];
     migrateState();
     saveState();
     renderAfterSync();
-    if (notify) toast('☁️ Mostrando lo publicado desde la nube', 'success');
+    if (notify) toast('✅ Mostrando lo publicado en la web', 'success');
     return true;
   } catch(e) {
-    if (notify) toast('No se pudo bajar: ' + e.message, 'error', 6000);
+    if (notify) toast('No se pudo traer: ' + e.message, 'error', 6000);
     return false;
   }
+}
+
+async function adoptPublishedIfEmpty() {
+  try {
+    const res = await fetch('data.json');
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!isValidCloudData(data) || !data.viajes.length) return;
+    if (state.viajes.length === 0) {
+      state.viajes = data.viajes;
+      migrateState();
+      saveState();
+      renderAfterSync();
+    }
+  } catch(e) {}
 }
 
 function renderAfterSync() {
@@ -2437,7 +2447,8 @@ function confirmAddHosp() {
 function openConfig() {
   document.getElementById('cfg-provider').value = state.config.ia_provider || 'gemini';
   document.getElementById('cfg-api-key').value = state.config.api_key || '';
-  document.getElementById('cfg-cloud-url').value = state.config.cloud_url || '';
+  document.getElementById('cfg-gh-token').value = state.config.gh_token || '';
+  document.getElementById('cfg-gh-repo').value = state.config.gh_repo || 'Jere22real/vaca-planner';
   onProviderChange();
   updateApiStatus();
   openModal('modal-config');
@@ -2508,8 +2519,10 @@ async function testApiKey() {
 function saveConfig() {
   state.config.ia_provider = document.getElementById('cfg-provider').value;
   state.config.api_key = document.getElementById('cfg-api-key').value.trim();
-  const cloudUrl = document.getElementById('cfg-cloud-url').value.trim();
-  if (cloudUrl) state.config.cloud_url = cloudUrl;
+  const token = document.getElementById('cfg-gh-token').value.trim();
+  if (token) state.config.gh_token = token;
+  const repo = document.getElementById('cfg-gh-repo').value.trim();
+  if (repo) state.config.gh_repo = repo;
   saveState();
   closeModal('modal-config');
   toast('Configuración guardada ✅', 'success');
@@ -2552,10 +2565,8 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
 // ============================================================
 loadState();
 
-// Auto-descarga desde la nube si está configurada
-if (state.config.cloud_url) {
-  pullDataFromCloud(false);
-}
+// Si la web ya tiene data publicado y el dispositivo está vacío, lo adoptamos
+adoptPublishedIfEmpty();
 
 // Show setup prompt if no API key
 if (!state.config.api_key) {
