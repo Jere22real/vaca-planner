@@ -79,6 +79,17 @@
     .brand-name { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; }
     .brand-name span { background: var(--grad1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .navbar-actions { display: flex; gap: 10px; align-items: center; }
+    .nav-sync-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 11px; background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 20px; font-size: 0.75rem; font-weight: 500; color: var(--text2);
+      cursor: default;
+    }
+    .sync-dot {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+      background: var(--green); box-shadow: 0 0 6px var(--green);
+      transition: background 0.3s, box-shadow 0.3s;
+    }
 
     /* ===== BUTTONS ===== */
     .btn {
@@ -485,6 +496,10 @@
       <span class="brand-name">Vaca<span>Planner</span></span>
     </a>
     <div class="navbar-actions">
+      <span class="nav-sync-badge" id="nav-sync-badge">
+        <span class="sync-dot" id="nav-sync-dot"></span>
+        <span class="sync-txt" id="nav-sync-txt">Nube lista</span>
+      </span>
       <button class="btn btn-ghost btn-sm" onclick="openConfig()">⚙️ Config</button>
     </div>
   </nav>
@@ -939,8 +954,9 @@ function localTs() {
 
 async function syncNow() {
   try {
-    // 1) BAJAR lo publicado (sin auth, sin límites) → todos lo ven
-    const res = await fetch(rawDataUrl());
+    setSyncStatus('syncing', '🔄 Sync...');
+    // 1) BAJAR lo publicado (cache-bust) — sin auth, todos lo ven
+    const res = await fetch(rawDataUrl() + '?_t=' + Date.now());
     if (res.ok) {
       const data = await res.json();
       if (isValidCloudData(data)) {
@@ -953,6 +969,7 @@ async function syncNow() {
           saveState();
           syncingRemote = false;
           lastUploadedTs = localTs();
+          // Solo re-renderiza el contenido de la vista actual, sin cambiar de pantalla
           renderAfterSync();
         }
       }
@@ -960,10 +977,13 @@ async function syncNow() {
 
     // 2) SUBIR cambios de este dispositivo (solo si tiene token y cambió algo)
     if (localTs() > lastUploadedTs && getToken()) {
+      setSyncStatus('syncing', '☁️ Guardando...');
       await pushCurrentState();
+    } else {
+      setSyncStatus('ok', '✅ Nube lista');
     }
   } catch(e) {
-    // Sin conexión o error: no pasa nada, se reintenta en el próximo ciclo
+    setSyncStatus('warn', '⚠️ Sin conexión');
   }
 }
 
@@ -1001,12 +1021,28 @@ async function startAutoSync() {
   setInterval(syncNow, 10000);
 }
 
+// Actualiza SOLO el contenido de la vista activa, sin cambiar de pantalla
 function renderAfterSync() {
   if (currentTripId && state.viajes.find(t => t.id === currentTripId)) {
-    openTrip(currentTripId);
-  } else {
-    goHome();
+    renderHospedajes();
+  } else if (!currentTripId) {
+    renderHome();
   }
+}
+
+function setSyncStatus(type, msg) {
+  const badge = document.getElementById('nav-sync-badge');
+  if (!badge) return;
+  const dot = badge.querySelector('.sync-dot');
+  const txt = badge.querySelector('.sync-txt');
+  if (dot) {
+    dot.className = 'sync-dot';
+    if (type === 'ok')     { dot.style.background = 'var(--green)'; dot.style.boxShadow = '0 0 6px var(--green)'; }
+    if (type === 'syncing'){ dot.style.background = 'var(--cyan)';  dot.style.boxShadow = '0 0 6px var(--cyan)'; }
+    if (type === 'warn')   { dot.style.background = 'var(--yellow)'; dot.style.boxShadow = '0 0 6px var(--yellow)'; }
+    if (type === 'err')    { dot.style.background = 'var(--red)';   dot.style.boxShadow = '0 0 6px var(--red)'; }
+  }
+  if (txt) txt.textContent = msg;
 }
 
 // Migración: hospedajes sueltos → agrupados por ciudad/destino
