@@ -76,40 +76,17 @@
     }
     .brand-icon { font-size: 1.6rem; }
     .brand-name { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; }
-    .brand-name span { background: var(--grad1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .navbar-actions { display: flex; gap: 10px; align-items: center; }
-
-    /* ===== BUTTONS ===== */
-    .btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 9px 18px; border-radius: var(--radius2); border: none;
-      font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 600;
-      cursor: pointer; transition: var(--trans); white-space: nowrap;
+    .brand-name span, .home-title span {
+      background: linear-gradient(135deg, #7c6ff7 0%, #5b8af0 40%, #38d9d9 80%, #7c6ff7 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shineGrad 6s linear infinite;
     }
-    .btn-primary {
-      background: var(--grad1); color: #fff;
-      box-shadow: 0 4px 18px rgba(124,111,247,0.4);
+    @keyframes shineGrad {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
     }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,111,247,0.55); }
-    .btn-ghost {
-      background: var(--surface); color: var(--text2);
-      border: 1px solid var(--border);
-    }
-    .btn-ghost:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
-    .btn-danger { background: rgba(240,82,82,0.15); color: var(--red); border: 1px solid rgba(240,82,82,0.3); }
-    .btn-danger:hover { background: rgba(240,82,82,0.25); }
-    .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
-    .btn-icon { padding: 8px; border-radius: var(--radius3); min-width: 36px; justify-content: center; }
-
-    /* ===== VIEWS ===== */
-    .view { display: none; padding: 28px; max-width: 1400px; margin: 0 auto; }
-    .view.active { display: block; animation: fadeIn 0.3s ease; }
-    @keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
-
-    /* ===== HOME VIEW ===== */
-    .home-header { margin-bottom: 32px; }
-    .home-title { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; }
-    .home-title span { background: var(--grad1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .home-sub { color: var(--text2); margin-top: 6px; font-size: 0.95rem; }
     .home-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
 
