@@ -76,17 +76,40 @@
     }
     .brand-icon { font-size: 1.6rem; }
     .brand-name { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; }
-    .brand-name span, .home-title span {
-      background: linear-gradient(135deg, #7c6ff7 0%, #5b8af0 40%, #38d9d9 80%, #7c6ff7 100%);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: shineGrad 6s linear infinite;
+    .brand-name span { background: var(--grad1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .navbar-actions { display: flex; gap: 10px; align-items: center; }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 18px; border-radius: var(--radius2); border: none;
+      font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; transition: var(--trans); white-space: nowrap;
     }
-    @keyframes shineGrad {
-      0% { background-position: 0% center; }
-      100% { background-position: 200% center; }
+    .btn-primary {
+      background: var(--grad1); color: #fff;
+      box-shadow: 0 4px 18px rgba(124,111,247,0.4);
     }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,111,247,0.55); }
+    .btn-ghost {
+      background: var(--surface); color: var(--text2);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
+    .btn-danger { background: rgba(240,82,82,0.15); color: var(--red); border: 1px solid rgba(240,82,82,0.3); }
+    .btn-danger:hover { background: rgba(240,82,82,0.25); }
+    .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+    .btn-icon { padding: 8px; border-radius: var(--radius3); min-width: 36px; justify-content: center; }
+
+    /* ===== VIEWS ===== */
+    .view { display: none; padding: 28px; max-width: 1400px; margin: 0 auto; }
+    .view.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+
+    /* ===== HOME VIEW ===== */
+    .home-header { margin-bottom: 32px; }
+    .home-title { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; }
+    .home-title span { background: var(--grad1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .home-sub { color: var(--text2); margin-top: 6px; font-size: 0.95rem; }
     .home-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
 
@@ -414,21 +437,7 @@
       white-space: pre-wrap; word-break: break-word;
     }
 
-    .sync-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 5px 11px; background: var(--bg3); border: 1px solid var(--border);
-      border-radius: 20px; font-size: 0.76rem; font-weight: 500; color: var(--text2);
-      cursor: pointer; transition: var(--trans);
-    }
-    .sync-badge:hover { border-color: var(--border2); color: var(--text); }
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
-    .status-dot.ok { background: var(--green); box-shadow: 0 0 8px rgba(78,203,113,0.6); }
-    .status-dot.warn { background: var(--yellow); box-shadow: 0 0 8px rgba(245,200,66,0.6); }
-    .status-dot.err { background: var(--red); box-shadow: 0 0 8px rgba(240,82,82,0.6); }
-    .status-dot.syncing { background: var(--cyan); box-shadow: 0 0 8px rgba(56,217,217,0.6); animation: pulse 1.2s infinite; }
-    @keyframes pulse { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
-
-    /* ===== BUTTONS ===== */
+    /* ===== TOAST ===== */
     #toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 500; display: flex; flex-direction: column; gap: 8px; }
     .toast {
       background: var(--bg2); border: 1px solid var(--border2);
@@ -474,10 +483,6 @@
       <span class="brand-name">Vaca<span>Planner</span></span>
     </a>
     <div class="navbar-actions">
-      <span class="sync-badge" id="nav-sync-badge" onclick="openConfig()" title="Estado de sincronización en la nube">
-        <span class="status-dot ok" id="nav-sync-dot"></span>
-        <span id="nav-sync-text">Sincronizado</span>
-      </span>
       <button class="btn btn-ghost btn-sm" onclick="openConfig()">⚙️ Config</button>
     </div>
   </nav>
@@ -930,71 +935,17 @@ function localTs() {
   return (state.meta && state.meta.updated_at) || 0;
 }
 
-function updateSyncStatusUI(status, text) {
-  const dot = document.getElementById('nav-sync-dot');
-  const txt = document.getElementById('nav-sync-text');
-  if (dot && txt) {
-    dot.className = 'status-dot ' + status;
-    txt.textContent = text;
-  }
-}
-
-function mergeCloudData(remoteViajes) {
-  if (!Array.isArray(remoteViajes)) return;
-  const localViajesMap = new Map(state.viajes.map(v => [v.id, v]));
-
-  remoteViajes.forEach(rv => {
-    if (!localViajesMap.has(rv.id)) {
-      state.viajes.push(rv);
-    } else {
-      const lv = localViajesMap.get(rv.id);
-      lv.nombre = rv.nombre || lv.nombre;
-      lv.destino = rv.destino || lv.destino;
-      lv.fecha_desde = rv.fecha_desde || lv.fecha_desde;
-      lv.fecha_hasta = rv.fecha_hasta || lv.fecha_hasta;
-      lv.emoji = rv.emoji || lv.emoji;
-
-      // Merge de Destinos
-      const localDestMap = new Map((lv.destinos || []).map(d => [d.id, d]));
-      (rv.destinos || []).forEach(rd => {
-        if (!localDestMap.has(rd.id)) {
-          lv.destinos = lv.destinos || [];
-          lv.destinos.push(rd);
-        } else {
-          const ld = localDestMap.get(rd.id);
-          ld.nombre = rd.nombre || ld.nombre;
-          ld.emoji = rd.emoji || ld.emoji;
-
-          // Merge de Hospedajes por ID
-          const localHospMap = new Map((ld.hospedajes || []).map(h => [h.id, h]));
-          (rd.hospedajes || []).forEach(rh => {
-            if (!localHospMap.has(rh.id)) {
-              ld.hospedajes = ld.hospedajes || [];
-              ld.hospedajes.push(rh);
-            } else {
-              const lh = localHospMap.get(rh.id);
-              lh.datos = { ...(lh.datos || {}), ...(rh.datos || {}) };
-              if (rh.mail_original && !lh.mail_original) lh.mail_original = rh.mail_original;
-            }
-          });
-        }
-      });
-    }
-  });
-}
-
 async function syncNow() {
   try {
-    updateSyncStatusUI('syncing', 'Comprobando...');
     // 1) BAJAR lo publicado (sin auth, sin límites) → todos lo ven
-    const res = await fetch(rawDataUrl() + '?t=' + Date.now());
+    const res = await fetch(rawDataUrl());
     if (res.ok) {
       const data = await res.json();
       if (isValidCloudData(data)) {
         const remoteTs = (data.meta && data.meta.updated_at) || 0;
         if (remoteTs > localTs()) {
           syncingRemote = true;
-          mergeCloudData(data.viajes);
+          state.viajes = data.viajes || [];
           state.meta = data.meta ? { ...data.meta } : { updated_at: remoteTs };
           migrateState();
           saveState();
@@ -1007,13 +958,10 @@ async function syncNow() {
 
     // 2) SUBIR cambios de este dispositivo (solo si tiene token y cambió algo)
     if (localTs() > lastUploadedTs && getToken()) {
-      updateSyncStatusUI('syncing', 'Guardando en la nube...');
       await pushCurrentState();
-    } else {
-      updateSyncStatusUI(getToken() ? 'ok' : 'warn', getToken() ? 'Nube lista' : 'Solo lectura');
     }
   } catch(e) {
-    updateSyncStatusUI('warn', 'Sin conexión');
+    // Sin conexión o error: no pasa nada, se reintenta en el próximo ciclo
   }
 }
 
@@ -1026,30 +974,12 @@ async function pushCurrentState() {
   try {
     let sha = null;
     const getRes = await fetch(api, { headers });
-    if (getRes.ok) {
-      const info = await getRes.json();
-      sha = info.sha;
+    if (getRes.ok) { const info = await getRes.json(); sha = info.sha; }
+    else if (getRes.status !== 404) return;
 
-      // Intentar Smart Merge con lo que hay en GitHub antes de sobrescribir
-      try {
-        const cloudContent = decodeURIComponent(escape(atob(info.content.replace(/\s/g, ''))));
-        const cloudJson = JSON.parse(cloudContent);
-        if (isValidCloudData(cloudJson)) {
-          mergeCloudData(cloudJson.viajes);
-        }
-      } catch(errMerge) {}
-    } else if (getRes.status !== 404) {
-      updateSyncStatusUI('err', 'Token inválido/sin permiso');
-      return;
-    }
-
-    const newTs = Date.now();
-    state.meta = state.meta || {};
-    state.meta.updated_at = newTs;
-
-    const payload = JSON.stringify({ version: 1, viajes: state.viajes, meta: { updated_at: newTs } }, null, 2);
+    const payload = JSON.stringify({ version: 1, viajes: state.viajes, meta: { updated_at: localTs() } }, null, 2);
     const body = {
-      message: 'Sincronización automática VacaPlanner 🏖️',
+      message: 'Sincronización VacaPlanner 🏖️',
       content: btoa(unescape(encodeURIComponent(payload))),
       branch: 'main'
     };
@@ -1060,17 +990,8 @@ async function pushCurrentState() {
       headers: { ...headers, 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
     });
-
-    if (putRes.ok) {
-      lastUploadedTs = newTs;
-      saveState();
-      updateSyncStatusUI('ok', 'Guardado en la nube ✅');
-    } else {
-      updateSyncStatusUI('err', 'Error al guardar en GitHub');
-    }
-  } catch(e) {
-    updateSyncStatusUI('err', 'Error de red al guardar');
-  }
+    if (putRes.ok) lastUploadedTs = localTs();
+  } catch(e) {}
 }
 
 async function startAutoSync() {
@@ -1080,9 +1001,9 @@ async function startAutoSync() {
 
 function renderAfterSync() {
   if (currentTripId && state.viajes.find(t => t.id === currentTripId)) {
-    renderHospedajes();
+    openTrip(currentTripId);
   } else {
-    renderHome();
+    goHome();
   }
 }
 
@@ -2022,6 +1943,11 @@ function viewMail(hospId) {
 // ADD HOSPEDAJE MODAL
 // ============================================================
 function openAddHosp(destinoId) {
+  if (!state.config.api_key) {
+    toast('Primero configurá tu API Key en ⚙️ Config', 'error', 4500);
+    openConfig();
+    return;
+  }
   const trip = getCurrentTrip();
   if (!trip) return;
   const destinos = trip.destinos || [];
@@ -2663,6 +2589,13 @@ loadState();
 
 // Sincronización automática: baja lo publicado y sube los cambios locales
 startAutoSync();
+
+// Show setup prompt if no API key
+if (!state.config.api_key) {
+  setTimeout(() => {
+    toast('👋 Bienvenido! Configurá tu API Key en ⚙️ Config para empezar.', 'info', 6000);
+  }, 600);
+}
 
 renderHome();
 </script>
