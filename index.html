@@ -579,13 +579,15 @@
         <label>☁️ Sincronización en la nube (JSONBlob gratis)</label>
         <input type="text" id="cfg-cloud-url" placeholder="https://jsonblob.com/api/jsonBlob/... (vacío = crear uno nuevo)" style="font-size:0.8rem;">
         <p class="form-hint">
-          Sube el botón "Crear" para generar tu almacenamiento y guardá la URL que aparece. En tus otros dispositivos pegá la misma URL en Config y dale "Bajar datos". Los hospedajes se sincronizan automáticamente.
+          🔹 <strong>Una sola vez:</strong> dale "➕ Crear" y tus datos quedan publicados (la URL se copia sola).<br>
+          🔹 Desde cualquier dispositivo: entrá a Config, pegá la misma URL y los verás siempre.<br>
+          🔹 La app muestra siempre lo publicado. Usá "⬆️ Publicar de nuevo" solo si cambiás datos y querés actualizar la nube.
         </p>
       </div>
       <div class="config-row">
-        <button class="btn btn-primary btn-sm" onclick="createCloudBlob()">➕ Crear</button>
-        <button class="btn btn-ghost btn-sm" onclick="pushDataToCloud(true)">⬆️ Subir</button>
-        <button class="btn btn-ghost btn-sm" onclick="pullDataFromCloud(true)">⬇️ Bajar</button>
+        <button class="btn btn-primary btn-sm" onclick="createCloudBlob()">➕ Crear / Publicar</button>
+        <button class="btn btn-ghost btn-sm" onclick="pushDataToCloud(true)">⬆️ Publicar de nuevo</button>
+        <button class="btn btn-ghost btn-sm" onclick="pullDataFromCloud(true)">⬇️ Mostrar lo publicado</button>
       </div>
     </div>
     <div class="modal-footer">
@@ -874,7 +876,6 @@ let editingHospId = null;
 // ============================================================
 function saveState() {
   localStorage.setItem('vacaplanner_v1', JSON.stringify(state));
-  if (!suppressCloudPush) scheduleCloudPush();
 }
 function loadState() {
   const raw = localStorage.getItem('vacaplanner_v1');
@@ -889,10 +890,9 @@ function loadState() {
 
 // ============================================================
 // CLOUD SYNC (JSONBlob - gratis, sin registro)
+// Modelo: 1 subida única publica tus datos. Todos los dispositivos
+// muestran SIEMPRE lo publicado (se baja automáticamente al abrir).
 // ============================================================
-let suppressCloudPush = false;
-let cloudPushTimer = null;
-
 function sanitizeForCloud() {
   return {
     version: 1,
@@ -903,11 +903,6 @@ function sanitizeForCloud() {
 
 function isValidCloudData(data) {
   return data && typeof data === 'object' && Array.isArray(data.viajes);
-}
-
-function scheduleCloudPush() {
-  clearTimeout(cloudPushTimer);
-  cloudPushTimer = setTimeout(() => { pushDataToCloud(false); }, 1500);
 }
 
 async function createCloudBlob() {
@@ -923,15 +918,16 @@ async function createCloudBlob() {
     state.config.cloud_url = loc;
     document.getElementById('cfg-cloud-url').value = loc;
     saveState();
-    toast('☁️ Almacenamiento en la nube creado. Copiá la URL para usarla en tus otros dispositivos.', 'success', 9000);
+    toast('☁️ Tus datos quedaron publicados. Copiá esta URL: ' + loc, 'success', 10000);
+    navigator.clipboard.writeText(loc).catch(() => {});
   } catch(e) {
-    toast('Error al crear almacenamiento: ' + e.message, 'error', 7000);
+    toast('Error al publicar: ' + e.message, 'error', 7000);
   }
 }
 
 async function pushDataToCloud(notify = false) {
   const url = state.config.cloud_url;
-  if (!url) { if (notify) toast('☁️ Creá o pegá tu URL de nube en Config primero', 'error'); return false; }
+  if (!url) { if (notify) toast('☁️ Publicá tus datos desde Config primero', 'error'); return false; }
   try {
     const res = await fetch(url, {
       method: 'PUT',
@@ -939,17 +935,17 @@ async function pushDataToCloud(notify = false) {
       body: JSON.stringify(sanitizeForCloud())
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
-    if (notify) toast('☁️ Datos subidos a la nube', 'success');
+    if (notify) toast('☁️ Datos actualizados en la nube', 'success');
     return true;
   } catch(e) {
-    if (notify) toast('No se pudo subir: ' + e.message, 'error', 6000);
+    if (notify) toast('No se pudo publicar: ' + e.message, 'error', 6000);
     return false;
   }
 }
 
 async function pullDataFromCloud(notify = false) {
   const url = state.config.cloud_url;
-  if (!url) { if (notify) toast('☁️ Creá o pegá tu URL de nube en Config primero', 'error'); return false; }
+  if (!url) { if (notify) toast('☁️ Publicá tus datos desde Config primero', 'error'); return false; }
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -957,15 +953,13 @@ async function pullDataFromCloud(notify = false) {
     if (!isValidCloudData(data)) throw new Error('El contenido de la nube no es válido');
     if (notify) {
       const n = (data.viajes || []).length;
-      if (!window.confirm(`¿Reemplazás tus datos locales (${state.viajes.length} viajes) por los de la nube (${n} viajes)?`)) return false;
+      if (!window.confirm(`¿Mostrar lo publicado en la nube (${n} viajes), reemplazando lo local (${state.viajes.length})?`)) return false;
     }
-    suppressCloudPush = true;
     state.viajes = data.viajes || [];
     migrateState();
     saveState();
-    suppressCloudPush = false;
     renderAfterSync();
-    if (notify) toast('☁️ Datos bajados desde la nube', 'success');
+    if (notify) toast('☁️ Mostrando lo publicado desde la nube', 'success');
     return true;
   } catch(e) {
     if (notify) toast('No se pudo bajar: ' + e.message, 'error', 6000);
