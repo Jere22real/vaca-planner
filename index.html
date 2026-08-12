@@ -1080,9 +1080,9 @@ async function startAutoSync() {
 
 function renderAfterSync() {
   if (currentTripId && state.viajes.find(t => t.id === currentTripId)) {
-    openTrip(currentTripId);
+    renderHospedajes();
   } else {
-    goHome();
+    renderHome();
   }
 }
 
