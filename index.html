@@ -576,23 +576,26 @@
       </div>
       <div class="divider"></div>
       <div class="form-group">
-        <label>🗝️ Token de GitHub (para publicar)</label>
-        <input type="password" id="cfg-gh-token" placeholder="ghp_... (tu token personal)">
+        <label>🗝️ Token de GitHub (para SUBIR cambios)</label>
+        <input type="password" id="cfg-gh-token" placeholder="ghp_... (opcional)">
         <p class="form-hint">
-          Creá tu token en <a href="https://github.com/settings/tokens" target="_blank" style="color:var(--accent)">github.com/settings/tokens</a> → "Generate new token (classic)" → marcá el scope <strong>repo</strong> → copiá el token. Se guarda solo en este dispositivo.
+          Creá tu token en <a href="https://github.com/settings/tokens" target="_blank" style="color:var(--accent)">github.com/settings/tokens</a> → "Generate new token (classic)" → marcá el scope <strong>repo</strong> → copiá el token.<br>
+          🔹 Sin token podés <strong>ver</strong> lo que otros dispositivos comparten.<br>
+          🔹 Con token, los cambios que hagas <strong>en este dispositivo</strong> se suben solos.
         </p>
       </div>
       <div class="form-group">
         <label>📦 Repositorio</label>
         <input type="text" id="cfg-gh-repo" placeholder="Jere22real/vaca-planner">
         <p class="form-hint">
-          🔹 El botón <strong>"⬆️ Actualizar / Publicar"</strong> sube lo que tenés <strong>en este dispositivo</strong> al archivo <em>data.json</em> del repo, y la web lo muestra.<br>
-          🔹 En un dispositivo nuevo: abrí la web y, si está vacío, ya te baja la data publicada sola. También podés usar <strong>"⬇️ Traer lo publicado"</strong>.
+          La sincronización es automática (cada ~10 segundos) y sin botones: lo que cambiás en un dispositivo aparece en todos los demás.
         </p>
       </div>
       <div class="config-row">
-        <button class="btn btn-primary btn-sm" onclick="publishToGithub()">⬆️ Actualizar / Publicar</button>
-        <button class="btn btn-ghost btn-sm" onclick="pullFromGithub(true)">⬇️ Traer lo publicado</button>
+        <span class="api-status">
+          <span class="status-dot ok" id="sync-status-dot"></span>
+          <span id="sync-status-text">🔄 Sincronización automática activada</span>
+        </span>
       </div>
     </div>
     <div class="modal-footer">
@@ -880,6 +883,10 @@ let editingHospId = null;
 // STORAGE
 // ============================================================
 function saveState() {
+  if (!syncingRemote) {
+    state.meta = state.meta || {};
+    state.meta.updated_at = Date.now();
+  }
   localStorage.setItem('vacaplanner_v1', JSON.stringify(state));
 }
 function loadState() {
@@ -890,91 +897,103 @@ function loadState() {
   // defaults
   if (!state.config) state.config = { ia_provider:'gemini', api_key:'', tema:'dark' };
   if (!state.viajes) state.viajes = [];
+  if (!state.meta) state.meta = { updated_at: 0 };
+  // Datos locales ya existentes (sin subir nunca) → se marcan como cambios a publicar
+  if (state.viajes.length && !state.meta.updated_at) state.meta.updated_at = Date.now();
   migrateState();
 }
 
 // ============================================================
-// PUBLICAR A GITHUB / SINCRONIZAR
-// Modelo simple: un botón "Actualizar" sube lo que tenés en el
-// dispositivo al archivo data.json del repo. La web muestra eso.
+// SINCRONIZACIÓN AUTOMÁTICA ENTRE DISPOSITIVOS (GitHub)
+// Sin botones: cada ~10s baja lo publicado y, si este dispositivo
+// cambió datos (y tiene token), los sube. Todos ven los cambios.
 // ============================================================
 function isValidCloudData(data) {
   return data && typeof data === 'object' && Array.isArray(data.viajes);
 }
 
-async function publishToGithub() {
-  const token = (document.getElementById('cfg-gh-token').value || state.config.gh_token || '').trim();
-  if (!token) { toast('Pegá tu token de GitHub en ⚙️ Config 🗝️', 'error'); return false; }
-  const repo = (document.getElementById('cfg-gh-repo').value || state.config.gh_repo || 'Jere22real/vaca-planner').trim().replace(/\.git$/, '');
-  const parts = repo.split('/');
-  if (parts.length !== 2) { toast('Repo inválido. Formato: usuario/repo', 'error'); return false; }
-  const owner = parts[0], name = parts[1];
-  const branch = 'main';
-  const path = 'data.json';
-  const api = `https://api.github.com/repos/${owner}/${name}/contents/${path}`;
+let syncingRemote = false;
+let lastUploadedTs = 0;
+
+function getRepoName() {
+  return ((state.config && state.config.gh_repo) || 'Jere22real/vaca-planner').trim().replace(/\.git$/, '');
+}
+function getToken() {
+  const el = document.getElementById('cfg-gh-token');
+  return ((el && el.value) || state.config.gh_token || '').trim();
+}
+function rawDataUrl() {
+  return `https://raw.githubusercontent.com/${getRepoName()}/main/data.json`;
+}
+function apiDataUrl() {
+  return `https://api.github.com/repos/${getRepoName()}/contents/data.json`;
+}
+function localTs() {
+  return (state.meta && state.meta.updated_at) || 0;
+}
+
+async function syncNow() {
+  try {
+    // 1) BAJAR lo publicado (sin auth, sin límites) → todos lo ven
+    const res = await fetch(rawDataUrl());
+    if (res.ok) {
+      const data = await res.json();
+      if (isValidCloudData(data)) {
+        const remoteTs = (data.meta && data.meta.updated_at) || 0;
+        if (remoteTs > localTs()) {
+          syncingRemote = true;
+          state.viajes = data.viajes || [];
+          state.meta = data.meta ? { ...data.meta } : { updated_at: remoteTs };
+          migrateState();
+          saveState();
+          syncingRemote = false;
+          lastUploadedTs = localTs();
+          renderAfterSync();
+        }
+      }
+    }
+
+    // 2) SUBIR cambios de este dispositivo (solo si tiene token y cambió algo)
+    if (localTs() > lastUploadedTs && getToken()) {
+      await pushCurrentState();
+    }
+  } catch(e) {
+    // Sin conexión o error: no pasa nada, se reintenta en el próximo ciclo
+  }
+}
+
+async function pushCurrentState() {
+  const token = getToken();
+  if (!token) return;
+  const api = apiDataUrl();
   const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' };
-  const payload = JSON.stringify({ version: 1, viajes: state.viajes }, null, 2);
 
   try {
     let sha = null;
     const getRes = await fetch(api, { headers });
     if (getRes.ok) { const info = await getRes.json(); sha = info.sha; }
-    else if (getRes.status !== 404) throw new Error('No se pudo leer data.json (HTTP ' + getRes.status + ')');
+    else if (getRes.status !== 404) return;
 
-    const body = { message: 'Actualizar datos VacaPlanner 🏖️', content: btoa(unescape(encodeURIComponent(payload))), branch };
+    const payload = JSON.stringify({ version: 1, viajes: state.viajes, meta: { updated_at: localTs() } }, null, 2);
+    const body = {
+      message: 'Sincronización VacaPlanner 🏖️',
+      content: btoa(unescape(encodeURIComponent(payload))),
+      branch: 'main'
+    };
     if (sha) body.sha = sha;
 
-    const putRes = await fetch(api, { method: 'PUT', headers: { ...headers, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-    if (!putRes.ok) {
-      const e = await putRes.json().catch(() => null);
-      throw new Error((e && e.message) || 'HTTP ' + putRes.status);
-    }
-    state.config.gh_token = token;
-    state.config.gh_repo = repo;
-    saveState();
-    toast('✅ Publicado en GitHub. Esperá ~1 minuto y se verá en la web.', 'success', 9000);
-    return true;
-  } catch(e) {
-    toast('Error al publicar: ' + e.message, 'error', 7000);
-    return false;
-  }
-}
-
-async function pullFromGithub(notify = true) {
-  try {
-    const res = await fetch('data.json');
-    if (!res.ok) throw new Error('Todavía no hay data.json publicado');
-    const data = await res.json();
-    if (!isValidCloudData(data)) throw new Error('data.json no es válido');
-    if (notify) {
-      const n = (data.viajes || []).length;
-      if (!window.confirm(`¿Reemplazás lo local (${state.viajes.length} viajes) por lo publicado (${n} viajes)?`)) return false;
-    }
-    state.viajes = data.viajes || [];
-    migrateState();
-    saveState();
-    renderAfterSync();
-    if (notify) toast('✅ Mostrando lo publicado en la web', 'success');
-    return true;
-  } catch(e) {
-    if (notify) toast('No se pudo traer: ' + e.message, 'error', 6000);
-    return false;
-  }
-}
-
-async function adoptPublishedIfEmpty() {
-  try {
-    const res = await fetch('data.json');
-    if (!res.ok) return;
-    const data = await res.json();
-    if (!isValidCloudData(data) || !data.viajes.length) return;
-    if (state.viajes.length === 0) {
-      state.viajes = data.viajes;
-      migrateState();
-      saveState();
-      renderAfterSync();
-    }
+    const putRes = await fetch(api, {
+      method: 'PUT',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (putRes.ok) lastUploadedTs = localTs();
   } catch(e) {}
+}
+
+async function startAutoSync() {
+  await syncNow();
+  setInterval(syncNow, 10000);
 }
 
 function renderAfterSync() {
@@ -2565,8 +2584,8 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
 // ============================================================
 loadState();
 
-// Si la web ya tiene data publicado y el dispositivo está vacío, lo adoptamos
-adoptPublishedIfEmpty();
+// Sincronización automática: baja lo publicado y sube los cambios locales
+startAutoSync();
 
 // Show setup prompt if no API key
 if (!state.config.api_key) {
