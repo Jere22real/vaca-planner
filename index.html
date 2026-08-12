@@ -1,0 +1,2576 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VacaPlanner — Comparador de Hospedajes</title>
+  <meta name="description" content="Compará hospedajes para tus vacaciones pegando los mails de los alojamientos. La IA los analiza y arma un comparador visual.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0b14;
+      --bg2:       #10121f;
+      --bg3:       #181b2e;
+      --surface:   rgba(255,255,255,0.05);
+      --surface2:  rgba(255,255,255,0.08);
+      --border:    rgba(255,255,255,0.10);
+      --border2:   rgba(255,255,255,0.18);
+      --text:      #e8eaf6;
+      --text2:     #9ba3c4;
+      --text3:     #5c6490;
+      --accent:    #7c6ff7;
+      --accent2:   #5b8af0;
+      --cyan:      #38d9d9;
+      --green:     #4ecb71;
+      --yellow:    #f5c842;
+      --red:       #f05252;
+      --orange:    #f08020;
+      --grad1: linear-gradient(135deg, #7c6ff7 0%, #5b8af0 50%, #38d9d9 100%);
+      --grad2: linear-gradient(135deg, #7c6ff720 0%, #5b8af010 100%);
+      --shadow:    0 8px 32px rgba(0,0,0,0.45);
+      --shadow2:   0 2px 12px rgba(0,0,0,0.30);
+      --radius:    16px;
+      --radius2:   10px;
+      --radius3:   6px;
+      --trans:     0.22s cubic-bezier(.4,0,.2,1);
+    }
+
+    html { font-size: 16px; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+    /* ===== BG DECORATION ===== */
+    .bg-orb {
+      position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.12; pointer-events: none; z-index: 0;
+    }
+    .orb1 { width: 500px; height: 500px; background: var(--accent); top: -150px; right: -100px; }
+    .orb2 { width: 400px; height: 400px; background: var(--cyan); bottom: -100px; left: -80px; }
+
+    /* ===== LAYOUT ===== */
+    #app { position: relative; z-index: 1; }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 28px; background: rgba(10,11,20,0.85);
+      backdrop-filter: blur(16px); border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .navbar-brand {
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
+      text-decoration: none; color: var(--text);
+    }
+    .brand-icon { font-size: 1.6rem; }
+    .brand-name { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; }
+    .brand-name span { background: var(--grad1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .navbar-actions { display: flex; gap: 10px; align-items: center; }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 18px; border-radius: var(--radius2); border: none;
+      font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; transition: var(--trans); white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--grad1); color: #fff;
+      box-shadow: 0 4px 18px rgba(124,111,247,0.4);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,111,247,0.55); }
+    .btn-ghost {
+      background: var(--surface); color: var(--text2);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { background: var(--surface2); color: var(--text); border-color: var(--border2); }
+    .btn-danger { background: rgba(240,82,82,0.15); color: var(--red); border: 1px solid rgba(240,82,82,0.3); }
+    .btn-danger:hover { background: rgba(240,82,82,0.25); }
+    .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+    .btn-icon { padding: 8px; border-radius: var(--radius3); min-width: 36px; justify-content: center; }
+
+    /* ===== VIEWS ===== */
+    .view { display: none; padding: 28px; max-width: 1400px; margin: 0 auto; }
+    .view.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+
+    /* ===== HOME VIEW ===== */
+    .home-header { margin-bottom: 32px; }
+    .home-title { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; }
+    .home-title span { background: var(--grad1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .home-sub { color: var(--text2); margin-top: 6px; font-size: 0.95rem; }
+    .home-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
+
+    .trips-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;
+    }
+    .trip-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px; cursor: pointer;
+      transition: var(--trans); position: relative; overflow: hidden;
+    }
+    .trip-card::before {
+      content: ''; position: absolute; inset: 0; background: var(--grad2);
+      opacity: 0; transition: var(--trans);
+    }
+    .trip-card:hover { border-color: var(--border2); transform: translateY(-3px); box-shadow: var(--shadow); }
+    .trip-card:hover::before { opacity: 1; }
+    .trip-card-emoji { font-size: 2.4rem; margin-bottom: 14px; }
+    .trip-card-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+    .trip-card-dest { color: var(--text2); font-size: 0.85rem; margin-bottom: 12px; }
+    .trip-card-meta { display: flex; gap: 12px; flex-wrap: wrap; }
+    .trip-badge {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 20px; padding: 3px 10px; font-size: 0.75rem; color: var(--text2);
+    }
+    .trip-badge.accent { background: rgba(124,111,247,0.15); border-color: rgba(124,111,247,0.3); color: var(--accent); }
+    .trip-card-actions {
+      position: absolute; top: 14px; right: 14px;
+      display: flex; gap: 6px; opacity: 0; transition: var(--trans);
+    }
+    .trip-card:hover .trip-card-actions { opacity: 1; }
+
+    .empty-state {
+      text-align: center; padding: 64px 24px;
+      border: 2px dashed var(--border); border-radius: var(--radius);
+    }
+    .empty-icon { font-size: 4rem; margin-bottom: 16px; }
+    .empty-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; }
+    .empty-sub { color: var(--text2); margin-bottom: 24px; }
+
+    /* ===== TRIP VIEW ===== */
+    .trip-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 28px; gap: 16px; flex-wrap: wrap;
+    }
+    .trip-header-left { display: flex; align-items: center; gap: 12px; }
+    .back-btn { background: none; border: none; color: var(--text2); cursor: pointer; font-size: 1.2rem; transition: var(--trans); padding: 4px; }
+    .back-btn:hover { color: var(--text); transform: translateX(-3px); }
+    .trip-view-title { font-size: 1.6rem; font-weight: 800; }
+    .trip-view-sub { color: var(--text2); font-size: 0.85rem; margin-top: 2px; }
+    .trip-header-right { display: flex; gap: 10px; align-items: center; }
+
+    .view-toggle {
+      display: flex; background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius2); overflow: hidden;
+    }
+    .view-toggle-btn {
+      padding: 8px 14px; background: none; border: none; color: var(--text2);
+      cursor: pointer; font-size: 0.85rem; font-family: 'Outfit',sans-serif;
+      transition: var(--trans); font-weight: 500;
+    }
+    .view-toggle-btn.active { background: var(--accent); color: #fff; }
+
+    /* ===== HOSPEDAJES GRID ===== */
+    .hospedajes-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;
+    }
+
+    /* ===== DESTINOS / CIUDADES ===== */
+    .destino-section { grid-column: 1 / -1; margin-bottom: 8px; }
+    .destino-header {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 14px 18px; margin-bottom: 16px;
+    }
+    .destino-title { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.02em; }
+    .destino-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+    /* ===== HOSPEDAJE CARD ===== */
+    .hosp-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden; transition: var(--trans);
+      display: flex; flex-direction: column;
+    }
+    .hosp-card:hover { border-color: var(--border2); box-shadow: var(--shadow); transform: translateY(-2px); }
+
+    .hosp-card-header {
+      padding: 18px 20px 14px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+    }
+    .hosp-name { font-size: 1.05rem; font-weight: 700; line-height: 1.3; }
+    .hosp-tipo {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2px 9px; font-size: 0.72rem;
+      color: var(--text2); white-space: nowrap; margin-top: 2px; display: inline-block;
+    }
+    .score-badge {
+      min-width: 42px; height: 42px; border-radius: 10px; display: flex;
+      align-items: center; justify-content: center; flex-direction: column;
+      font-weight: 800; font-size: 1rem; flex-shrink: 0;
+      cursor: pointer; transition: var(--trans);
+    }
+    .score-badge:hover { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .score-badge.high { background: rgba(78,203,113,0.15); color: var(--green); border: 1px solid rgba(78,203,113,0.3); }
+    .score-badge.mid  { background: rgba(245,200,66,0.15); color: var(--yellow); border: 1px solid rgba(245,200,66,0.3); }
+    .score-badge.low  { background: rgba(240,82,82,0.15); color: var(--red); border: 1px solid rgba(240,82,82,0.3); }
+    .score-edit-hint { font-size: 0.62rem; font-weight: 500; opacity: 0.75; }
+
+    /* ===== CONTACT BUTTONS ===== */
+    .contact-btns { display: flex; flex-wrap: wrap; gap: 6px; }
+    .contact-btn {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 5px 11px; border-radius: 7px; font-size: 0.74rem; font-weight: 600;
+      text-decoration: none; transition: var(--trans); border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .contact-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow2); }
+    .contact-btn.tel  { background: rgba(56,217,217,0.10); color: var(--cyan);    border-color: rgba(56,217,217,0.30); }
+    .contact-btn.wa   { background: rgba(78,203,113,0.10); color: var(--green);   border-color: rgba(78,203,113,0.30); }
+    .contact-btn.mail { background: rgba(124,111,247,0.10); color: var(--accent); border-color: rgba(124,111,247,0.30); }
+    .contact-btn.ig   { background: rgba(240,128,32,0.10); color: var(--orange);  border-color: rgba(240,128,32,0.30); }
+
+    .hosp-card-body { padding: 16px 20px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
+
+    .hosp-price-row {
+      display: flex; align-items: baseline; gap: 8px;
+    }
+    .price-big { font-size: 1.7rem; font-weight: 800; background: var(--grad1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .price-unit { color: var(--text2); font-size: 0.82rem; }
+    .price-total { color: var(--text3); font-size: 0.78rem; }
+
+    .hosp-info-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .info-chip {
+      display: flex; align-items: center; gap: 4px;
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 6px; padding: 4px 9px; font-size: 0.78rem; color: var(--text2);
+    }
+
+    .hosp-location { display: flex; align-items: flex-start; gap: 6px; color: var(--text2); font-size: 0.82rem; }
+    .hosp-location span:first-child { flex-shrink: 0; }
+
+    .features-list { display: flex; flex-wrap: wrap; gap: 5px; }
+    .feat-tag {
+      background: rgba(124,111,247,0.1); border: 1px solid rgba(124,111,247,0.2);
+      border-radius: 5px; padding: 2px 8px; font-size: 0.72rem; color: var(--accent);
+    }
+    .feat-tag.more { background: var(--bg3); border-color: var(--border); color: var(--text3); }
+
+    .hosp-extra { font-size: 0.78rem; color: var(--text2); }
+    .hosp-extra strong { color: var(--text); }
+
+    .missing-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .missing-tag {
+      background: rgba(240,82,82,0.08); border: 1px solid rgba(240,82,82,0.2);
+      border-radius: 5px; padding: 1px 7px; font-size: 0.70rem; color: var(--red);
+    }
+
+    .hosp-card-footer {
+      padding: 12px 20px; border-top: 1px solid var(--border);
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+
+    /* ===== PORTADA / HEADER PHOTO ===== */
+    .hosp-portada {
+      position: relative; height: 190px; overflow: hidden;
+      background: var(--bg3); cursor: zoom-in; flex-shrink: 0;
+    }
+    .hosp-portada img { width: 100%; height: 100%; object-fit: cover; transition: var(--trans); }
+    .hosp-portada:hover img { transform: scale(1.04); }
+    .hosp-portada.empty {
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text3); font-size: 0.8rem; border-bottom: 1px solid var(--border);
+      cursor: default;
+    }
+    .portada-badge {
+      position: absolute; bottom: 8px; right: 8px;
+      background: rgba(0,0,0,0.65); color: #fff; border-radius: 6px;
+      padding: 3px 8px; font-size: 0.7rem; backdrop-filter: blur(4px);
+    }
+    .thumb-wrap { position: relative; flex-shrink: 0; }
+    .thumb-fav {
+      position: absolute; top: 2px; left: 2px;
+      background: rgba(0,0,0,0.6); border: none; border-radius: 4px;
+      color: var(--yellow); font-size: 0.85rem; width: 20px; height: 20px;
+      cursor: pointer; line-height: 1; display: flex; align-items: center; justify-content: center;
+    }
+    .thumb-fav:hover { background: rgba(0,0,0,0.85); }
+
+    /* ===== LIGHTBOX ===== */
+    .lightbox { position: relative; max-width: 96vw; max-height: 94vh; display: flex; align-items: center; justify-content: center; }
+    #lightbox-img {
+      max-width: 92vw; max-height: 84vh; border-radius: var(--radius2);
+      box-shadow: var(--shadow); object-fit: contain; background: #000;
+    }
+    .lightbox-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.12); color: #fff; border: none; border-radius: 50%;
+      width: 46px; height: 46px; font-size: 1.7rem; cursor: pointer; transition: var(--trans);
+      display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px);
+      z-index: 2;
+    }
+    .lightbox-nav:hover { background: rgba(255,255,255,0.28); }
+    .lightbox-nav.prev { left: 6px; }
+    .lightbox-nav.next { right: 6px; }
+    .lightbox-close {
+      position: absolute; top: 6px; right: 6px; z-index: 3;
+      background: rgba(255,255,255,0.12); color: #fff; border: none; border-radius: 50%;
+      width: 42px; height: 42px; font-size: 1.1rem; cursor: pointer; transition: var(--trans);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.28); }
+    .lightbox-bottom {
+      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 10px; z-index: 2;
+      background: rgba(0,0,0,0.55); padding: 6px 12px; border-radius: 20px; backdrop-filter: blur(4px);
+    }
+    .lightbox-count { color: #fff; font-size: 0.8rem; font-weight: 600; }
+
+    /* ===== TABLE VIEW ===== */
+    .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+    .compare-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+    .compare-table th {
+      padding: 14px 16px; background: var(--bg3); font-weight: 700;
+      font-size: 0.85rem; text-align: center; border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .compare-table th:first-child { text-align: left; min-width: 140px; }
+    .compare-table td {
+      padding: 11px 16px; border-bottom: 1px solid var(--border);
+      font-size: 0.82rem; text-align: center; vertical-align: middle;
+    }
+    .compare-table td:first-child { text-align: left; color: var(--text2); font-weight: 600; background: var(--bg3); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:hover td:not(:first-child) { background: var(--surface2); }
+    .best-cell { background: rgba(78,203,113,0.08) !important; color: var(--green) !important; font-weight: 700; }
+    .check-yes { color: var(--green); }
+    .check-no { color: var(--text3); }
+
+    /* ===== MODALS ===== */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.72); backdrop-filter: blur(6px);
+      z-index: 200; display: flex; align-items: center; justify-content: center;
+      padding: 20px; animation: fadeIn 0.2s ease;
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal {
+      background: var(--bg2); border: 1px solid var(--border2);
+      border-radius: var(--radius); box-shadow: var(--shadow);
+      max-width: 620px; width: 100%; max-height: 90vh;
+      display: flex; flex-direction: column; animation: slideUp 0.25s cubic-bezier(.4,0,.2,1);
+    }
+    .modal.wide { max-width: 820px; }
+    @keyframes slideUp { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform: translateY(0); } }
+    .modal-header {
+      padding: 20px 24px 16px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .modal-title { font-size: 1.1rem; font-weight: 700; }
+    .modal-close {
+      background: none; border: none; color: var(--text3); cursor: pointer;
+      font-size: 1.3rem; line-height: 1; transition: var(--trans); padding: 2px;
+    }
+    .modal-close:hover { color: var(--text); }
+    .modal-body { padding: 20px 24px; overflow-y: auto; flex: 1; }
+    .modal-footer {
+      padding: 16px 24px; border-top: 1px solid var(--border);
+      display: flex; gap: 10px; justify-content: flex-end;
+    }
+
+    /* ===== FORM ELEMENTS ===== */
+    .form-group { margin-bottom: 18px; }
+    .form-group:last-child { margin-bottom: 0; }
+    label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text2); margin-bottom: 7px; }
+    input[type=text], input[type=date], input[type=password], textarea, select {
+      width: 100%; background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius2); padding: 10px 14px; color: var(--text);
+      font-family: 'Outfit', sans-serif; font-size: 0.9rem; transition: var(--trans);
+      outline: none;
+    }
+    input[type=text]:focus, input[type=date]:focus, input[type=password]:focus,
+    textarea:focus, select:focus {
+      border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,111,247,0.18);
+    }
+    textarea { resize: vertical; min-height: 120px; line-height: 1.5; }
+    .textarea-mail { min-height: 200px; font-size: 0.83rem; font-family: monospace; }
+    select { appearance: none; cursor: pointer; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-hint { font-size: 0.75rem; color: var(--text3); margin-top: 5px; }
+
+    /* ===== CONFIG / SETUP ===== */
+    .config-panel {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px; margin-bottom: 24px;
+    }
+    .config-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .api-status { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .status-dot.ok  { background: var(--green); box-shadow: 0 0 8px var(--green); }
+    .status-dot.warn{ background: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
+    .status-dot.err { background: var(--red); box-shadow: 0 0 8px var(--red); }
+
+    /* ===== SPINNER / LOADING ===== */
+    .spinner {
+      width: 36px; height: 36px; border: 3px solid var(--border);
+      border-top-color: var(--accent); border-radius: 50%;
+      animation: spin 0.8s linear infinite; margin: 0 auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-block { text-align: center; padding: 32px; }
+    .loading-block p { color: var(--text2); margin-top: 12px; font-size: 0.88rem; }
+
+    /* ===== SKELETON ===== */
+    .skeleton {
+      background: linear-gradient(90deg, var(--bg3) 25%, var(--surface2) 50%, var(--bg3) 75%);
+      background-size: 200% 100%; animation: shimmer 1.4s infinite;
+      border-radius: 6px;
+    }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+    /* ===== PREVIEW JSON ===== */
+    .json-preview {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: var(--radius2); padding: 14px; font-size: 0.78rem;
+      font-family: monospace; color: var(--cyan); overflow-x: auto; max-height: 260px;
+      white-space: pre-wrap; word-break: break-word;
+    }
+
+    /* ===== TOAST ===== */
+    #toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 500; display: flex; flex-direction: column; gap: 8px; }
+    .toast {
+      background: var(--bg2); border: 1px solid var(--border2);
+      border-radius: var(--radius2); padding: 12px 18px; font-size: 0.85rem;
+      box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px;
+      animation: slideRight 0.25s ease; max-width: 320px;
+    }
+    .toast.success { border-left: 3px solid var(--green); }
+    .toast.error   { border-left: 3px solid var(--red); }
+    .toast.info    { border-left: 3px solid var(--accent); }
+    @keyframes slideRight { from { opacity:0; transform: translateX(20px); } to { opacity:1; transform: translateX(0); } }
+
+    /* ===== DIVIDER ===== */
+    .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+    /* ===== SECTION LABEL ===== */
+    .section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 640px) {
+      .view { padding: 16px; }
+      .navbar { padding: 12px 16px; }
+      .form-row { grid-template-columns: 1fr; }
+      .home-top { flex-direction: column; gap: 12px; align-items: flex-start; }
+      .trip-header { flex-direction: column; }
+      .hospedajes-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
+
+<!-- App -->
+<div id="app">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a class="navbar-brand" onclick="goHome()" id="brand-link">
+      <span class="brand-icon">🏖️</span>
+      <span class="brand-name">Vaca<span>Planner</span></span>
+    </a>
+    <div class="navbar-actions">
+      <button class="btn btn-ghost btn-sm" onclick="openConfig()">⚙️ Config</button>
+    </div>
+  </nav>
+
+  <!-- VIEW: HOME -->
+  <div class="view active" id="view-home">
+    <div class="home-header">
+      <h1 class="home-title">Mis <span>Viajes</span></h1>
+      <p class="home-sub">Compará hospedajes pegando los mails que recibís. La IA hace el resto.</p>
+    </div>
+    <div class="home-top">
+      <span id="trips-count" style="color:var(--text2);font-size:0.88rem;"></span>
+      <button class="btn btn-primary" onclick="openNewTrip()">✈️ Nuevo Viaje</button>
+    </div>
+    <div id="trips-grid" class="trips-grid"></div>
+  </div>
+
+  <!-- VIEW: TRIP -->
+  <div class="view" id="view-trip">
+    <div class="trip-header">
+      <div class="trip-header-left">
+        <button class="back-btn" onclick="goHome()">← </button>
+        <div>
+          <div class="trip-view-title" id="trip-view-title">Viaje</div>
+          <div class="trip-view-sub" id="trip-view-sub"></div>
+        </div>
+      </div>
+      <div class="trip-header-right">
+        <div class="view-toggle">
+          <button class="view-toggle-btn active" id="btn-grid" onclick="setHospView('grid')">⊞ Grilla</button>
+          <button class="view-toggle-btn" id="btn-table" onclick="setHospView('table')">≡ Tabla</button>
+        </div>
+        <button class="btn btn-ghost" onclick="openNewDestino()">🗺️ Ciudad</button>
+        <button class="btn btn-primary" onclick="openAddHosp()">➕ Hospedaje</button>
+      </div>
+    </div>
+
+    <!-- Grid view -->
+    <div id="hosp-grid-view">
+      <div id="hospedajes-grid" class="hospedajes-grid"></div>
+    </div>
+
+    <!-- Table view -->
+    <div id="hosp-table-view" style="display:none;">
+      <div class="table-wrap">
+        <table class="compare-table" id="compare-table">
+          <thead><tr id="table-head-row"></tr></thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<!-- ===== MODALS ===== -->
+
+<!-- Modal: Config / API Key -->
+<div class="modal-overlay hidden" id="modal-config">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">⚙️ Configuración</span>
+      <button class="modal-close" onclick="closeModal('modal-config')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Proveedor de IA</label>
+        <select id="cfg-provider" onchange="onProviderChange()">
+          <option value="gemini">Google Gemini (gratuito — recomendado)</option>
+          <option value="openrouter">OpenRouter (modelos gratuitos)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label id="cfg-key-label">API Key de Gemini</label>
+        <input type="password" id="cfg-api-key" placeholder="Pegá tu API Key aquí...">
+        <p class="form-hint" id="cfg-key-hint">
+          Obtené tu key gratis en <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent)">aistudio.google.com</a> · Se guarda solo en tu browser.<br>
+          ⚠️ Free tier: ~20 llamadas/día (más que suficiente para comparar hospedajes).
+        </p>
+      </div>
+      <div class="divider"></div>
+      <div class="config-row">
+        <span class="api-status" id="api-status-badge">
+          <span class="status-dot warn" id="api-dot"></span>
+          <span id="api-status-text">Sin configurar</span>
+        </span>
+        <button class="btn btn-ghost btn-sm" onclick="testApiKey()">🔍 Probar key</button>
+      </div>
+      <div class="divider"></div>
+      <div class="form-group">
+        <label>☁️ Sincronización en la nube (JSONBlob gratis)</label>
+        <input type="text" id="cfg-cloud-url" placeholder="https://jsonblob.com/api/jsonBlob/... (vacío = crear uno nuevo)" style="font-size:0.8rem;">
+        <p class="form-hint">
+          Sube el botón "Crear" para generar tu almacenamiento y guardá la URL que aparece. En tus otros dispositivos pegá la misma URL en Config y dale "Bajar datos". Los hospedajes se sincronizan automáticamente.
+        </p>
+      </div>
+      <div class="config-row">
+        <button class="btn btn-primary btn-sm" onclick="createCloudBlob()">➕ Crear</button>
+        <button class="btn btn-ghost btn-sm" onclick="pushDataToCloud(true)">⬆️ Subir</button>
+        <button class="btn btn-ghost btn-sm" onclick="pullDataFromCloud(true)">⬇️ Bajar</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-config')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveConfig()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nuevo Viaje -->
+<div class="modal-overlay hidden" id="modal-new-trip">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">✈️ Nuevo Viaje</span>
+      <button class="modal-close" onclick="closeModal('modal-new-trip')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Nombre del viaje</label>
+        <input type="text" id="trip-name" placeholder="Ej: Bariloche Enero 2027">
+      </div>
+      <div class="form-group">
+        <label>Destino</label>
+        <input type="text" id="trip-dest" placeholder="Ej: Bariloche, Río Negro">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Fecha de llegada</label>
+          <input type="date" id="trip-from">
+        </div>
+        <div class="form-group">
+          <label>Fecha de salida</label>
+          <input type="date" id="trip-to">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Emoji del viaje</label>
+        <input type="text" id="trip-emoji" placeholder="🏔️" maxlength="4" style="font-size:1.5rem; width:80px; text-align:center;">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-new-trip')">Cancelar</button>
+      <button class="btn btn-primary" onclick="createTrip()">Crear Viaje ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nuevo/Editar Destino (Ciudad) -->
+<div class="modal-overlay hidden" id="modal-new-destino">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-header">
+      <span class="modal-title" id="destino-modal-title">🗺️ Nueva Ciudad / Destino</span>
+      <button class="modal-close" onclick="closeModal('modal-new-destino')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:0.82rem;color:var(--text2);margin-bottom:14px;">
+        Agrupá los hospedajes por ciudad o lugar donde vas a parar (ej: Bariloche, San Martín de los Andes).
+      </p>
+      <div class="form-group">
+        <label>Nombre de la ciudad / destino</label>
+        <input type="text" id="destino-name" placeholder="Ej: Bariloche">
+      </div>
+      <div class="form-group">
+        <label>Emoji</label>
+        <input type="text" id="destino-emoji" placeholder="🏔️" maxlength="4" style="font-size:1.5rem; width:80px; text-align:center;">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-new-destino')">Cancelar</button>
+      <button class="btn btn-primary" id="btn-save-destino" onclick="saveDestino()">Crear Ciudad ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Agregar Hospedaje -->
+<div class="modal-overlay hidden" id="modal-add-hosp">
+  <div class="modal wide">
+    <div class="modal-header">
+      <span class="modal-title">✨ Agregar Alojamiento (Mail y/o Link Web)</span>
+      <button class="modal-close" onclick="closeModal('modal-add-hosp')">✕</button>
+    </div>
+    <div class="modal-body" id="add-hosp-body">
+      <div id="step-paste">
+        <p style="color:var(--text2);font-size:0.88rem;margin-bottom:16px;">
+          Podés pegar el <strong>Mail/WhatsApp</strong> que recibiste, o directamente el <strong>Link Web de la cabaña</strong> (Booking, InterPatagonia, etc.), o <strong>ambos</strong> para que la IA fusione precios y fotos automáticamente.
+        </p>
+
+        <div class="form-group">
+          <label>🗺️ Ciudad / Destino</label>
+          <select id="addhosp-destino" onchange="currentDestinoId=this.value"></select>
+        </div>
+
+        <div class="form-group">
+          <label>🌐 Link Web de la Cabaña (Opcional - Extrae fotos HD y servicios de la web)</label>
+          <input type="text" id="hosp-web-link" placeholder="Ej: https://www.interpatagonia.com/bariloche/bungalows-nahuel-malal.html">
+        </div>
+
+        <div class="form-group">
+          <label>📧 Mail / Mensaje de respuesta del propietario (Opcional si pusiste Link Web)</label>
+          <textarea class="textarea-mail" id="hosp-mail-text" placeholder="Pegá el mail o mensaje completo acá...
+
+Ejemplo:
+Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
+        </div>
+
+        <div id="loading-ai" class="loading-block" style="display:none;">
+          <div class="spinner"></div>
+          <p>Analizando con IA... esto tarda unos segundos ✨</p>
+        </div>
+      </div>
+      <div id="step-preview" style="display:none;">
+        <p style="color:var(--text2);font-size:0.88rem;margin-bottom:12px;">
+          ✅ La IA extrajo la siguiente información. Revisá y confirmá.
+        </p>
+        <div id="preview-card"></div>
+        <div class="divider"></div>
+        <details>
+          <summary style="cursor:pointer;font-size:0.8rem;color:var(--text3);user-select:none;">Ver JSON completo</summary>
+          <div class="json-preview" id="preview-json" style="margin-top:10px;"></div>
+        </details>
+      </div>
+    </div>
+    <div class="modal-footer" id="add-hosp-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add-hosp')">Cancelar</button>
+      <button class="btn btn-primary" id="btn-analyze" onclick="analyzeWithAI()">🤖 Analizar con IA</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Ver mail original -->
+<div class="modal-overlay hidden" id="modal-view-mail">
+  <div class="modal wide">
+    <div class="modal-header">
+      <span class="modal-title">📧 Mail Original</span>
+      <button class="modal-close" onclick="closeModal('modal-view-mail')">✕</button>
+    </div>
+    <div class="modal-body">
+      <pre id="view-mail-content" style="white-space:pre-wrap;word-break:break-word;font-size:0.82rem;color:var(--text2);line-height:1.6;"></pre>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Confirmar eliminación -->
+<div class="modal-overlay hidden" id="modal-confirm-del">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-header">
+      <span class="modal-title">⚠️ Confirmar eliminación</span>
+      <button class="modal-close" onclick="closeModal('modal-confirm-del')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="color:var(--text2);" id="confirm-del-msg">¿Eliminás esto?</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-confirm-del')">Cancelar</button>
+      <button class="btn btn-danger" id="btn-confirm-del">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Fotos -->
+<div class="modal-overlay hidden" id="modal-photos">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">📷 Fotos del Alojamiento</span>
+      <button class="modal-close" onclick="closeModal('modal-photos')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:0.85rem;color:var(--text2);margin-bottom:14px;">
+        Podés adjuntar fotos pegando el link (Booking, Instagram, Drive) o subiendo una imagen desde tu dispositivo.
+      </p>
+
+      <div class="form-group">
+        <label>Agregar por URL / Link</label>
+        <div style="display:flex;gap:8px;">
+          <input type="text" id="photo-url-input" placeholder="https://... (URL de la foto o Booking)">
+          <button class="btn btn-primary btn-sm" onclick="addPhotoByUrl()">+ Agregar</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="form-group">
+        <label>O subir archivo de foto</label>
+        <input type="file" id="photo-file-input" accept="image/*" onchange="addPhotoFromFile(event)" style="font-size:0.85rem;">
+      </div>
+
+      <div class="divider"></div>
+
+      <label>Galeria de fotos (<span id="photo-count-label">0</span>)</label>
+      <div id="photos-gallery-preview" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(100px,1fr));gap:10px;margin-top:10px;max-height:220px;overflow-y:auto;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-photos')">Listo ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Editar puntaje -->
+<div class="modal-overlay hidden" id="modal-edit-score">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-header">
+      <span class="modal-title">⭐ Editar Puntaje</span>
+      <button class="modal-close" onclick="closeModal('modal-edit-score')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:0.82rem;color:var(--text2);margin-bottom:14px;">
+        Ajustá la calificación del alojamiento (la IA la estimó, pero vos sabés mejor 😉).
+      </p>
+      <div class="form-group">
+        <label>Puntaje (0 a 10)</label>
+        <input type="number" id="edit-score-input" min="0" max="10" step="0.1" placeholder="Ej: 8.5">
+      </div>
+      <div class="form-group">
+        <label>Razón del puntaje</label>
+        <input type="text" id="edit-score-reason" placeholder="Ej: Mejor relación precio-calidad">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-edit-score')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveScore()">💾 Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Agregar link web a un hospedaje existente -->
+<div class="modal-overlay hidden" id="modal-add-link">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">🔗 Agregar Link Web</span>
+      <button class="modal-close" onclick="closeModal('modal-add-link')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:0.85rem;color:var(--text2);margin-bottom:14px;">
+        Pegá el link web del alojamiento para buscar <strong>fotos automáticamente</strong>. No se reprocesa el mail que ya cargaste: solo se agregan las fotos encontradas.
+      </p>
+      <div class="form-group">
+        <label>🌐 Link Web</label>
+        <input type="text" id="addlink-url" placeholder="https://www.interpatagonia.com/...">
+        <p class="form-hint">Booking, InterPatagonia, Sitio propio, Instagram, etc.</p>
+      </div>
+      <div id="addlink-loading" class="loading-block" style="display:none;">
+        <div class="spinner"></div>
+        <p>Buscando fotos en el sitio web...</p>
+      </div>
+      <div id="addlink-result"></div>
+    </div>
+    <div class="modal-footer" id="addlink-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-add-link')">Cancelar</button>
+      <button class="btn btn-primary" id="btn-addlink-search" onclick="processAddLink()">🔗 Buscar fotos</button>
+      <button class="btn btn-primary" id="btn-addlink-confirm" style="display:none;" onclick="confirmAddLink()">✅ Agregar fotos</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Lightbox / Galería -->
+<div class="modal-overlay hidden" id="modal-lightbox" style="background:rgba(0,0,0,0.92);backdrop-filter:none;">
+  <div class="lightbox">
+    <button class="lightbox-close" onclick="closeModal('modal-lightbox')" title="Cerrar">✕</button>
+    <button class="lightbox-nav prev" onclick="lightboxNav(-1)" title="Anterior">‹</button>
+    <img id="lightbox-img" src="" alt="Foto del alojamiento">
+    <button class="lightbox-nav next" onclick="lightboxNav(1)" title="Siguiente">›</button>
+    <div class="lightbox-bottom">
+      <span class="lightbox-count" id="lightbox-count"></span>
+      <button class="btn btn-ghost btn-sm" onclick="setFavFromLightbox()">⭐ Portada</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+let state = {
+  config: { ia_provider: 'gemini', api_key: '', tema: 'dark' },
+  viajes: []
+};
+let currentTripId = null;
+let currentDestinoId = null;
+let hospView = 'grid';
+let pendingExtracted = null;
+let deleteCallback = null;
+let editingHospId = null;
+
+// ============================================================
+// STORAGE
+// ============================================================
+function saveState() {
+  localStorage.setItem('vacaplanner_v1', JSON.stringify(state));
+  if (!suppressCloudPush) scheduleCloudPush();
+}
+function loadState() {
+  const raw = localStorage.getItem('vacaplanner_v1');
+  if (raw) {
+    try { state = JSON.parse(raw); } catch(e) {}
+  }
+  // defaults
+  if (!state.config) state.config = { ia_provider:'gemini', api_key:'', tema:'dark' };
+  if (!state.viajes) state.viajes = [];
+  migrateState();
+}
+
+// ============================================================
+// CLOUD SYNC (JSONBlob - gratis, sin registro)
+// ============================================================
+let suppressCloudPush = false;
+let cloudPushTimer = null;
+
+function sanitizeForCloud() {
+  return {
+    version: 1,
+    viajes: state.viajes,
+    config: { ...state.config, api_key: '', cloud_url: '' }
+  };
+}
+
+function isValidCloudData(data) {
+  return data && typeof data === 'object' && Array.isArray(data.viajes);
+}
+
+function scheduleCloudPush() {
+  clearTimeout(cloudPushTimer);
+  cloudPushTimer = setTimeout(() => { pushDataToCloud(false); }, 1500);
+}
+
+async function createCloudBlob() {
+  const body = JSON.stringify(sanitizeForCloud());
+  try {
+    const res = await fetch('https://jsonblob.com/api/jsonBlob', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body
+    });
+    const loc = res.headers.get('Location');
+    if (!loc || !res.ok) throw new Error('JSONBlob no devolvió una URL (HTTP ' + res.status + ')');
+    state.config.cloud_url = loc;
+    document.getElementById('cfg-cloud-url').value = loc;
+    saveState();
+    toast('☁️ Almacenamiento en la nube creado. Copiá la URL para usarla en tus otros dispositivos.', 'success', 9000);
+  } catch(e) {
+    toast('Error al crear almacenamiento: ' + e.message, 'error', 7000);
+  }
+}
+
+async function pushDataToCloud(notify = false) {
+  const url = state.config.cloud_url;
+  if (!url) { if (notify) toast('☁️ Creá o pegá tu URL de nube en Config primero', 'error'); return false; }
+  try {
+    const res = await fetch(url, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(sanitizeForCloud())
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    if (notify) toast('☁️ Datos subidos a la nube', 'success');
+    return true;
+  } catch(e) {
+    if (notify) toast('No se pudo subir: ' + e.message, 'error', 6000);
+    return false;
+  }
+}
+
+async function pullDataFromCloud(notify = false) {
+  const url = state.config.cloud_url;
+  if (!url) { if (notify) toast('☁️ Creá o pegá tu URL de nube en Config primero', 'error'); return false; }
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (!isValidCloudData(data)) throw new Error('El contenido de la nube no es válido');
+    if (notify) {
+      const n = (data.viajes || []).length;
+      if (!window.confirm(`¿Reemplazás tus datos locales (${state.viajes.length} viajes) por los de la nube (${n} viajes)?`)) return false;
+    }
+    suppressCloudPush = true;
+    state.viajes = data.viajes || [];
+    migrateState();
+    saveState();
+    suppressCloudPush = false;
+    renderAfterSync();
+    if (notify) toast('☁️ Datos bajados desde la nube', 'success');
+    return true;
+  } catch(e) {
+    if (notify) toast('No se pudo bajar: ' + e.message, 'error', 6000);
+    return false;
+  }
+}
+
+function renderAfterSync() {
+  if (currentTripId && state.viajes.find(t => t.id === currentTripId)) {
+    openTrip(currentTripId);
+  } else {
+    goHome();
+  }
+}
+
+// Migración: hospedajes sueltos → agrupados por ciudad/destino
+function migrateState() {
+  state.viajes.forEach(trip => {
+    if (!trip.destinos) {
+      const legacy = trip.hospedajes || [];
+      trip.destinos = [];
+      if (legacy.length) {
+        const ctx = (trip.nombre || '') + ' ' + (trip.destino || '');
+        const name = /patagonia/i.test(ctx) ? 'Bariloche' : 'Ciudad Principal';
+        trip.destinos.push({ id: uid(), nombre: name, emoji: '🏠', hospedajes: legacy });
+      }
+      delete trip.hospedajes;
+    }
+    (trip.destinos || []).forEach(d => { if (!d.hospedajes) d.hospedajes = []; });
+  });
+}
+
+// ============================================================
+// UTILS & HELPERS
+// ============================================================
+let currentPhotoHospId = null;
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+function fmtPrice(val, currency = 'ARS') {
+  if (val == null || isNaN(val)) return '';
+  const num = Math.round(Number(val));
+  const formatted = num.toLocaleString('es-AR');
+  if (currency === 'USD' || currency === 'USD$') return `USD $ ${formatted}`;
+  return `$ ${formatted}`;
+}
+
+function getFullTitle(d) {
+  const gen = d.alojamiento_general || d.complejo_nombre;
+  const nom = d.nombre || 'Alojamiento';
+  if (gen && !nom.toLowerCase().includes(gen.toLowerCase())) {
+    return `${gen} — ${nom}`;
+  }
+  return nom;
+}
+
+function extractEmail(str) {
+  if (!str) return null;
+  const m = str.match(/[\w\.\-+]+@[\w\.\-]+\.\w{2,}/);
+  return m ? m[0] : null;
+}
+
+function extractPhone(str) {
+  if (!str) return null;
+  const candidates = str.match(/(?:\+\d{1,3}[ \-\/.]?)?(?:\(\d{2,5}\)[ \-\/.]?)?\d[\d \-\/.]{6,14}\d/g);
+  if (!candidates) return null;
+  for (const c of candidates) {
+    const d = digitsOnly(c);
+    if (d.length < 7 || d.length > 15) continue;
+    const dotOnly = /^[\d.]+$/.test(c.trim());
+    if (dotOnly && d.length < 9) continue;
+    return c.trim();
+  }
+  return null;
+}
+
+function extractInstagram(str) {
+  if (!str) return null;
+  const m = str.match(/@([\w\._]{3,})/);
+  return m ? m[1] : null;
+}
+
+function digitsOnly(s) { return s.replace(/\D/g, ''); }
+
+function waNumber(raw) {
+  let d = digitsOnly(raw);
+  if (d.startsWith('54')) return d;
+  if (d.length === 10 || d.length === 11) d = '54' + d;
+  return d;
+}
+
+function buildContactLinks(contacto, instagram) {
+  const links = [];
+  const str = (contacto || '') + (instagram ? ` ${instagram}` : '');
+
+  const email = extractEmail(contacto);
+  const phoneRaw = extractPhone(str);
+  const ig = String(instagram || extractInstagram(contacto) || '').replace(/^@+/, '');
+
+  if (phoneRaw) {
+    links.push({
+      type: 'tel',
+      label: '📞 Tel',
+      href: `tel:${digitsOnly(phoneRaw)}`,
+      title: phoneRaw
+    });
+  }
+  if (phoneRaw) {
+    links.push({
+      type: 'wa',
+      label: '📲 WhatsApp',
+      href: `https://wa.me/${waNumber(phoneRaw)}`,
+      title: phoneRaw
+    });
+  }
+  if (email) {
+    links.push({
+      type: 'mail',
+      label: `📧 ${email}`,
+      href: `mailto:${email}`,
+      title: email
+    });
+  }
+  if (ig) {
+    links.push({
+      type: 'ig',
+      label: `📸 @${ig}`,
+      href: `https://instagram.com/${ig}`,
+      title: `@${ig}`
+    });
+  }
+  return links;
+}
+
+function formatContactHtml(contacto, instagram) {
+  const links = buildContactLinks(contacto, instagram);
+  if (!links.length) return '';
+
+  const btnHtml = links.map(l => `
+    <a class="contact-btn ${l.type}" href="${l.href}" target="_blank" rel="noopener" title="${esc(l.title)}">${l.label}</a>
+  `).join('');
+
+  return `<div><strong>📞 Contacto:</strong><div class="contact-btns" style="margin-top:6px;">${btnHtml}</div></div>`;
+}
+
+function openPhotoModal(hospId) {
+  currentPhotoHospId = hospId;
+  document.getElementById('photo-url-input').value = '';
+  document.getElementById('photo-file-input').value = '';
+  renderPhotoGalleryModal();
+  openModal('modal-photos');
+}
+
+function renderPhotoGalleryModal() {
+  const hosp = getHospById(currentPhotoHospId);
+  if (!hosp) return;
+  const urls = hosp.datos.fotos_urls || [];
+  document.getElementById('photo-count-label').textContent = urls.length;
+
+  const container = document.getElementById('photos-gallery-preview');
+  if (!urls.length) {
+    container.innerHTML = `<p style="grid-column:1/-1;color:var(--text3);font-size:0.8rem;">Sin fotos agregadas aún.</p>`;
+    return;
+  }
+  container.innerHTML = urls.map((url, i) => {
+    const isFav = url === (hosp.datos.foto_portada || urls[0]);
+    return `
+    <div style="position:relative;border-radius:8px;overflow:hidden;border:1px solid ${isFav?'var(--yellow)':'var(--border)'};aspect-ratio:1;">
+      <img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover;cursor:zoom-in;" onclick="openLightbox('${hosp.id}', ${i})" onerror="this.src='https://via.placeholder.com/150?text=Error+Img'">
+      <button onclick="setFavPhoto('${hosp.id}', ${i})" title="${isFav?'Quitar portada':'Fijar como portada'}" style="position:absolute;top:4px;left:4px;background:rgba(0,0,0,0.7);color:${isFav?'var(--yellow)':'#fff'};border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:0.8rem;">${isFav?'★':'☆'}</button>
+      <button onclick="deletePhoto(${i})" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.7);color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function addPhotoByUrl() {
+  const url = document.getElementById('photo-url-input').value.trim();
+  if (!url) return;
+  const hosp = getHospById(currentPhotoHospId);
+  if (!hosp) return;
+  hosp.datos.fotos_urls = hosp.datos.fotos_urls || [];
+  hosp.datos.fotos_urls.push(url);
+  saveState();
+  document.getElementById('photo-url-input').value = '';
+  renderPhotoGalleryModal();
+  renderHospedajes();
+  toast('Foto agregada 📷', 'success');
+}
+
+function addPhotoFromFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const dataUrl = evt.target.result;
+    const hosp = getHospById(currentPhotoHospId);
+    if (!hosp) return;
+    hosp.datos.fotos_urls = hosp.datos.fotos_urls || [];
+    hosp.datos.fotos_urls.push(dataUrl);
+    saveState();
+    renderPhotoGalleryModal();
+    renderHospedajes();
+    toast('Foto subida 📷', 'success');
+  };
+  reader.readAsDataURL(file);
+}
+
+function deletePhoto(idx) {
+  const hosp = getHospById(currentPhotoHospId);
+  if (!hosp) return;
+  const removed = hosp.datos.fotos_urls[idx];
+  hosp.datos.fotos_urls.splice(idx, 1);
+  if (hosp.datos.foto_portada === removed) delete hosp.datos.foto_portada;
+  saveState();
+  renderPhotoGalleryModal();
+  renderHospedajes();
+  toast('Foto eliminada', 'info');
+}
+
+// ============================================================
+// LIGHTBOX (GALERÍA)
+// ============================================================
+let lightboxHospId = null;
+let lightboxIndex = 0;
+
+function openLightbox(hospId, index) {
+  const hosp = getHospById(hospId);
+  if (!hosp) return;
+  const urls = hosp.datos.fotos_urls || [];
+  if (!urls.length) return;
+  lightboxHospId = hospId;
+  lightboxIndex = Math.max(0, Math.min(index || 0, urls.length - 1));
+  updateLightbox();
+  openModal('modal-lightbox');
+}
+
+function updateLightbox() {
+  const hosp = getHospById(lightboxHospId);
+  if (!hosp) return;
+  const urls = hosp.datos.fotos_urls || [];
+  if (!urls.length) { closeModal('modal-lightbox'); return; }
+  lightboxIndex = ((lightboxIndex % urls.length) + urls.length) % urls.length;
+  const img = document.getElementById('lightbox-img');
+  img.src = urls[lightboxIndex];
+  img.onerror = () => { img.src = 'https://via.placeholder.com/1200?text=Error+Img'; };
+  document.getElementById('lightbox-count').textContent = `${lightboxIndex + 1} / ${urls.length}`;
+}
+
+function lightboxNav(delta) {
+  lightboxIndex += delta;
+  updateLightbox();
+}
+
+function setFavFromLightbox() {
+  const hosp = getHospById(lightboxHospId);
+  if (!hosp) return;
+  const urls = hosp.datos.fotos_urls || [];
+  if (!urls.length) return;
+  hosp.datos.foto_portada = urls[lightboxIndex];
+  saveState();
+  renderHospedajes();
+  toast('Foto fijada como portada ⭐', 'success');
+}
+
+function setFavPhoto(hospId, idx) {
+  const hosp = getHospById(hospId);
+  if (!hosp) return;
+  const urls = hosp.datos.fotos_urls || [];
+  if (idx < 0 || idx >= urls.length) return;
+  if (hosp.datos.foto_portada === urls[idx]) {
+    delete hosp.datos.foto_portada;
+  } else {
+    hosp.datos.foto_portada = urls[idx];
+  }
+  saveState();
+  renderHospedajes();
+  if (!document.getElementById('modal-photos').classList.contains('hidden')) {
+    renderPhotoGalleryModal();
+  }
+  toast('Portada actualizada ⭐', 'success');
+}
+
+function toast(msg, type='info', duration) {
+  const icons = { success:'✅', error:'❌', info:'ℹ️' };
+  const defaultDuration = type === 'error' ? 30000 : 15000;
+  const dur = duration || defaultDuration;
+
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.style.display = 'flex';
+  el.style.alignItems = 'center';
+  el.style.gap = '8px';
+
+  const iconSpan = document.createElement('span');
+  iconSpan.textContent = icons[type] || '•';
+
+  const msgSpan = document.createElement('span');
+  msgSpan.style.flex = '1';
+  msgSpan.style.wordBreak = 'break-word';
+  msgSpan.textContent = msg;
+
+  const copyBtn = document.createElement('button');
+  copyBtn.className = 'btn btn-ghost btn-sm';
+  copyBtn.style.padding = '3px 8px';
+  copyBtn.style.fontSize = '0.75rem';
+  copyBtn.style.whiteSpace = 'nowrap';
+  copyBtn.innerHTML = '📋 Copiar';
+  copyBtn.onclick = (e) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(msg);
+    copyBtn.innerHTML = '✓ Copiado';
+    setTimeout(() => { copyBtn.innerHTML = '📋 Copiar'; }, 2500);
+  };
+
+  const closeBtn = document.createElement('button');
+  closeBtn.style.background = 'none';
+  closeBtn.style.border = 'none';
+  closeBtn.style.color = 'var(--text3)';
+  closeBtn.style.cursor = 'pointer';
+  closeBtn.style.padding = '2px 6px';
+  closeBtn.style.fontSize = '1rem';
+  closeBtn.textContent = '✕';
+  closeBtn.onclick = () => el.remove();
+
+  el.appendChild(iconSpan);
+  el.appendChild(msgSpan);
+  el.appendChild(copyBtn);
+  el.appendChild(closeBtn);
+
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => { if (el.parentNode) el.remove(); }, dur);
+}
+
+function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function goHome() {
+  currentTripId = null;
+  showView('view-home');
+  renderHome();
+}
+
+function fmtDate(d) {
+  if (!d) return '';
+  const dt = new Date(d + 'T00:00:00');
+  return dt.toLocaleDateString('es-AR', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+function nightsBetween(from, to) {
+  if (!from || !to) return null;
+  const a = new Date(from), b = new Date(to);
+  return Math.round((b-a)/(1000*60*60*24));
+}
+
+// ============================================================
+// HOME RENDER
+// ============================================================
+function renderHome() {
+  const grid = document.getElementById('trips-grid');
+  const count = document.getElementById('trips-count');
+
+  if (!state.viajes.length) {
+    count.textContent = '';
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1;">
+        <div class="empty-icon">✈️</div>
+        <div class="empty-title">No hay viajes todavía</div>
+        <p class="empty-sub">Creá tu primer viaje y empezá a comparar hospedajes.</p>
+        <button class="btn btn-primary" onclick="openNewTrip()">✈️ Crear primer viaje</button>
+      </div>`;
+    return;
+  }
+
+  count.textContent = `${state.viajes.length} viaje${state.viajes.length!==1?'s':''}`;
+  grid.innerHTML = state.viajes.map(trip => {
+    const nights = nightsBetween(trip.fecha_desde, trip.fecha_hasta);
+    const hospN = (trip.destinos || []).reduce((a,d) => a + (d.hospedajes||[]).length, 0);
+    return `
+    <div class="trip-card" onclick="openTrip('${trip.id}')">
+      <div class="trip-card-actions" onclick="event.stopPropagation()">
+        <button class="btn btn-ghost btn-sm btn-icon" onclick="confirmDeleteTrip('${trip.id}')" title="Eliminar viaje">🗑️</button>
+      </div>
+      <div class="trip-card-emoji">${trip.emoji||'✈️'}</div>
+      <div class="trip-card-name">${esc(trip.nombre)}</div>
+      <div class="trip-card-dest">${esc(trip.destino||'')}</div>
+      <div class="trip-card-meta">
+        ${trip.fecha_desde ? `<span class="trip-badge">${fmtDate(trip.fecha_desde)}</span>` : ''}
+        ${nights ? `<span class="trip-badge">${nights} noches</span>` : ''}
+        <span class="trip-badge accent">${hospN} hospedaje${hospN!==1?'s':''}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// TRIP: OPEN / RENDER
+// ============================================================
+function openTrip(id) {
+  currentTripId = id;
+  const trip = state.viajes.find(t => t.id === id);
+  if (!trip) return;
+  document.getElementById('trip-view-title').textContent = `${trip.emoji||'✈️'} ${trip.nombre}`;
+  const nights = nightsBetween(trip.fecha_desde, trip.fecha_hasta);
+  let sub = trip.destino || '';
+  if (trip.fecha_desde) sub += (sub?' · ':'') + `${fmtDate(trip.fecha_desde)}`;
+  if (nights) sub += ` · ${nights} noches`;
+  document.getElementById('trip-view-sub').textContent = sub;
+  showView('view-trip');
+  renderHospedajes();
+}
+
+function getCurrentTrip() {
+  return state.viajes.find(t => t.id === currentTripId);
+}
+
+// ============================================================
+// HOSPEDAJES RENDER
+// ============================================================
+function renderHospedajes() {
+  const trip = getCurrentTrip();
+  if (!trip) return;
+  const allHosps = flattenHosps(trip);
+
+  if (hospView === 'grid') {
+    renderGrid(trip);
+  } else {
+    renderTable(allHosps);
+  }
+}
+
+function flattenHosps(trip) {
+  return (trip.destinos || []).flatMap(d =>
+    (d.hospedajes || []).map(h => ({ ...h, _destino: d.nombre, _destinoId: d.id }))
+  );
+}
+
+function setHospView(v) {
+  hospView = v;
+  document.getElementById('btn-grid').classList.toggle('active', v==='grid');
+  document.getElementById('btn-table').classList.toggle('active', v==='table');
+  document.getElementById('hosp-grid-view').style.display = v==='grid'?'':'none';
+  document.getElementById('hosp-table-view').style.display = v==='table'?'':'none';
+  renderHospedajes();
+}
+
+function renderGrid(trip) {
+  const grid = document.getElementById('hospedajes-grid');
+  const destinos = trip.destinos || [];
+
+  if (!destinos.length) {
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1;">
+        <div class="empty-icon">🗺️</div>
+        <div class="empty-title">Sin ciudades todavía</div>
+        <p class="empty-sub">Creá una ciudad (ej: Bariloche) y empezá a agregar hospedajes dentro de ella.</p>
+        <button class="btn btn-primary" onclick="openNewDestino()">🗺️ Crear primera ciudad</button>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = destinos.map(d => {
+    const hosps = d.hospedajes || [];
+    const cardsHtml = hosps.length
+      ? `<div class="hospedajes-grid">${hosps.map(h => hospCard(h)).join('')}</div>`
+      : `
+        <div class="empty-state">
+          <div class="empty-icon">🏨</div>
+          <div class="empty-title">Sin hospedajes en ${esc(d.nombre)}</div>
+          <p class="empty-sub">Agregá el primer hospedaje de esta ciudad.</p>
+          <button class="btn btn-primary" onclick="openAddHosp('${d.id}')">➕ Agregar hospedaje</button>
+        </div>`;
+    return `
+    <div class="destino-section">
+      <div class="destino-header">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <span style="font-size:1.3rem;">${esc(d.emoji||'🗺️')}</span>
+          <span class="destino-title">${esc(d.nombre)}</span>
+          <span class="trip-badge accent">${hosps.length} hospedaje${hosps.length!==1?'s':''}</span>
+        </div>
+        <div class="destino-actions">
+          <button class="btn btn-ghost btn-sm" onclick="openAddHosp('${d.id}')">➕ Hospedaje</button>
+          <button class="btn btn-ghost btn-sm btn-icon" onclick="openEditDestino('${d.id}')" title="Renombrar ciudad">✏️</button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="confirmDeleteDestino('${d.id}')" title="Eliminar ciudad">🗑️</button>
+        </div>
+      </div>
+      ${cardsHtml}
+    </div>`;
+  }).join('');
+}
+
+function hospCard(h) {
+  const d = h.datos || {};
+  const score = d.calificacion_ia;
+  const scoreClass = score >= 7.5 ? 'high' : score >= 5 ? 'mid' : 'low';
+  const feats = d.caracteristicas || [];
+  const maxFeats = 5;
+  const shownFeats = feats.slice(0, maxFeats);
+  const extraFeats = feats.length - maxFeats;
+  const missing = d.datos_faltantes || [];
+  const photos = d.fotos_urls || [];
+
+  const title = getFullTitle(d);
+
+  let priceHtml = '';
+  if (d.precio_por_noche) {
+    const priceFormatted = fmtPrice(d.precio_por_noche, d.moneda);
+    const usdText = d.precio_noche_usd ? `<span style="font-size:0.82rem;color:var(--cyan);margin-left:6px;">(~${fmtPrice(d.precio_noche_usd, 'USD')})</span>` : '';
+    const refDollarText = d.referencia_dolar ? `<div style="font-size:0.74rem;color:var(--text3);margin-top:2px;">💵 Dólar ref: ${fmtPrice(d.referencia_dolar, 'ARS')}</div>` : '';
+    priceHtml = `
+      <div>
+        <div class="hosp-price-row">
+          <span class="price-big">${priceFormatted}</span>
+          <span class="price-unit">/ noche</span>
+          ${usdText}
+        </div>
+        ${d.precio_total ? `<div class="price-total" style="margin-top:1px;">(Total: ${fmtPrice(d.precio_total, d.moneda)})</div>` : ''}
+        ${refDollarText}
+      </div>`;
+  } else {
+    priceHtml = `<p style="color:var(--text3);font-size:0.82rem;">💰 Precio no especificado</p>`;
+  }
+
+  // Portada grande (favorita / primera foto)
+  const portadaUrl = (d.foto_portada && photos.includes(d.foto_portada)) ? d.foto_portada : (photos[0] || null);
+  const portadaIdx = portadaUrl ? photos.indexOf(portadaUrl) : -1;
+  let portadaHtml = '';
+  if (portadaUrl && portadaIdx >= 0) {
+    portadaHtml = `
+      <div class="hosp-portada" onclick="openLightbox('${h.id}', ${portadaIdx})" title="Ver galería">
+        <img src="${esc(portadaUrl)}" alt="" onerror="this.parentElement.style.display='none'">
+        <span class="portada-badge">📷 ${photos.length} foto${photos.length>1?'s':''}</span>
+      </div>`;
+  } else {
+    portadaHtml = `<div class="hosp-portada empty"><span>📷 Sin fotos cargadas</span></div>`;
+  }
+
+  // Fotos preview en la tarjeta (miniaturas clicables)
+  let photosHtml = '';
+  if (photos.length > 0) {
+    photosHtml = `
+      <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-top:4px;">
+        ${photos.map((p, i) => {
+          const isFav = p === portadaUrl;
+          return `
+          <div class="thumb-wrap">
+            <img src="${esc(p)}" style="width:70px;height:55px;object-fit:cover;border-radius:6px;border:1px solid ${isFav?'var(--yellow)':'var(--border)'};cursor:zoom-in;" onclick="openLightbox('${h.id}', ${i})" onerror="this.style.display='none'">
+            <button class="thumb-fav" onclick="event.stopPropagation();setFavPhoto('${h.id}', ${i})" title="Fijar como portada">${isFav?'★':'☆'}</button>
+          </div>`;
+        }).join('')}
+      </div>`;
+  }
+
+  return `
+  <div class="hosp-card" id="card-${h.id}">
+    <div class="hosp-card-header">
+      <div style="flex:1;min-width:0;">
+        <div class="hosp-name" style="font-size:1.1rem;font-weight:700;">${esc(title)}</div>
+        ${d.tipo ? `<span class="hosp-tipo">${esc(d.tipo)}</span>` : ''}
+      </div>
+      ${score != null ? `<div class="score-badge ${scoreClass}" onclick="openEditScore('${h.id}')" title="Clic para editar puntaje">${score}<span class="score-edit-hint">/10 ✎</span></div>` : ''}
+    </div>
+    ${portadaHtml}
+    <div class="hosp-card-body">
+      ${priceHtml}
+
+      <div class="hosp-info-row">
+        ${d.habitaciones ? `<span class="info-chip">🛏️ ${d.habitaciones} hab.</span>` : ''}
+        ${d.banos ? `<span class="info-chip">🚿 ${d.banos} baño${d.banos>1?'s':''}</span>` : ''}
+        ${d.capacidad ? `<span class="info-chip">👥 ${esc(d.capacidad)}</span>` : ''}
+        ${d.fechas_disponibles ? `<span class="info-chip">📅 ${esc(d.fechas_disponibles)}</span>` : ''}
+      </div>
+
+      ${d.ubicacion ? `
+      <div class="hosp-location">
+        <span>📍</span><span>${esc(d.ubicacion)}</span>
+      </div>` : ''}
+
+      ${shownFeats.length ? `
+      <div>
+        <div class="section-label">Características</div>
+        <div class="features-list">
+          ${shownFeats.map(f=>`<span class="feat-tag">${esc(f)}</span>`).join('')}
+          ${extraFeats > 0 ? `<span class="feat-tag more">+${extraFeats} más</span>` : ''}
+        </div>
+      </div>` : ''}
+
+      ${d.politica_cancelacion ? `
+      <div class="hosp-extra"><strong>📋 Cancelación:</strong> ${esc(d.politica_cancelacion)}</div>` : ''}
+
+      ${d.forma_pago ? `
+      <div class="hosp-extra"><strong>💳 Pago:</strong> ${esc(d.forma_pago)}</div>` : ''}
+
+      ${formatContactHtml(d.contacto, d.instagram)}
+
+      ${photosHtml}
+
+      ${d.notas_adicionales ? `
+      <div class="hosp-extra"><strong>🗒️ Notas:</strong> ${esc(d.notas_adicionales)}</div>` : ''}
+
+      ${d.razon_calificacion ? `
+      <div class="hosp-extra" style="color:var(--text3);">🤖 <em>${esc(d.razon_calificacion)}</em></div>` : ''}
+
+      ${missing.length ? `
+      <div>
+        <div class="section-label" style="color:var(--red);">⚠️ Datos faltantes</div>
+        <div class="missing-tags">
+          ${missing.map(m=>`<span class="missing-tag">${esc(m)}</span>`).join('')}
+        </div>
+      </div>` : ''}
+    </div>
+    <div class="hosp-card-footer">
+      <button class="btn btn-ghost btn-sm" onclick="openPhotoModal('${h.id}')">📷 Fotos (${photos.length})</button>
+      <button class="btn btn-ghost btn-sm" onclick="openAddLinkModal('${h.id}')">🔗 Link</button>
+      <button class="btn btn-ghost btn-sm" onclick="viewMail('${h.id}')">📧 Ver mail</button>
+      <button class="btn btn-danger btn-sm" onclick="confirmDeleteHosp('${h.id}')">🗑️</button>
+    </div>
+  </div>`;
+}
+
+// ============================================================
+// TABLE VIEW
+// ============================================================
+function renderTable(hosps) {
+  if (!hosps.length) {
+    document.getElementById('compare-table').innerHTML = `<tr><td style="padding:40px;text-align:center;color:var(--text2);">No hay hospedajes para comparar.</td></tr>`;
+    return;
+  }
+
+  const fields = [
+    { key:'nombre',            label:'Nombre' },
+    { key:'tipo',              label:'Tipo' },
+    { key:'precio_por_noche',  label:'Precio/noche', isMoney:true },
+    { key:'precio_total',      label:'Precio total', isMoney:true },
+    { key:'habitaciones',      label:'Habitaciones' },
+    { key:'banos',             label:'Baños' },
+    { key:'capacidad',         label:'Capacidad' },
+    { key:'ubicacion',         label:'Ubicación' },
+    { key:'caracteristicas',   label:'Características', isArray:true },
+    { key:'politica_cancelacion', label:'Cancelación' },
+    { key:'forma_pago',        label:'Forma de pago' },
+    { key:'contacto',          label:'Contacto' },
+    { key:'fechas_disponibles',label:'Fechas disponibles' },
+    { key:'notas_adicionales', label:'Notas' },
+    { key:'calificacion_ia',   label:'Calificación IA' },
+  ];
+
+  // Head
+  const headRow = document.getElementById('table-head-row');
+  headRow.innerHTML = `<th>Atributo</th>` + hosps.map(h => `
+    <th>${esc(getFullTitle(h.datos||{}))}
+      ${h._destino ? `<br><span style="font-weight:500;font-size:0.7rem;color:var(--text3);">${esc(h._destino)}</span>` : ''}
+    </th>`).join('');
+
+  // Body
+  const tbody = document.getElementById('table-body');
+  tbody.innerHTML = fields.map(f => {
+    const vals = hosps.map(h => (h.datos||{})[f.key]);
+    let bestIdx = -1;
+
+    // Find best for money fields (lowest > 0)
+    if (f.isMoney) {
+      let best = Infinity;
+      vals.forEach((v,i) => { if (v && Number(v) > 0 && Number(v) < best) { best=Number(v); bestIdx=i; } });
+    }
+    // Find best for score
+    if (f.key === 'calificacion_ia') {
+      let best = -1;
+      vals.forEach((v,i) => { if (v && Number(v) > best) { best=Number(v); bestIdx=i; } });
+    }
+
+    const cells = vals.map((v, i) => {
+      let display = '—';
+      if (f.isArray && Array.isArray(v) && v.length) display = v.slice(0,4).join(', ') + (v.length>4?` +${v.length-4}`:'');
+      else if (f.isMoney && v) display = fmtPrice(v, hosps[i]?.datos?.moneda);
+      else if (v != null && v !== '') display = esc(String(v));
+      const isBest = i === bestIdx;
+      return `<td class="${isBest?'best-cell':''}">${display}</td>`;
+    }).join('');
+
+    return `<tr><td>${f.label}</td>${cells}</tr>`;
+  }).join('');
+}
+
+// ============================================================
+// NEW TRIP
+// ============================================================
+function openNewTrip() {
+  document.getElementById('trip-name').value = '';
+  document.getElementById('trip-dest').value = '';
+  document.getElementById('trip-from').value = '';
+  document.getElementById('trip-to').value = '';
+  document.getElementById('trip-emoji').value = '✈️';
+  openModal('modal-new-trip');
+  setTimeout(()=>document.getElementById('trip-name').focus(), 100);
+}
+
+function createTrip() {
+  const name = document.getElementById('trip-name').value.trim();
+  if (!name) { toast('Ponele un nombre al viaje', 'error'); return; }
+  const trip = {
+    id: uid(),
+    nombre: name,
+    destino: document.getElementById('trip-dest').value.trim(),
+    fecha_desde: document.getElementById('trip-from').value,
+    fecha_hasta: document.getElementById('trip-to').value,
+    emoji: document.getElementById('trip-emoji').value || '✈️',
+    creado: new Date().toISOString(),
+    destinos: []
+  };
+  state.viajes.unshift(trip);
+  saveState();
+  closeModal('modal-new-trip');
+  toast('Viaje creado 🎉', 'success');
+  openTrip(trip.id);
+}
+
+// ============================================================
+// DESTINOS / CIUDADES (CRUD)
+// ============================================================
+let editingDestinoId = null;
+
+function openNewDestino() {
+  editingDestinoId = null;
+  document.getElementById('destino-modal-title').textContent = '🗺️ Nueva Ciudad / Destino';
+  document.getElementById('destino-name').value = '';
+  document.getElementById('destino-emoji').value = '🏔️';
+  document.getElementById('btn-save-destino').textContent = 'Crear Ciudad ✓';
+  openModal('modal-new-destino');
+  setTimeout(() => document.getElementById('destino-name').focus(), 100);
+}
+
+function openEditDestino(id) {
+  const trip = getCurrentTrip();
+  const d = (trip?.destinos || []).find(x => x.id === id);
+  if (!d) return;
+  editingDestinoId = id;
+  document.getElementById('destino-modal-title').textContent = '✏️ Renombrar Ciudad';
+  document.getElementById('destino-name').value = d.nombre;
+  document.getElementById('destino-emoji').value = d.emoji || '🏔️';
+  document.getElementById('btn-save-destino').textContent = 'Guardar ✓';
+  openModal('modal-new-destino');
+  setTimeout(() => document.getElementById('destino-name').focus(), 100);
+}
+
+function saveDestino() {
+  const trip = getCurrentTrip();
+  if (!trip) return;
+  const name = document.getElementById('destino-name').value.trim();
+  if (!name) { toast('Ponele un nombre a la ciudad', 'error'); return; }
+  const emoji = document.getElementById('destino-emoji').value.trim() || '🏔️';
+
+  if (editingDestinoId) {
+    const d = (trip.destinos || []).find(x => x.id === editingDestinoId);
+    if (d) { d.nombre = name; d.emoji = emoji; }
+  } else {
+    trip.destinos = trip.destinos || [];
+    trip.destinos.push({ id: uid(), nombre: name, emoji: emoji, hospedajes: [] });
+  }
+  saveState();
+  closeModal('modal-new-destino');
+  renderHospedajes();
+  toast('Ciudad guardada 🗺️', 'success');
+}
+
+function confirmDeleteDestino(id) {
+  const trip = getCurrentTrip();
+  const d = (trip?.destinos || []).find(x => x.id === id);
+  const n = (d?.hospedajes || []).length;
+  document.getElementById('confirm-del-msg').textContent =
+    `¿Eliminás la ciudad "${d?.nombre}"?${n ? ` Se eliminarán también los ${n} hospedaje(s) que contiene.` : ''}`;
+  deleteCallback = () => {
+    if (trip) {
+      trip.destinos = (trip.destinos || []).filter(x => x.id !== id);
+      saveState();
+    }
+    closeModal('modal-confirm-del');
+    renderHospedajes();
+    toast('Ciudad eliminada', 'info');
+  };
+  document.getElementById('btn-confirm-del').onclick = deleteCallback;
+  openModal('modal-confirm-del');
+}
+
+// ============================================================
+// DELETE TRIP / HOSP
+// ============================================================
+function confirmDeleteTrip(id) {
+  const trip = state.viajes.find(t=>t.id===id);
+  document.getElementById('confirm-del-msg').textContent =
+    `¿Eliminás el viaje "${trip?.nombre}"? Se perderán todos los hospedajes guardados.`;
+  deleteCallback = () => {
+    state.viajes = state.viajes.filter(t=>t.id!==id);
+    saveState();
+    closeModal('modal-confirm-del');
+    renderHome();
+    toast('Viaje eliminado', 'info');
+  };
+  document.getElementById('btn-confirm-del').onclick = deleteCallback;
+  openModal('modal-confirm-del');
+}
+
+function confirmDeleteHosp(id) {
+  document.getElementById('confirm-del-msg').textContent = '¿Eliminás este hospedaje?';
+  deleteCallback = () => {
+    const trip = getCurrentTrip();
+    if (trip) {
+      (trip.destinos || []).forEach(d => {
+        d.hospedajes = (d.hospedajes || []).filter(h => h.id !== id);
+      });
+      saveState();
+    }
+    closeModal('modal-confirm-del');
+    renderHospedajes();
+    toast('Hospedaje eliminado', 'info');
+  };
+  document.getElementById('btn-confirm-del').onclick = deleteCallback;
+  openModal('modal-confirm-del');
+}
+
+// ============================================================
+// EDIT SCORE
+// ============================================================
+let editingScoreHospId = null;
+
+function getHospById(id) {
+  const trip = getCurrentTrip();
+  if (!trip) return null;
+  for (const d of (trip.destinos || [])) {
+    const h = (d.hospedajes || []).find(h => h.id === id);
+    if (h) return h;
+  }
+  return null;
+}
+
+function openEditScore(hospId) {
+  const hosp = getHospById(hospId);
+  if (!hosp) return;
+  editingScoreHospId = hospId;
+  document.getElementById('edit-score-input').value =
+    hosp.datos.calificacion_ia != null ? hosp.datos.calificacion_ia : '';
+  document.getElementById('edit-score-reason').value = hosp.datos.razon_calificacion || '';
+  openModal('modal-edit-score');
+  setTimeout(() => document.getElementById('edit-score-input').focus(), 100);
+}
+
+function saveScore() {
+  const hosp = getHospById(editingScoreHospId);
+  if (!hosp) return;
+  const val = parseFloat(document.getElementById('edit-score-input').value);
+  if (!isNaN(val)) {
+    hosp.datos.calificacion_ia = Math.max(0, Math.min(10, Math.round(val * 10) / 10));
+  }
+  const reason = document.getElementById('edit-score-reason').value.trim();
+  if (reason) hosp.datos.razon_calificacion = reason;
+  hosp.editado_manualmente = true;
+  saveState();
+  closeModal('modal-edit-score');
+  renderHospedajes();
+  toast('Puntaje actualizado ⭐', 'success');
+}
+
+// ============================================================
+// ADD LINK TO EXISTING HOSPEDAJE
+// ============================================================
+let addLinkHospId = null;
+let addLinkFoundPhotos = [];
+
+function openAddLinkModal(hospId) {
+  addLinkHospId = hospId;
+  addLinkFoundPhotos = [];
+  document.getElementById('addlink-url').value = '';
+  document.getElementById('addlink-loading').style.display = 'none';
+  document.getElementById('addlink-result').innerHTML = '';
+  document.getElementById('btn-addlink-search').style.display = '';
+  document.getElementById('btn-addlink-confirm').style.display = 'none';
+  openModal('modal-add-link');
+  setTimeout(() => document.getElementById('addlink-url').focus(), 100);
+}
+
+async function processAddLink() {
+  const url = document.getElementById('addlink-url').value.trim();
+  if (!url) { toast('Ingresá un link primero', 'error'); return; }
+  if (!/^https?:\/\//i.test(url)) { toast('El link debe comenzar con http(s)', 'error'); return; }
+
+  const resultEl = document.getElementById('addlink-result');
+  const loadingEl = document.getElementById('addlink-loading');
+  const btn = document.getElementById('btn-addlink-search');
+
+  loadingEl.style.display = '';
+  resultEl.innerHTML = '';
+  btn.disabled = true;
+  try {
+    addLinkFoundPhotos = await fetchWebpagePhotos(url);
+    loadingEl.style.display = 'none';
+    if (addLinkFoundPhotos.length) {
+      resultEl.innerHTML = `
+        <p style="color:var(--green);font-size:0.85rem;margin-bottom:10px;">✅ Se encontraron ${addLinkFoundPhotos.length} fotos. Revisá y confirmá:</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;max-height:220px;overflow-y:auto;">
+          ${addLinkFoundPhotos.map(p => `<img src="${esc(p)}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;border:1px solid var(--border);" onerror="this.style.display='none'">`).join('')}
+        </div>`;
+      btn.style.display = 'none';
+      document.getElementById('btn-addlink-confirm').style.display = '';
+    } else {
+      resultEl.innerHTML = `
+        <p style="color:var(--yellow);font-size:0.85rem;line-height:1.6;">
+          ⚠️ No se pudieron extraer fotos automáticamente. La mayoría de los sitios de reservas (Booking, etc.) bloquean la lectura directa o cargan las fotos con JavaScript.<br><br>
+          <button class="btn btn-ghost btn-sm" onclick="closeModal('modal-add-link'); openPhotoModal('${addLinkHospId}')">📷 Cargar fotos manualmente</button>
+        </p>`;
+    }
+  } catch (e) {
+    loadingEl.style.display = 'none';
+    resultEl.innerHTML = `<p style="color:var(--red);font-size:0.85rem;">❌ Error: ${esc(e.message)}</p>`;
+  }
+  btn.disabled = false;
+}
+
+function confirmAddLink() {
+  const hosp = getHospById(addLinkHospId);
+  if (hosp) {
+    hosp.datos.fotos_urls = hosp.datos.fotos_urls || [];
+    addLinkFoundPhotos.forEach(u => {
+      if (!hosp.datos.fotos_urls.includes(u)) hosp.datos.fotos_urls.push(u);
+    });
+    const url = document.getElementById('addlink-url').value.trim();
+    if (url) hosp.datos.web_link = url;
+    saveState();
+    renderHospedajes();
+    toast(`Se agregaron ${addLinkFoundPhotos.length} fotos 📷`, 'success');
+  }
+  closeModal('modal-add-link');
+}
+
+// ============================================================
+// VIEW MAIL
+// ============================================================
+function viewMail(hospId) {
+  const hosp = getHospById(hospId);
+  if (!hosp) return;
+  document.getElementById('view-mail-content').textContent = hosp.mail_original || '(Sin contenido)';
+  openModal('modal-view-mail');
+}
+
+// ============================================================
+// ADD HOSPEDAJE MODAL
+// ============================================================
+function openAddHosp(destinoId) {
+  if (!state.config.api_key) {
+    toast('Primero configurá tu API Key en ⚙️ Config', 'error', 4500);
+    openConfig();
+    return;
+  }
+  const trip = getCurrentTrip();
+  if (!trip) return;
+  const destinos = trip.destinos || [];
+  if (!destinos.length) {
+    toast('Creá primero una ciudad/destino (🗺️ Ciudad)', 'error');
+    openNewDestino();
+    return;
+  }
+  currentDestinoId = destinos.find(d => d.id === destinoId) ? destinoId : destinos[0].id;
+
+  const sel = document.getElementById('addhosp-destino');
+  sel.innerHTML = destinos.map(d =>
+    `<option value="${d.id}">${esc(d.emoji||'🗺️')} ${esc(d.nombre)}</option>`).join('');
+  sel.value = currentDestinoId;
+
+  pendingExtracted = null;
+  editingHospId = null;
+  document.getElementById('hosp-mail-text').value = '';
+  document.getElementById('hosp-web-link').value = '';
+  document.getElementById('hosp-mail-text').style.display = '';
+  document.getElementById('hosp-web-link').style.display = '';
+  document.getElementById('step-paste').style.display = '';
+  document.getElementById('step-preview').style.display = 'none';
+  document.getElementById('loading-ai').style.display = 'none';
+  document.getElementById('add-hosp-footer').innerHTML = `
+    <button class="btn btn-ghost" onclick="closeModal('modal-add-hosp')">Cancelar</button>
+    <button class="btn btn-primary" id="btn-analyze" onclick="analyzeWithAI()">🤖 Analizar con IA</button>`;
+  openModal('modal-add-hosp');
+  setTimeout(()=>document.getElementById('hosp-mail-text').focus(), 120);
+}
+
+// ============================================================
+// AI ANALYSIS & WEB PHOTO SCRAPING
+// ============================================================
+function resolveUrl(relativeOrAbsolute, baseUrlObj) {
+  if (!relativeOrAbsolute) return null;
+  try {
+    let clean = relativeOrAbsolute.trim().replace(/^["']|["']$/g, '');
+    if (clean.startsWith('//')) return 'https:' + clean;
+    if (clean.startsWith('http://') || clean.startsWith('https://')) return clean;
+    if (clean.startsWith('/')) return baseUrlObj.origin + clean;
+    return new URL(clean, baseUrlObj.href).href;
+  } catch(e) {
+    return null;
+  }
+}
+
+function isBadPhotoUrl(url) {
+  const l = url.toLowerCase();
+  if (l.length < 8) return true;
+  if (l.includes('/logo') || l.includes('/logos') || l.includes('sprite')
+    || l.includes('/icon') || l.includes('/icons') || l.includes('favicon')
+    || l.includes('placeholder') || l.includes('/pixel') || l.includes('transparent')
+    || l.includes('tracking') || l.includes('blank')) return true;
+  return false;
+}
+
+function extractImagesFromHtml(html, baseUrlObj) {
+  const urls = [];
+  const push = (raw) => {
+    if (!raw || typeof raw !== 'string') return;
+    const abs = resolveUrl(raw.trim().replace(/^["'\(]|["'\)]$/g, ''), baseUrlObj);
+    if (abs && !isBadPhotoUrl(abs)) urls.push(abs);
+  };
+
+  // 1. meta og:image / twitter:image (cualquier orden de atributos)
+  for (const m of html.matchAll(/<meta[^>]+>/gi)) {
+    const tag = m[0];
+    if (/og:image|twitter:image/i.test(tag)) {
+      const content = tag.match(/content\s*=\s*["']([^"']+)["']/i);
+      if (content) push(content[1]);
+    }
+  }
+
+  // 2. tags <img>: src, data-src, data-original, data-lazy-src, srcset...
+  for (const m of html.matchAll(/<img[^>]+>/gi)) {
+    const tag = m[0];
+    const attrs = ['src','data-src','data-original','data-lazy-src','data-original-src','data-image','data-url','data-full'];
+    for (const a of attrs) {
+      const val = tag.match(new RegExp(a + '\\s*=\\s*["\']([^"\']+)["\']', 'i'));
+      if (val) push(val[1]);
+    }
+    const ss = tag.match(/(?:data-)?srcset\s*=\s*["']([^"']+)["']/i);
+    if (ss) {
+      ss[1].split(',').forEach(part => {
+        const u = part.trim().split(/\s+/)[0];
+        push(u);
+      });
+    }
+  }
+
+  // 3. background-image inline
+  for (const m of html.matchAll(/background(?:-image)?\s*:\s*url\((["']?)([^"')]+)\1\)/gi)) {
+    push(m[2]);
+  }
+
+  // 4. URLs con extensión de imagen en cualquier parte (JSON-LD, atributos, etc.)
+  for (const m of html.matchAll(/["']([^"']*\.(?:jpe?g|png|webp|avif)(?:\?[^"']*)?)["']/gi)) {
+    push(m[1]);
+  }
+
+  return urls;
+}
+
+async function fetchWebpagePhotos(rawUrl) {
+  if (!rawUrl) return [];
+  const cleanUrl = rawUrl.replace(/[.,\)\s]+$/, '').trim();
+  if (!/^https?:\/\//i.test(cleanUrl)) return [];
+
+  let baseUrlObj;
+  try { baseUrlObj = new URL(cleanUrl); } catch(e) { return []; }
+
+  const proxyFactories = [
+    u => `https://api.allorigins.win/get?url=${encodeURIComponent(u)}`,
+    u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+    u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
+    u => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
+    u => `https://api.cors.lol/?url=${encodeURIComponent(u)}`
+  ];
+
+  for (const getProxyUrl of proxyFactories) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 6000);
+    try {
+      const proxyUrl = getProxyUrl(cleanUrl);
+      const res = await fetch(proxyUrl, { signal: controller.signal });
+      clearTimeout(timeoutId);
+      if (!res.ok) continue;
+
+      let html = '';
+      const contentType = res.headers.get('content-type') || '';
+      if (contentType.includes('application/json') || proxyUrl.includes('allorigins.win/get')) {
+        const json = await res.json();
+        html = json.contents || '';
+      } else {
+        html = await res.text();
+      }
+
+      if (!html || html.length < 200) continue;
+
+      const photoUrls = extractImagesFromHtml(html, baseUrlObj);
+      const uniquePhotos = [...new Set(photoUrls.filter(Boolean))].slice(0, 12);
+      if (uniquePhotos.length > 0) {
+        console.log('[Web Photos Found]', uniquePhotos);
+        return uniquePhotos;
+      }
+    } catch(e) {
+      clearTimeout(timeoutId);
+    }
+  }
+  return [];
+}
+
+let lastExtractedWebPhotos = [];
+
+async function analyzeWithAI() {
+  const mailText = document.getElementById('hosp-mail-text').value.trim();
+  const webLink = document.getElementById('hosp-web-link').value.trim();
+
+  if (!mailText && !webLink) {
+    toast('Pegá el mail o link del hospedaje para analizar', 'error');
+    return;
+  }
+
+  const loadingEl = document.getElementById('loading-ai');
+  loadingEl.style.display = '';
+  loadingEl.querySelector('p').textContent = 'Analizando con IA... esto tarda unos segundos ✨';
+  document.getElementById('hosp-mail-text').style.display = 'none';
+  document.getElementById('hosp-web-link').style.display = 'none';
+  if (document.getElementById('btn-analyze')) document.getElementById('btn-analyze').disabled = true;
+
+  // Recopilar enlaces web opcionales para fotos
+  const linksToScrape = [];
+  if (webLink && webLink.startsWith('http')) linksToScrape.push(webLink);
+  const linksInMail = mailText.match(/https?:\/\/[^\s]+/gi) || [];
+  linksInMail.forEach(l => { if (!linksToScrape.includes(l)) linksToScrape.push(l); });
+
+  lastExtractedWebPhotos = [];
+
+  // Intento de extracción de fotos (máximo 4.5s por proxy, fallback automático)
+  if (linksToScrape.length > 0) {
+    loadingEl.querySelector('p').textContent = '📸 Buscando fotos en el sitio web... ✨';
+    for (const targetUrl of linksToScrape.slice(0, 2)) {
+      const photos = await fetchWebpagePhotos(targetUrl);
+      if (photos && photos.length > 0) {
+        lastExtractedWebPhotos.push(...photos);
+      }
+    }
+    lastExtractedWebPhotos = [...new Set(lastExtractedWebPhotos)];
+  }
+
+  let fullInput = mailText || webLink;
+  if (lastExtractedWebPhotos.length > 0) {
+    fullInput += `\n\n[FOTOS ENCONTRADAS EN LA WEB]:\n${JSON.stringify(lastExtractedWebPhotos)}`;
+  }
+
+  const prompt = buildPrompt(fullInput);
+
+  try {
+    let extracted;
+    if (state.config.ia_provider === 'gemini') {
+      extracted = await callGemini(prompt);
+    } else {
+      extracted = await callOpenRouter(prompt);
+    }
+
+    pendingExtracted = extracted;
+    showPreview(extracted, mailText || webLink);
+  } catch(err) {
+    loadingEl.style.display = 'none';
+    document.getElementById('hosp-mail-text').style.display = '';
+    document.getElementById('hosp-web-link').style.display = '';
+    if (document.getElementById('btn-analyze')) document.getElementById('btn-analyze').disabled = false;
+    toast('Error al analizar: ' + err.message, 'error', 6000);
+  }
+}
+
+function buildPrompt(mailText) {
+  return `Eres un extractor experto de información de hospedajes turísticos. Analiza el siguiente mensaje y extrae TODAS las alternativas u opciones de alojamiento ofrecidas.
+
+REGLAS OBLIGATORIAS:
+1. TITULO COMPLETO EN CADA OPCION: En "nombre", SIEMPRE combina el nombre del complejo o establecimiento con la opción específica. Ejemplo: "Bungalows Nahuel Malal — Bungalow B". NUNCA devuelvas solo "Bungalow B" o "Opción A".
+2. PRECIOS COMO NÚMEROS PUROS: "precio_por_noche" y "precio_total" deben ser números enteros sin letras ni símbolos (ej: 107000, NUNCA "ARS 107000").
+3. CONTACTO E INSTAGRAM: Extrae teléfonos, WhatsApp, emails y cuentas de Instagram (ej: @bungalows.nahuelmalal).
+4. LINKS Y FOTOS: Si hay enlaces a Booking, Instagram, Google Drive o fotos en el mensaje, agrégalos a "fotos_urls".
+
+ESTRUCTURA EXACTA REQUERIDA:
+
+{
+  "alojamiento_general": "Bungalows Nahuel Malal",
+  "referencia_dolar": 1520,
+  "opciones": [
+    {
+      "nombre": "Bungalows Nahuel Malal — Bungalow B (para 2 personas)",
+      "tipo": "bungalow",
+      "precio_por_noche": 107000,
+      "moneda": "ARS",
+      "precio_total": 321000,
+      "precio_noche_usd": 70,
+      "referencia_dolar": 1520,
+      "fechas_disponibles": "23/09 al 26/09",
+      "capacidad": "2 a 5 personas",
+      "habitaciones": 1,
+      "banos": 1,
+      "caracteristicas": ["Costa de lago", "WiFi", "Hogar a leña", "Parrilla exclusiva", "Vista al lago"],
+      "ubicacion": "Av. Bustillo km 12.4, Bariloche (a 80m de comercios)",
+      "politica_cancelacion": "Reserva 40% por BBVA/MercadoPago, saldo al ingresar",
+      "forma_pago": "BBVA, Mercado Pago, Efectivo",
+      "contacto": "Juan / Tel: +54 9 2944 56 3033 / Instagram: @bungalows.nahuelmalal",
+      "instagram": "@bungalows.nahuelmalal",
+      "fotos_urls": [],
+      "notas_adicionales": "Supermercados TODO y La Anónima a 500m. Cerro Catedral a 12km.",
+      "calificacion_ia": 8.5,
+      "razon_calificacion": "Buena ubicación con costa de lago y comercios muy cerca",
+      "datos_faltantes": ["horario check-in/out"],
+      "texto_original_resumido": "Bungalow B para 2 personas a $107.000 ARS/noche."
+    }
+  ]
+}
+
+MENSAJE A ANALIZAR:
+---
+${mailText}
+---
+
+JSON:`;
+}
+
+// Modelos en orden de preferencia — si uno falla, prueba el siguiente
+const GEMINI_MODELS = [
+  'gemini-1.5-flash',
+  'gemini-2.5-flash-lite',
+  'gemini-2.5-flash',
+  'gemini-3.6-flash',
+  'gemini-1.5-pro'
+];
+
+async function callGeminiModel(key, model, prompt) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: {
+        temperature: 0.1,
+        maxOutputTokens: 8192,
+        responseMimeType: 'application/json'  // fuerza JSON puro, sin markdown
+      }
+    })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(()=>({error:{message:res.statusText}}));
+    throw new Error(err?.error?.message || `HTTP ${res.status}`);
+  }
+  const data = await res.json();
+  const candidate = data.candidates?.[0];
+  
+  if (candidate?.finishReason === 'MAX_TOKENS') {
+    console.warn('[Gemini truncated due to MAX_TOKENS]');
+  }
+
+  // Algunos modelos devuelven parts[0]=thought, parts[1]=text
+  // Concatenamos TODOS los parts de tipo text para no perder nada
+  const parts = candidate?.content?.parts || [];
+  const raw = parts
+    .filter(p => p.text != null)
+    .map(p => p.text)
+    .join('\n');
+  if (!raw) {
+    console.warn('[Gemini raw response]', JSON.stringify(data, null, 2));
+    throw new Error('La IA no devolvió texto en la respuesta');
+  }
+  console.log('[Gemini raw text length]', raw.length, raw.slice(0, 300));
+  return parseJsonFromAI(raw);
+}
+
+async function callGemini(prompt) {
+  const key = state.config.api_key;
+  let lastError;
+  for (const model of GEMINI_MODELS) {
+    try {
+      const result = await callGeminiModel(key, model, prompt);
+      // Guardamos el modelo que funcionó para no repetir el fallback
+      if (state.config.working_model !== model) {
+        state.config.working_model = model;
+        saveState();
+      }
+      return result;
+    } catch(e) {
+      const msg = e.message || '';
+      // Si el error es de modelo no disponible, probamos el siguiente
+      if (msg.includes('no longer available') || msg.includes('not found') || msg.includes('404')) {
+        lastError = e;
+        continue;
+      }
+      // Cualquier otro error (key inválida, rate limit, etc.) lo tiramos directo
+      throw e;
+    }
+  }
+  throw lastError || new Error('Ningún modelo de Gemini disponible. Revisá tu API Key.');
+}
+
+async function callOpenRouter(prompt) {
+  const key = state.config.api_key;
+  const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${key}`,
+      'HTTP-Referer': 'https://vacaplanner.app',
+    },
+    body: JSON.stringify({
+      model: 'meta-llama/llama-3.1-8b-instruct:free',
+      messages: [{ role:'user', content: prompt }],
+      temperature: 0.1,
+    })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(()=>({error:{message:res.statusText}}));
+    throw new Error(err?.error?.message || `HTTP ${res.status}`);
+  }
+  const data = await res.json();
+  const raw = data.choices?.[0]?.message?.content || '';
+  return parseJsonFromAI(raw);
+}
+
+function tryRepairTruncatedJson(str) {
+  let s = str.trim();
+  // 1. Si hay comillas sin cerrar, cerramos la string
+  const quotes = (s.match(/(?<!\\)"/g) || []).length;
+  if (quotes % 2 !== 0) s += '"';
+  // 2. Limpiar comas o colons al final
+  s = s.replace(/[:,\s]+$/, '');
+  // 3. Balancear corchetes y llaves
+  let openBrackets = (s.match(/\[/g) || []).length - (s.match(/\]/g) || []).length;
+  while (openBrackets > 0) { s += ']'; openBrackets--; }
+  let openBraces = (s.match(/\{/g) || []).length - (s.match(/\}/g) || []).length;
+  while (openBraces > 0) { s += '}'; openBraces--; }
+  return JSON.parse(s);
+}
+
+function parseJsonFromAI(raw) {
+  if (!raw || !raw.trim()) throw new Error('La IA devolvió una respuesta vacía');
+  let clean = raw.trim();
+
+  // 1. Extraer bloque ```json ... ``` si existe
+  const fenceMatch = clean.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (fenceMatch) clean = fenceMatch[1].trim();
+
+  // 2. Buscar el primer {
+  const start = clean.indexOf('{');
+  if (start === -1) {
+    console.error('[parseJsonFromAI] Sin { en:', clean.slice(0, 400));
+    throw new Error(`La IA no devolvió JSON. Respuesta: "${clean.slice(0, 120)}..."`);
+  }
+
+  // Encontrar el } de cierre balanceado
+  let depth = 0, end = -1;
+  for (let i = start; i < clean.length; i++) {
+    if (clean[i] === '{') depth++;
+    else if (clean[i] === '}') {
+      depth--;
+      if (depth === 0) { end = i; break; }
+    }
+  }
+  if (end === -1) end = clean.lastIndexOf('}');
+
+  let jsonStr = (end !== -1 && end > start) ? clean.slice(start, end + 1) : clean.slice(start);
+
+  try {
+    return JSON.parse(jsonStr);
+  } catch(e) {
+    // Intento 1: reparación básica (trailing commas)
+    try {
+      const fixed = jsonStr
+        .replace(/,\s*([}\]])/g, '$1')  // trailing commas
+        .replace(/([{,]\s*)(\w+)\s*:/g, '$1"$2":'); // unquoted keys
+      return JSON.parse(fixed);
+    } catch(e2) {
+      // Intento 2: reparación de JSON cortado (por tokens)
+      try {
+        return tryRepairTruncatedJson(jsonStr);
+      } catch(e3) {
+        console.error('[parseJsonFromAI] JSON fallido:', jsonStr.slice(0, 600));
+        throw new Error(`JSON malformado o cortado: ${e.message}. Copiá este error si persiste.`);
+      }
+    }
+  }
+}
+
+// ============================================================
+// PREVIEW AFTER AI
+// ============================================================
+function showPreview(data, mailText) {
+  document.getElementById('loading-ai').style.display = 'none';
+  document.getElementById('step-paste').style.display = 'none';
+  document.getElementById('step-preview').style.display = '';
+  document.getElementById('preview-json').textContent = JSON.stringify(data, null, 2);
+
+  // Extraer lista de opciones (compatibilidad con objeto único o array de opciones)
+  let options = [];
+  if (Array.isArray(data.opciones) && data.opciones.length > 0) {
+    options = data.opciones.map(opt => ({
+      ...opt,
+      alojamiento_general: data.alojamiento_general || opt.nombre,
+      referencia_dolar: opt.referencia_dolar || data.referencia_dolar,
+      fotos_urls: [...new Set([...(opt.fotos_urls || []), ...lastExtractedWebPhotos])]
+    }));
+  } else if (data.nombre || data.precio_por_noche) {
+    data.fotos_urls = [...new Set([...(data.fotos_urls || []), ...lastExtractedWebPhotos])];
+    options = [data];
+  } else {
+    options = [data];
+  }
+
+  pendingExtracted = options; // Guardamos el array de opciones
+
+  const cardHtmls = options.map((optData, idx) => {
+    const fakeHosp = { id: 'preview_' + idx, datos: optData, mail_original: mailText };
+    return hospCard(fakeHosp)
+      .replace(/onclick="openEditScore\([^)]+\)"/g, '')
+      .replace(/onclick="(openLightbox|setFavPhoto)\([^)]+\)"/g, '')
+      .replace(/onclick="(viewMail|confirmDeleteHosp|openAddLinkModal)\([^)]+\)"/g, 'style="display:none"');
+  }).join('');
+
+  document.getElementById('preview-card').innerHTML = `
+    <p style="font-weight:700;color:var(--cyan);margin-bottom:12px;font-size:0.9rem;">
+      ✨ La IA extrajo ${options.length} ${options.length === 1 ? 'opción' : 'opciones/alternativas'} de este mensaje:
+    </p>
+    <div style="display:flex;flex-direction:column;gap:16px;">${cardHtmls}</div>
+  `;
+
+  document.getElementById('add-hosp-footer').innerHTML = `
+    <button class="btn btn-ghost" onclick="resetAddHosp()">← Volver</button>
+    <button class="btn btn-primary" onclick="confirmAddHosp()">✅ Confirmar y Agregar ${options.length} ${options.length === 1 ? 'Opción' : 'Opciones'}</button>`;
+}
+
+function resetAddHosp() {
+  pendingExtracted = null;
+  document.getElementById('step-paste').style.display = '';
+  document.getElementById('hosp-mail-text').style.display = '';
+  document.getElementById('step-preview').style.display = 'none';
+  document.getElementById('add-hosp-footer').innerHTML = `
+    <button class="btn btn-ghost" onclick="closeModal('modal-add-hosp')">Cancelar</button>
+    <button class="btn btn-primary" id="btn-analyze" onclick="analyzeWithAI()">🤖 Analizar con IA</button>`;
+}
+
+function confirmAddHosp() {
+  if (!pendingExtracted || !pendingExtracted.length) return;
+  const trip = getCurrentTrip();
+  if (!trip) return;
+  const dest = (trip.destinos || []).find(d => d.id === currentDestinoId) || (trip.destinos || [])[0];
+  if (!dest) return;
+  const mailText = document.getElementById('hosp-mail-text').value || '';
+
+  dest.hospedajes = dest.hospedajes || [];
+
+  pendingExtracted.forEach(optData => {
+    const hosp = {
+      id: uid(),
+      fecha_agregado: new Date().toISOString(),
+      mail_original: mailText,
+      datos: optData,
+      editado_manualmente: false
+    };
+    dest.hospedajes.push(hosp);
+  });
+
+  saveState();
+  closeModal('modal-add-hosp');
+  renderHospedajes();
+  toast(`Se agregaron ${pendingExtracted.length} opción(es) a ${dest.nombre} ✨`, 'success');
+}
+
+// ============================================================
+// CONFIG
+// ============================================================
+function openConfig() {
+  document.getElementById('cfg-provider').value = state.config.ia_provider || 'gemini';
+  document.getElementById('cfg-api-key').value = state.config.api_key || '';
+  document.getElementById('cfg-cloud-url').value = state.config.cloud_url || '';
+  onProviderChange();
+  updateApiStatus();
+  openModal('modal-config');
+}
+
+function onProviderChange() {
+  const p = document.getElementById('cfg-provider').value;
+  if (p === 'gemini') {
+    document.getElementById('cfg-key-label').textContent = 'API Key de Gemini';
+    document.getElementById('cfg-key-hint').innerHTML =
+      'Obtené tu key gratis en <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent)">aistudio.google.com</a> · Se guarda solo en tu browser.';
+  } else {
+    document.getElementById('cfg-key-label').textContent = 'API Key de OpenRouter';
+    document.getElementById('cfg-key-hint').innerHTML =
+      'Obtené tu key en <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--accent)">openrouter.ai</a> · Tiene modelos gratuitos disponibles.';
+  }
+}
+
+function updateApiStatus() {
+  const dot = document.getElementById('api-dot');
+  const txt = document.getElementById('api-status-text');
+  const key = state.config.api_key;
+  if (key && key.length > 10) {
+    dot.className = 'status-dot ok';
+    txt.textContent = `API Key configurada (${state.config.ia_provider})`;
+  } else {
+    dot.className = 'status-dot warn';
+    txt.textContent = 'Sin configurar';
+  }
+}
+
+async function testApiKey() {
+  const key = document.getElementById('cfg-api-key').value.trim();
+  const provider = document.getElementById('cfg-provider').value;
+  if (!key) { toast('Ingresá una API Key primero', 'error'); return; }
+
+  const dot = document.getElementById('api-dot');
+  const txt = document.getElementById('api-status-text');
+  dot.className = 'status-dot warn';
+  txt.textContent = 'Probando...';
+
+  // Guardamos config temporal para testear sin tocar el state real
+  const savedKey = state.config.api_key;
+  const savedProv = state.config.ia_provider;
+  state.config.api_key = key;
+  state.config.ia_provider = provider;
+
+  try {
+    const testPrompt = 'Responde SOLO con este JSON exacto sin nada más: {"ok":true}';
+    if (provider === 'gemini') await callGemini(testPrompt);
+    else await callOpenRouter(testPrompt);
+
+    // Éxito: actualizamos config real
+    saveState();
+    dot.className = 'status-dot ok';
+    txt.textContent = '✅ Key válida y funcionando!';
+    toast('API Key funcionando ✅', 'success');
+  } catch(e) {
+    // Fallo: restauramos config anterior
+    state.config.api_key = savedKey;
+    state.config.ia_provider = savedProv;
+    dot.className = 'status-dot err';
+    txt.textContent = '❌ ' + e.message.slice(0, 80);
+    toast('Error: ' + e.message, 'error', 6000);
+  }
+}
+
+function saveConfig() {
+  state.config.ia_provider = document.getElementById('cfg-provider').value;
+  state.config.api_key = document.getElementById('cfg-api-key').value.trim();
+  const cloudUrl = document.getElementById('cfg-cloud-url').value.trim();
+  if (cloudUrl) state.config.cloud_url = cloudUrl;
+  saveState();
+  closeModal('modal-config');
+  toast('Configuración guardada ✅', 'success');
+}
+
+// ============================================================
+// ESC HTML
+// ============================================================
+function esc(s) {
+  if (s == null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ============================================================
+// KEYBOARD
+// ============================================================
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    ['modal-config','modal-new-trip','modal-new-destino','modal-add-hosp','modal-view-mail','modal-confirm-del','modal-photos','modal-edit-score','modal-add-link','modal-lightbox']
+      .forEach(id => { if (!document.getElementById(id).classList.contains('hidden')) closeModal(id); });
+  }
+  const lightboxEl = document.getElementById('modal-lightbox');
+  if (lightboxEl && !lightboxEl.classList.contains('hidden')) {
+    if (e.key === 'ArrowLeft') lightboxNav(-1);
+    if (e.key === 'ArrowRight') lightboxNav(1);
+  }
+});
+
+// Close modal clicking overlay
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) {
+      overlay.classList.add('hidden');
+    }
+  });
+});
+
+// ============================================================
+// INIT
+// ============================================================
+loadState();
+
+// Auto-descarga desde la nube si está configurada
+if (state.config.cloud_url) {
+  pullDataFromCloud(false);
+}
+
+// Show setup prompt if no API key
+if (!state.config.api_key) {
+  setTimeout(() => {
+    toast('👋 Bienvenido! Configurá tu API Key en ⚙️ Config para empezar.', 'info', 6000);
+  }, 600);
+}
+
+renderHome();
+</script>
+</body>
+</html>
