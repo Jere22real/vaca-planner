@@ -266,7 +266,8 @@
                 "fotos_urls": [
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/638116387.jpg?k=570ecd77b896dec031c158b99706b0c03870bc38221df2430cb5a0d7b9cc6a2c&o=",
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/638116362.jpg?k=0f2a3a8f1b1001747aec2fae2013a2c770301cba11a63cbba0150122cd1b89c7&o=",
-                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/638352829.jpg?k=3e299eeeedfa2ea0cf6655f0407404842c1b4d624e0d338d0289b9d72abaea3d&o="
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/638352829.jpg?k=3e299eeeedfa2ea0cf6655f0407404842c1b4d624e0d338d0289b9d72abaea3d&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/638354603.jpg?k=a4dc251abe24ca2d9c58f8e7c6e99a8f6bb3531ddbf3a48ffde09590342b646f&o="
                 ],
                 "notas_adicionales": "Check-in a partir de las 14hs (recepción 24hs), Check-out hasta las 11hs (late check-out hasta las 15hs pagando 50% de la noche). Guardaequipaje gratuito. Jacuzzi y cochera disponibles con costo adicional.",
                 "calificacion_ia": 8.5,
@@ -292,6 +293,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1786655854868
+    "updated_at": 1786655864401
   }
 }
