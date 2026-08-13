@@ -115,7 +115,8 @@
                 ],
                 "texto_original_resumido": "Bungalow A para 2 personas, dormitorio matrimonial + 2 altillos, estar con sofá cama, barcito, escritorio, 2 TVs, jardín y parrilla exclusiva, vista preferencial al lago a $142.000 ARS/noche.",
                 "alojamiento_general": "Bungalows Nahuel Malal",
-                "foto_portada": "https://www.interpatagonia.com/plantillas/grandes/33662-01Gr.jpg"
+                "foto_portada": "https://www.interpatagonia.com/plantillas/grandes/33662-01Gr.jpg",
+                "web_link": "https://www.interpatagonia.com/bariloche/bungalows-nahuel-malal.html"
               },
               "editado_manualmente": false
             }
@@ -131,6 +132,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1786653659269
+    "updated_at": 1786653674233
   }
 }
