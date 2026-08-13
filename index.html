@@ -423,6 +423,22 @@
     .status-dot.ok  { background: var(--green); box-shadow: 0 0 8px var(--green); }
     .status-dot.warn{ background: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
     .status-dot.err { background: var(--red); box-shadow: 0 0 8px var(--red); }
+    .key-add-row { display: flex; gap: 8px; }
+    .key-add-row input { flex: 1; }
+    .key-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius2);
+      padding: 8px 12px; margin-top: 8px; font-size: 0.8rem;
+    }
+    .key-mask { font-family: monospace; color: var(--text2); }
+    .key-row .key-status { font-size: 0.75rem; color: var(--text3); }
+    .key-row .key-actions { display: flex; align-items: center; gap: 10px; }
+    .key-del {
+      background: none; border: none; cursor: pointer; color: var(--text3);
+      font-size: 1rem; padding: 2px 6px; border-radius: 6px; transition: var(--trans);
+    }
+    .key-del:hover { background: rgba(240,82,82,0.15); color: var(--red); }
+    .key-empty { color: var(--text3); font-size: 0.8rem; padding: 8px 0; }
 
     /* ===== SPINNER / LOADING ===== */
     .spinner {
@@ -569,45 +585,25 @@
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label>Proveedor de IA</label>
-        <select id="cfg-provider" onchange="onProviderChange()">
-          <option value="gemini">Google Gemini (gratuito — recomendado)</option>
-          <option value="openrouter">OpenRouter (modelos gratuitos)</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label id="cfg-key-label">API Key de Gemini</label>
-        <input type="password" id="cfg-api-key" placeholder="Pegá tu API Key aquí...">
-        <p class="form-hint" id="cfg-key-hint">
-          Obtené tu key gratis en <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent)">aistudio.google.com</a> · Se guarda solo en tu browser.<br>
-          ⚠️ Free tier: ~20 llamadas/día (más que suficiente para comparar hospedajes).
+        <label>🔑 API Keys</label>
+        <div class="key-add-row">
+          <input type="password" id="cfg-new-key" placeholder="Pegá una API Key (Gemini u OpenRouter)...">
+          <button class="btn btn-ghost btn-sm" onclick="addPendingKey()">➕ Agregar</button>
+        </div>
+        <div id="cfg-keys-list"></div>
+        <p class="form-hint">
+          Se prueban <strong>primero las keys de Gemini</strong> (todos los modelos); si se quedan sin créditos, la app cae automáticamente a <strong>OpenRouter</strong>.<br>
+          Obtené keys gratis en <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent)">aistudio.google.com</a> y <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--accent)">openrouter.ai</a>. Se guardan solo en tu browser.
         </p>
       </div>
-      <div class="divider"></div>
       <div class="config-row">
         <span class="api-status" id="api-status-badge">
           <span class="status-dot warn" id="api-dot"></span>
           <span id="api-status-text">Sin configurar</span>
         </span>
-        <button class="btn btn-ghost btn-sm" onclick="testApiKey()">🔍 Probar key</button>
+        <button class="btn btn-ghost btn-sm" onclick="testApiKey()">🔍 Probar keys</button>
       </div>
       <div class="divider"></div>
-      <div class="form-group">
-        <label>🗝️ Token de GitHub (para SUBIR cambios)</label>
-        <input type="password" id="cfg-gh-token" placeholder="ghp_... (opcional)">
-        <p class="form-hint">
-          Creá tu token en <a href="https://github.com/settings/tokens" target="_blank" style="color:var(--accent)">github.com/settings/tokens</a> → "Generate new token (classic)" → marcá el scope <strong>repo</strong> → copiá el token.<br>
-          🔹 Sin token podés <strong>ver</strong> lo que otros dispositivos comparten.<br>
-          🔹 Con token, los cambios que hagas <strong>en este dispositivo</strong> se suben solos.
-        </p>
-      </div>
-      <div class="form-group">
-        <label>📦 Repositorio</label>
-        <input type="text" id="cfg-gh-repo" placeholder="Jere22real/vaca-planner">
-        <p class="form-hint">
-          La sincronización es automática (cada ~10 segundos) y sin botones: lo que cambiás en un dispositivo aparece en todos los demás.
-        </p>
-      </div>
       <div class="config-row">
         <span class="api-status">
           <span class="status-dot ok" id="sync-status-dot"></span>
@@ -886,7 +882,7 @@ Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
 // STATE
 // ============================================================
 let state = {
-  config: { ia_provider: 'gemini', api_key: '', tema: 'dark' },
+  config: { ia_provider: 'gemini', api_keys: [], tema: 'dark' },
   viajes: []
 };
 let currentTripId = null;
@@ -912,7 +908,12 @@ function loadState() {
     try { state = JSON.parse(raw); } catch(e) {}
   }
   // defaults
-  if (!state.config) state.config = { ia_provider:'gemini', api_key:'', tema:'dark' };
+  if (!state.config) state.config = { ia_provider:'gemini', api_keys:[], tema:'dark' };
+  if (!state.config.api_keys) state.config.api_keys = [];
+  if (state.config.api_key && !state.config.api_keys.length) {
+    state.config.api_keys = [state.config.api_key];
+    delete state.config.api_key;
+  }
   if (!state.viajes) state.viajes = [];
   if (!state.meta) state.meta = { updated_at: 0 };
   // Datos locales ya existentes (sin subir nunca) → se marcan como cambios a publicar
@@ -935,12 +936,13 @@ let lastUploadedTs = 0;
 const DEFAULT_GH_TOKEN = ['ghp_ltSPWEdi4DznOtTi', 'Spa5BIdFA3rX2D3KDW0g'].join('');
 
 function getRepoName() {
-  return ((state.config && state.config.gh_repo) || 'Jere22real/vaca-planner').trim().replace(/\.git$/, '');
+  return 'Jere22real/vaca-planner';
 }
 function getToken() {
-  const el = document.getElementById('cfg-gh-token');
-  const val = (el && el.value) ? el.value.trim() : '';
-  return val || (state.config && state.config.gh_token) || DEFAULT_GH_TOKEN;
+  return DEFAULT_GH_TOKEN;
+}
+function getApiKeys() {
+  return (state.config.api_keys || []).map(k => (k || '').trim()).filter(Boolean);
 }
 function rawDataUrl() {
   return `https://raw.githubusercontent.com/${getRepoName()}/main/data.json`;
@@ -1981,7 +1983,7 @@ function viewMail(hospId) {
 // ADD HOSPEDAJE MODAL
 // ============================================================
 function openAddHosp(destinoId) {
-  if (!state.config.api_key) {
+  if (!getApiKeys().length) {
     toast('Primero configurá tu API Key en ⚙️ Config', 'error', 4500);
     openConfig();
     return;
@@ -2185,11 +2187,21 @@ async function analyzeWithAI() {
   const prompt = buildPrompt(fullInput);
 
   try {
-    let extracted;
-    if (state.config.ia_provider === 'gemini') {
+    let extracted = null;
+    let gemErr = null;
+    try {
       extracted = await callGemini(prompt);
-    } else {
-      extracted = await callOpenRouter(prompt);
+    } catch(e) {
+      gemErr = e;
+    }
+    if (!extracted) {
+      try {
+        extracted = await callOpenRouter(prompt);
+      } catch(orErr) {
+        throw new Error('Sin créditos en todas las keys' +
+          (gemErr ? ' (Gemini: ' + gemErr.message + ')' : '') +
+          (orErr ? ' / OpenRouter: ' + orErr.message : ''));
+      }
     }
 
     pendingExtracted = extracted;
@@ -2303,34 +2315,51 @@ async function callGeminiModel(key, model, prompt) {
   return parseJsonFromAI(raw);
 }
 
-async function callGemini(prompt) {
-  const key = state.config.api_key;
-  let lastError;
-  for (const model of GEMINI_MODELS) {
-    try {
-      const result = await callGeminiModel(key, model, prompt);
-      // Guardamos el modelo que funcionó para no repetir el fallback
-      if (state.config.working_model !== model) {
-        state.config.working_model = model;
-        saveState();
-      }
-      return result;
-    } catch(e) {
-      const msg = e.message || '';
-      // Si el error es de modelo no disponible, probamos el siguiente
-      if (msg.includes('no longer available') || msg.includes('not found') || msg.includes('404')) {
-        lastError = e;
-        continue;
-      }
-      // Cualquier otro error (key inválida, rate limit, etc.) lo tiramos directo
-      throw e;
-    }
+const KEY_SKIP_RE = /api key|invalid|permission|quota|rate limit|429|403|exhausted|blocked|forbidden|unauthorized|401|no credits|insufficient/i;
+const MODEL_SKIP_RE = /no longer available|not found|404|not exist|not supported|unavailable/i;
+
+function getGeminiKeys() {
+  const keys = getApiKeys();
+  const wk = state.config.working_key;
+  if (wk) {
+    const i = keys.indexOf(wk);
+    if (i > 0) keys.unshift(keys.splice(i, 1)[0]);
   }
-  throw lastError || new Error('Ningún modelo de Gemini disponible. Revisá tu API Key.');
+  return keys;
 }
 
-async function callOpenRouter(prompt) {
-  const key = state.config.api_key;
+async function callGemini(prompt) {
+  const keys = getGeminiKeys();
+  if (!keys.length) throw new Error('No hay API Keys configuradas. Andá a ⚙️ Config.');
+  const exhausted = new Set();
+  let lastError;
+  for (const model of GEMINI_MODELS) {
+    for (const key of keys) {
+      if (exhausted.has(key)) continue;
+      try {
+        const result = await callGeminiModel(key, model, prompt);
+        // Guardamos key y modelo que funcionaron para probarlos primero la próxima vez
+        if (state.config.working_model !== model || state.config.working_key !== key) {
+          state.config.working_model = model;
+          state.config.working_key = key;
+          saveState();
+        }
+        return result;
+      } catch(e) {
+        lastError = e;
+        const msg = e.message || '';
+        // Error de key (inválida/sin créditos/rate limit) → probar la siguiente key
+        if (KEY_SKIP_RE.test(msg)) { exhausted.add(key); continue; }
+        // Modelo no disponible → probar el siguiente modelo
+        if (MODEL_SKIP_RE.test(msg)) break;
+        throw e;
+      }
+    }
+  }
+  throw lastError || new Error('Sin créditos en todas las keys de Gemini.');
+}
+
+async function callOpenRouterKey(key, prompt) {
   const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -2351,6 +2380,28 @@ async function callOpenRouter(prompt) {
   const data = await res.json();
   const raw = data.choices?.[0]?.message?.content || '';
   return parseJsonFromAI(raw);
+}
+
+async function callOpenRouter(prompt) {
+  const keys = getApiKeys();
+  if (!keys.length) throw new Error('No hay API Keys de OpenRouter configuradas.');
+  let lastError;
+  for (const key of keys) {
+    try {
+      const result = await callOpenRouterKey(key, prompt);
+      if (state.config.working_key !== key) {
+        state.config.working_key = key;
+        saveState();
+      }
+      return result;
+    } catch(e) {
+      lastError = e;
+      const msg = e.message || '';
+      if (KEY_SKIP_RE.test(msg)) continue;
+      throw e;
+    }
+  }
+  throw lastError || new Error('Sin créditos en OpenRouter.');
 }
 
 function tryRepairTruncatedJson(str) {
@@ -2504,85 +2555,121 @@ function confirmAddHosp() {
 // ============================================================
 // CONFIG
 // ============================================================
+let pendingKeys = [];
+
 function openConfig() {
-  document.getElementById('cfg-provider').value = state.config.ia_provider || 'gemini';
-  document.getElementById('cfg-api-key').value = state.config.api_key || '';
-  document.getElementById('cfg-gh-token').value = state.config.gh_token || '';
-  document.getElementById('cfg-gh-repo').value = state.config.gh_repo || 'Jere22real/vaca-planner';
-  onProviderChange();
+  pendingKeys = getApiKeys();
+  renderConfigKeys();
   updateApiStatus();
   openModal('modal-config');
+  const input = document.getElementById('cfg-new-key');
+  if (input) setTimeout(() => input.focus(), 50);
 }
 
-function onProviderChange() {
-  const p = document.getElementById('cfg-provider').value;
-  if (p === 'gemini') {
-    document.getElementById('cfg-key-label').textContent = 'API Key de Gemini';
-    document.getElementById('cfg-key-hint').innerHTML =
-      'Obtené tu key gratis en <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent)">aistudio.google.com</a> · Se guarda solo en tu browser.';
-  } else {
-    document.getElementById('cfg-key-label').textContent = 'API Key de OpenRouter';
-    document.getElementById('cfg-key-hint').innerHTML =
-      'Obtené tu key en <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--accent)">openrouter.ai</a> · Tiene modelos gratuitos disponibles.';
+function renderConfigKeys() {
+  const list = document.getElementById('cfg-keys-list');
+  if (!list) return;
+  if (!pendingKeys.length) {
+    list.innerHTML = '<div class="key-empty">Todavía no agregaste ninguna API Key.</div>';
+    return;
   }
+  list.innerHTML = pendingKeys.map((k, i) => `
+    <div class="key-row" id="key-row-${i}">
+      <span class="key-mask">${maskKey(k)}</span>
+      <span class="key-status" id="key-status-${i}"></span>
+      <span class="key-actions">
+        <button class="key-del" title="Eliminar key" onclick="removePendingKey(${i})">✕</button>
+      </span>
+    </div>`).join('');
+}
+
+function maskKey(k) {
+  if (!k) return '';
+  if (k.length <= 10) return k.slice(0, 3) + '••••';
+  return k.slice(0, 6) + '••••••••' + k.slice(-4);
+}
+
+function addPendingKey() {
+  const input = document.getElementById('cfg-new-key');
+  const val = input.value.trim();
+  if (!val) { toast('Pegá una API Key primero', 'error'); return; }
+  if (pendingKeys.includes(val)) { toast('Esa key ya está agregada', 'error'); return; }
+  pendingKeys.push(val);
+  input.value = '';
+  renderConfigKeys();
+  input.focus();
+}
+
+function removePendingKey(i) {
+  pendingKeys.splice(i, 1);
+  renderConfigKeys();
 }
 
 function updateApiStatus() {
   const dot = document.getElementById('api-dot');
   const txt = document.getElementById('api-status-text');
-  const key = state.config.api_key;
-  if (key && key.length > 10) {
+  const n = getApiKeys().length;
+  if (n) {
     dot.className = 'status-dot ok';
-    txt.textContent = `API Key configurada (${state.config.ia_provider})`;
+    txt.textContent = `${n} API key${n !== 1 ? 's' : ''} configurada${n !== 1 ? 's' : ''}`;
   } else {
     dot.className = 'status-dot warn';
     txt.textContent = 'Sin configurar';
   }
 }
 
+async function probeGeminiKey(key, prompt) {
+  let lastErr;
+  for (const m of GEMINI_MODELS) {
+    try {
+      return await callGeminiModel(key, m, prompt);
+    } catch(e) {
+      lastErr = e;
+      if (!MODEL_SKIP_RE.test(e.message || '')) throw e;
+    }
+  }
+  throw lastErr;
+}
+
 async function testApiKey() {
-  const key = document.getElementById('cfg-api-key').value.trim();
-  const provider = document.getElementById('cfg-provider').value;
-  if (!key) { toast('Ingresá una API Key primero', 'error'); return; }
+  if (!pendingKeys.length) { toast('No hay keys para probar. Agregá una primero', 'error'); return; }
 
   const dot = document.getElementById('api-dot');
   const txt = document.getElementById('api-status-text');
   dot.className = 'status-dot warn';
   txt.textContent = 'Probando...';
 
-  // Guardamos config temporal para testear sin tocar el state real
-  const savedKey = state.config.api_key;
-  const savedProv = state.config.ia_provider;
-  state.config.api_key = key;
-  state.config.ia_provider = provider;
+  const testPrompt = 'Responde SOLO con este JSON exacto sin nada más: {"ok":true}';
+  let ok = 0;
 
-  try {
-    const testPrompt = 'Responde SOLO con este JSON exacto sin nada más: {"ok":true}';
-    if (provider === 'gemini') await callGemini(testPrompt);
-    else await callOpenRouter(testPrompt);
-
-    // Éxito: actualizamos config real
-    saveState();
-    dot.className = 'status-dot ok';
-    txt.textContent = '✅ Key válida y funcionando!';
-    toast('API Key funcionando ✅', 'success');
-  } catch(e) {
-    // Fallo: restauramos config anterior
-    state.config.api_key = savedKey;
-    state.config.ia_provider = savedProv;
-    dot.className = 'status-dot err';
-    txt.textContent = '❌ ' + e.message.slice(0, 80);
-    toast('Error: ' + e.message, 'error', 6000);
+  for (let i = 0; i < pendingKeys.length; i++) {
+    const key = pendingKeys[i];
+    const statusEl = document.getElementById('key-status-' + i);
+    if (statusEl) statusEl.textContent = '⏳';
+    let label = '❌';
+    try {
+      await probeGeminiKey(key, testPrompt);
+      label = '✅ Gemini';
+      ok++;
+    } catch(e) {
+      try {
+        await callOpenRouterKey(key, testPrompt);
+        label = '✅ OpenRouter';
+        ok++;
+      } catch(e2) {
+        label = '❌ ' + ((e2.message || e.message || '').slice(0, 40));
+      }
+    }
+    if (statusEl) statusEl.textContent = label;
   }
+
+  dot.className = ok ? 'status-dot ok' : 'status-dot err';
+  txt.textContent = `${ok}/${pendingKeys.length} key${pendingKeys.length !== 1 ? 's' : ''} válida${pendingKeys.length !== 1 ? 's' : ''}`;
+  toast(ok ? `${ok} de ${pendingKeys.length} keys funcionan ✅` : 'Ninguna key funcionó ❌', ok ? 'success' : 'error', 6000);
 }
 
 function saveConfig() {
-  state.config.ia_provider = document.getElementById('cfg-provider').value;
-  state.config.api_key = document.getElementById('cfg-api-key').value.trim();
-  const token = document.getElementById('cfg-gh-token').value.trim();
-  if (token) state.config.gh_token = token;
-  const repo = document.getElementById('cfg-gh-repo').value.trim();
-  if (repo) state.config.gh_repo = repo;
+  state.config.api_keys = pendingKeys.filter(k => k && k.trim());
   saveState();
   closeModal('modal-config');
   toast('Configuración guardada ✅', 'success');
@@ -2629,7 +2716,7 @@ loadState();
 startAutoSync();
 
 // Show setup prompt if no API key
-if (!state.config.api_key) {
+if (!getApiKeys().length) {
   setTimeout(() => {
     toast('👋 Bienvenido! Configurá tu API Key en ⚙️ Config para empezar.', 'info', 6000);
   }, 600);
