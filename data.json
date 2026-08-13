@@ -154,7 +154,8 @@
                 "instagram": "@donjustoapart",
                 "fotos_urls": [
                   "https://cabaniasdonjusto.com.ar/wp-content/uploads/2025/07/1606615852foto.jpg",
-                  "https://cabaniasdonjusto.com.ar/wp-content/uploads/2025/08/IMG_5990-scaled.jpg"
+                  "https://cabaniasdonjusto.com.ar/wp-content/uploads/2025/08/IMG_5990-scaled.jpg",
+                  "https://cabaniasdonjusto.com.ar/wp-content/uploads/2025/08/IMG_6054-scaled.jpg"
                 ],
                 "notas_adicionales": "A 10 minutos del centro cívico. Menores de 2 años no cuentan como pasajeros y se provee cuna. Para estadías de 5+ días se incluye limpieza y reposición de ropa blanca cada 3/4 días. Tarifa dada sin IVA.",
                 "calificacion_ia": 8.5,
@@ -182,6 +183,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1786654221330
+    "updated_at": 1786654228990
   }
 }
