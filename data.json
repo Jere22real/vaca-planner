@@ -264,9 +264,6 @@
                 "contacto": "Instagram: @tangoinn / Web: https://tangoinnhostel.cloudbeds.com/es/",
                 "instagram": "@tangoinn",
                 "fotos_urls": [
-                  "https://tangoinnhostel.cloudbeds.com/es/",
-                  "www.airbnb.com.ar/p/tangoinnbariloche",
-                  "www.instagram.com/tangoinn",
                   "https://youtu.be/4jfNo8SnqDs",
                   "https://tangoinn.com/index.php/hostel/"
                 ],
@@ -294,6 +291,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1786655516026
+    "updated_at": 1786655829233
   }
 }
