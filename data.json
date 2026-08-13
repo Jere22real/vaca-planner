@@ -103,7 +103,8 @@
                 "fotos_urls": [
                   "https://www.interpatagonia.com/plantillas/grandes/33662-08Gr.jpg",
                   "https://www.interpatagonia.com/plantillas/grandes/33662-01Gr.jpg",
-                  "https://www.interpatagonia.com/plantillas/grandes/33662-12Gr.jpg"
+                  "https://www.interpatagonia.com/plantillas/grandes/33662-12Gr.jpg",
+                  "https://img.alqastatic.com/_propiedades_/um92/um92-Bungalow-O93N9AO9.jpg?w=1080&h=812"
                 ],
                 "notas_adicionales": "Orientación noreste con la mejor vista al lago, Isla Huemul y cerros. A 80m de centro comercial completo.",
                 "calificacion_ia": 9,
@@ -129,6 +130,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1786653589247
+    "updated_at": 1786653618513
   }
 }
