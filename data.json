@@ -207,7 +207,8 @@
                 "contacto": "Cabañas Kay Hue",
                 "instagram": null,
                 "fotos_urls": [
-                  "https://www.booking.com/hotel/ar/cabanas-kay-hue.es-ar.html?aid=311839&label=cabanas-kay-hue-HhUA38PsNGUfTfcULvjNcgS626048958377%3Apl%3Ata%3Ap1%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atiaud-2393166470140%3Akwd-1515648817890%3Alp9041071%3Ali%3Adec%3Adm%3Appccp%3DUmFuZG9tSVYkc2RlIyh9YasQqy722txiCD_GKCoqnfQ&sid=30a70855ff0e59ae8a5f8654e5018748&all_sr_blocks=360049602_120127719_4_0_0&checkin=2026-09-07&checkout=2026-09-10&dest_id=-1012061&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=360049602_120127719_4_0_0&hpos=1&matching_block_id=360049602_120127719_4_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=360049602_120127719_4_0_0__15660&srepoch=1786654390&srpvid=dae692b961d901b2&type=total&ucfs=1&"
+                  "https://www.booking.com/hotel/ar/cabanas-kay-hue.es-ar.html?aid=311839&label=cabanas-kay-hue-HhUA38PsNGUfTfcULvjNcgS626048958377%3Apl%3Ata%3Ap1%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atiaud-2393166470140%3Akwd-1515648817890%3Alp9041071%3Ali%3Adec%3Adm%3Appccp%3DUmFuZG9tSVYkc2RlIyh9YasQqy722txiCD_GKCoqnfQ&sid=30a70855ff0e59ae8a5f8654e5018748&all_sr_blocks=360049602_120127719_4_0_0&checkin=2026-09-07&checkout=2026-09-10&dest_id=-1012061&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=360049602_120127719_4_0_0&hpos=1&matching_block_id=360049602_120127719_4_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=360049602_120127719_4_0_0__15660&srepoch=1786654390&srpvid=dae692b961d901b2&type=total&ucfs=1&",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/204578570.jpg?k=d4d9ea38d2773e9f562a2a93facfff16d9d18bde72d61446788afb8123aebe29&o="
                 ],
                 "notas_adicionales": "Toallas y ropa de cama disponibles por un adicional. Ubicado a 21 km del aeropuerto.",
                 "calificacion_ia": 8,
@@ -236,6 +237,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1786654663645
+    "updated_at": 1786654677957
   }
 }
