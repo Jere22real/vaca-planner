@@ -49,7 +49,9 @@
                 "forma_pago": "BBVA, Mercado Pago, Efectivo",
                 "contacto": "Juan O. Bruckner / Tel: 0294 15 456 3033 / WhatsApp: +54 9 2944 56 3033 / Instagram: @bungalows.nahuelmalal",
                 "instagram": "@bungalows.nahuelmalal",
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://img.alqastatic.com/_propiedades_/um92/o_um92_Bungalow_IKFJNE87.jpg?w=1080&h=812"
+                ],
                 "notas_adicionales": "A 80m de centro comercial completo, a 500m de supermercados TODO y La Anónima. A 12km de la base del Cerro Catedral.",
                 "calificacion_ia": 8.5,
                 "razon_calificacion": "Excelente ubicación frente al lago, muy equipado, zona comercial muy cercana y fácil acceso.",
@@ -125,6 +127,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1786585060280
+    "updated_at": 1786653573295
   }
 }
