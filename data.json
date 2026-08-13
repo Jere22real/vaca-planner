@@ -264,7 +264,8 @@
                 "contacto": "Instagram: @tangoinn / Web: https://tangoinnhostel.cloudbeds.com/es/",
                 "instagram": "@tangoinn",
                 "fotos_urls": [
-                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/638116387.jpg?k=570ecd77b896dec031c158b99706b0c03870bc38221df2430cb5a0d7b9cc6a2c&o="
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/638116387.jpg?k=570ecd77b896dec031c158b99706b0c03870bc38221df2430cb5a0d7b9cc6a2c&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/638116362.jpg?k=0f2a3a8f1b1001747aec2fae2013a2c770301cba11a63cbba0150122cd1b89c7&o="
                 ],
                 "notas_adicionales": "Check-in a partir de las 14hs (recepción 24hs), Check-out hasta las 11hs (late check-out hasta las 15hs pagando 50% de la noche). Guardaequipaje gratuito. Jacuzzi y cochera disponibles con costo adicional.",
                 "calificacion_ia": 8.5,
@@ -290,6 +291,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1786655837645
+    "updated_at": 1786655845669
   }
 }
