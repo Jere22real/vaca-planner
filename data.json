@@ -269,7 +269,8 @@
                 "contacto": "Teresa / Instagram: @despertarenellago",
                 "instagram": "@despertarenellago",
                 "fotos_urls": [
-                  "https://barilocheturismo.gob.ar/images/hoteles/878_j6qrX.JPG"
+                  "https://barilocheturismo.gob.ar/images/hoteles/878_j6qrX.JPG",
+                  "https://barilocheturismo.gob.ar/images/hoteles/878_zBFTy.jpg"
                 ],
                 "notas_adicionales": "La casa está sobre lote de 1.400 m2 y comparte terreno con los dueños que tienen mascotas. Distribución: Dormitorio matrimonial, entrepiso con 2 camas, cocina, baño, living y deck con parrilla.",
                 "calificacion_ia": 8.5,
@@ -298,6 +299,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1786656508292
+    "updated_at": 1786656518253
   }
 }
