@@ -61,7 +61,8 @@
                   "horario check-in/out"
                 ],
                 "texto_original_resumido": "Bungalow B para 2 personas, dormitorio matrimonial + estar con sofá cama y cama extra, hogar a leña, jardín y parrilla exclusiva, vista al lago a $107.000 ARS/noche.",
-                "alojamiento_general": "Bungalows Nahuel Malal"
+                "alojamiento_general": "Bungalows Nahuel Malal",
+                "web_link": "https://www.alquilerargentina.com/alojamientos/um92-Bungalow-Bungalows-Nahuel-Malal-San-Carlos-De-Bariloche.html"
               },
               "editado_manualmente": false
             },
@@ -130,6 +131,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1786653618513
+    "updated_at": 1786653659269
   }
 }
