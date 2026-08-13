@@ -226,6 +226,65 @@
                 "web_link": "https://tangoinn.com/index.php/hostel/"
               },
               "editado_manualmente": false
+            },
+            {
+              "id": "mss15dwyajiui",
+              "fecha_agregado": "2026-08-13T21:28:19.378Z",
+              "mail_original": "Despertar en el lago    \nHola Jeremías \nPara el mes de Septiembre tengo disponibilidad a partir del día 11 . La tarifa de la casa es de $ 100.000 por día, para 2 personas. Pueden ver más fotos en Instagram despertar en el lago . \nSaludos Teresa \n@despertarenellago\nEnviado desde mi iPhone\n\nDespertar en el Lago. Casa para 4 personas , lugar tranquilo con jardín y acceso a la playa del lago Nahuel Huapi. Muy bien equipada con vajilla ropa de cama , toallas. Dormitorio matrimonial , entrepiso con 2 camas , cocina , baño y living. Deck con mesa y sillas y parrilla con mesadas . La casa está sobre lote de 1.400 m2 y comparte terreno con los dueños que tienen mascotas.\n\n\nCosta de lagoEstacionamiento (incluido)JardínRecepción 24 horasWi-Fi\nHABITACIÓN\nBañeraCocinaCunas disponiblesFreezerHeladeraHogarMicroondasParrillaSecador de peloTV por cableVajillaWi-Fi",
+              "datos": {
+                "nombre": "Despertar en el lago — Casa (para 2 a 4 personas)",
+                "tipo": "casa",
+                "precio_por_noche": 100000,
+                "moneda": "ARS",
+                "precio_total": null,
+                "precio_noche_usd": null,
+                "referencia_dolar": null,
+                "fechas_disponibles": "A partir del 11 de septiembre",
+                "capacidad": "2 a 4 personas",
+                "habitaciones": 2,
+                "banos": 1,
+                "caracteristicas": [
+                  "Costa de lago",
+                  "Acceso a la playa del lago Nahuel Huapi",
+                  "Jardín",
+                  "Estacionamiento (incluido)",
+                  "Wi-Fi",
+                  "Parrilla",
+                  "Deck con mesa y sillas",
+                  "Hogar",
+                  "Cocina equipada",
+                  "Vajilla",
+                  "Freezer",
+                  "Heladera",
+                  "Microondas",
+                  "TV por cable",
+                  "Bañera",
+                  "Secador de pelo",
+                  "Cunas disponibles",
+                  "Recepción 24 horas"
+                ],
+                "ubicacion": "Playa del lago Nahuel Huapi, Bariloche",
+                "politica_cancelacion": null,
+                "forma_pago": null,
+                "contacto": "Teresa / Instagram: @despertarenellago",
+                "instagram": "@despertarenellago",
+                "fotos_urls": [
+                  "https://barilocheturismo.gob.ar/es/ver-hotel/despertar-en-el-lago"
+                ],
+                "notas_adicionales": "La casa está sobre lote de 1.400 m2 y comparte terreno con los dueños que tienen mascotas. Distribución: Dormitorio matrimonial, entrepiso con 2 camas, cocina, baño, living y deck con parrilla.",
+                "calificacion_ia": 8.5,
+                "razon_calificacion": "Excelente ubicación sobre el Lago Nahuel Huapi con gran terreno, parrilla y equipamiento completo.",
+                "datos_faltantes": [
+                  "política de cancelación",
+                  "formas de pago",
+                  "horario check-in/out",
+                  "mínimo de noches"
+                ],
+                "texto_original_resumido": "Casa para 2 a 4 personas disponible desde el 11 de septiembre a $100.000 por día, con costa de lago Nahuel Huapi, parque de 1.400m2 y equipamiento completo.",
+                "alojamiento_general": "Despertar en el lago",
+                "web_link": "https://barilocheturismo.gob.ar/es/ver-hotel/despertar-en-el-lago"
+              },
+              "editado_manualmente": false
             }
           ]
         },
@@ -239,6 +298,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1786656079009
+    "updated_at": 1786656499378
   }
 }
