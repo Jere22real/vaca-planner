@@ -693,7 +693,7 @@
     <div class="modal-body" id="add-hosp-body">
       <div id="step-paste">
         <p style="color:var(--text2);font-size:0.88rem;margin-bottom:16px;">
-          Podés pegar el <strong>Mail/WhatsApp</strong> que recibiste, o directamente el <strong>Link Web de la cabaña</strong> (Booking, InterPatagonia, etc.), o <strong>ambos</strong> para que la IA fusione precios y fotos automáticamente.
+          Pegá el <strong>Mail/WhatsApp</strong> que recibiste del alojamiento. Podés <strong>sumar opcionalmente el Link Web</strong> como complemento para que la IA tenga más contexto.
         </p>
 
         <div class="form-group">
@@ -702,7 +702,7 @@
         </div>
 
         <div class="form-group">
-          <label>🌐 Link Web de la Cabaña (Opcional - Extrae fotos HD y servicios de la web)</label>
+          <label>🌐 Link Web de la Cabaña (Opcional - complemento de información)</label>
           <input type="text" id="hosp-web-link" placeholder="Ej: https://www.interpatagonia.com/bariloche/bungalows-nahuel-malal.html">
         </div>
 
@@ -777,13 +777,13 @@ Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
     </div>
     <div class="modal-body">
       <p style="font-size:0.85rem;color:var(--text2);margin-bottom:14px;">
-        Podés adjuntar fotos pegando el link (Booking, Instagram, Drive) o subiendo una imagen desde tu dispositivo.
+        Las fotos se cargan <strong>manualmente</strong>: pegá el link directo de una imagen o subila desde tu dispositivo.
       </p>
 
       <div class="form-group">
-        <label>Agregar por URL / Link</label>
+        <label>Adjuntar por URL directa de imagen</label>
         <div style="display:flex;gap:8px;">
-          <input type="text" id="photo-url-input" placeholder="https://... (URL de la foto o Booking)">
+          <input type="text" id="photo-url-input" placeholder="https://.../foto.jpg (URL directa de imagen)">
           <button class="btn btn-primary btn-sm" onclick="addPhotoByUrl()">+ Agregar</button>
         </div>
       </div>
@@ -837,28 +837,23 @@ Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
 <div class="modal-overlay hidden" id="modal-add-link">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title">🔗 Agregar Link Web</span>
+      <span class="modal-title">🔗 Link Web</span>
       <button class="modal-close" onclick="closeModal('modal-add-link')">✕</button>
     </div>
     <div class="modal-body">
       <p style="font-size:0.85rem;color:var(--text2);margin-bottom:14px;">
-        Pegá el link web del alojamiento para buscar <strong>fotos automáticamente</strong>. No se reprocesa el mail que ya cargaste: solo se agregan las fotos encontradas.
+        Guardá el link web del alojamiento para acceder al sitio desde la tarjeta.
       </p>
       <div class="form-group">
         <label>🌐 Link Web</label>
         <input type="text" id="addlink-url" placeholder="https://www.interpatagonia.com/...">
-        <p class="form-hint">Booking, InterPatagonia, Sitio propio, Instagram, etc.</p>
+        <p class="form-hint">Booking, InterPatagonia, sitio propio, etc.</p>
       </div>
-      <div id="addlink-loading" class="loading-block" style="display:none;">
-        <div class="spinner"></div>
-        <p>Buscando fotos en el sitio web...</p>
-      </div>
-      <div id="addlink-result"></div>
     </div>
     <div class="modal-footer" id="addlink-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-add-link')">Cancelar</button>
-      <button class="btn btn-primary" id="btn-addlink-search" onclick="processAddLink()">🔗 Buscar fotos</button>
-      <button class="btn btn-primary" id="btn-addlink-confirm" style="display:none;" onclick="confirmAddLink()">✅ Agregar fotos</button>
+      <button class="btn btn-ghost" onclick="saveLinkOnly()">💾 Solo guardar</button>
+      <button class="btn btn-primary" onclick="saveAndOpenLink()">🌐 Guardar y abrir</button>
     </div>
   </div>
 </div>
@@ -1649,7 +1644,7 @@ function hospCard(h) {
     </div>
     <div class="hosp-card-footer">
       <button class="btn btn-ghost btn-sm" onclick="openPhotoModal('${h.id}')">📷 Fotos (${photos.length})</button>
-      <button class="btn btn-ghost btn-sm" onclick="openAddLinkModal('${h.id}')">🔗 Link</button>
+      <button class="btn btn-ghost btn-sm" onclick="openWebLink('${h.id}')">🔗 Link</button>
       <button class="btn btn-ghost btn-sm" onclick="viewMail('${h.id}')">📧 Ver mail</button>
       <button class="btn btn-danger btn-sm" onclick="confirmDeleteHosp('${h.id}')">🗑️</button>
     </div>
@@ -1899,74 +1894,51 @@ function saveScore() {
 }
 
 // ============================================================
-// ADD LINK TO EXISTING HOSPEDAJE
+// LINK WEB DEL HOSPEDAJE
 // ============================================================
 let addLinkHospId = null;
-let addLinkFoundPhotos = [];
+
+function openWebLink(hospId) {
+  const hosp = getHospById(hospId);
+  if (!hosp) return;
+  const link = (hosp.datos && hosp.datos.web_link) || '';
+  if (link) {
+    window.open(link, '_blank', 'noopener');
+  } else {
+    toast('Este alojamiento no tiene link web. Agregalo primero.', 'info');
+    openAddLinkModal(hospId);
+  }
+}
 
 function openAddLinkModal(hospId) {
   addLinkHospId = hospId;
-  addLinkFoundPhotos = [];
-  document.getElementById('addlink-url').value = '';
-  document.getElementById('addlink-loading').style.display = 'none';
-  document.getElementById('addlink-result').innerHTML = '';
-  document.getElementById('btn-addlink-search').style.display = '';
-  document.getElementById('btn-addlink-confirm').style.display = 'none';
+  const hosp = getHospById(hospId);
+  document.getElementById('addlink-url').value = (hosp && hosp.datos && hosp.datos.web_link) || '';
   openModal('modal-add-link');
   setTimeout(() => document.getElementById('addlink-url').focus(), 100);
 }
 
-async function processAddLink() {
+function saveAddLink() {
   const url = document.getElementById('addlink-url').value.trim();
-  if (!url) { toast('Ingresá un link primero', 'error'); return; }
-  if (!/^https?:\/\//i.test(url)) { toast('El link debe comenzar con http(s)', 'error'); return; }
-
-  const resultEl = document.getElementById('addlink-result');
-  const loadingEl = document.getElementById('addlink-loading');
-  const btn = document.getElementById('btn-addlink-search');
-
-  loadingEl.style.display = '';
-  resultEl.innerHTML = '';
-  btn.disabled = true;
-  try {
-    addLinkFoundPhotos = await fetchWebpagePhotos(url);
-    loadingEl.style.display = 'none';
-    if (addLinkFoundPhotos.length) {
-      resultEl.innerHTML = `
-        <p style="color:var(--green);font-size:0.85rem;margin-bottom:10px;">✅ Se encontraron ${addLinkFoundPhotos.length} fotos. Revisá y confirmá:</p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;max-height:220px;overflow-y:auto;">
-          ${addLinkFoundPhotos.map(p => `<img src="${esc(p)}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;border:1px solid var(--border);" onerror="this.style.display='none'">`).join('')}
-        </div>`;
-      btn.style.display = 'none';
-      document.getElementById('btn-addlink-confirm').style.display = '';
-    } else {
-      resultEl.innerHTML = `
-        <p style="color:var(--yellow);font-size:0.85rem;line-height:1.6;">
-          ⚠️ No se pudieron extraer fotos automáticamente. La mayoría de los sitios de reservas (Booking, etc.) bloquean la lectura directa o cargan las fotos con JavaScript.<br><br>
-          <button class="btn btn-ghost btn-sm" onclick="closeModal('modal-add-link'); openPhotoModal('${addLinkHospId}')">📷 Cargar fotos manualmente</button>
-        </p>`;
-    }
-  } catch (e) {
-    loadingEl.style.display = 'none';
-    resultEl.innerHTML = `<p style="color:var(--red);font-size:0.85rem;">❌ Error: ${esc(e.message)}</p>`;
-  }
-  btn.disabled = false;
+  if (!url) { toast('Ingresá un link primero', 'error'); return null; }
+  if (!/^https?:\/\//i.test(url)) { toast('El link debe comenzar con http(s)', 'error'); return null; }
+  const hosp = getHospById(addLinkHospId);
+  if (!hosp) return null;
+  hosp.datos = hosp.datos || {};
+  hosp.datos.web_link = url;
+  saveState();
+  renderHospedajes();
+  return url;
 }
 
-function confirmAddLink() {
-  const hosp = getHospById(addLinkHospId);
-  if (hosp) {
-    hosp.datos.fotos_urls = hosp.datos.fotos_urls || [];
-    addLinkFoundPhotos.forEach(u => {
-      if (!hosp.datos.fotos_urls.includes(u)) hosp.datos.fotos_urls.push(u);
-    });
-    const url = document.getElementById('addlink-url').value.trim();
-    if (url) hosp.datos.web_link = url;
-    saveState();
-    renderHospedajes();
-    toast(`Se agregaron ${addLinkFoundPhotos.length} fotos 📷`, 'success');
-  }
-  closeModal('modal-add-link');
+function saveLinkOnly() {
+  const url = saveAddLink();
+  if (url) { closeModal('modal-add-link'); toast('Link guardado 🔗', 'success'); }
+}
+
+function saveAndOpenLink() {
+  const url = saveAddLink();
+  if (url) { closeModal('modal-add-link'); window.open(url, '_blank', 'noopener'); }
 }
 
 // ============================================================
@@ -2020,129 +1992,8 @@ function openAddHosp(destinoId) {
 }
 
 // ============================================================
-// AI ANALYSIS & WEB PHOTO SCRAPING
+// AI ANALYSIS
 // ============================================================
-function resolveUrl(relativeOrAbsolute, baseUrlObj) {
-  if (!relativeOrAbsolute) return null;
-  try {
-    let clean = relativeOrAbsolute.trim().replace(/^["']|["']$/g, '');
-    if (clean.startsWith('//')) return 'https:' + clean;
-    if (clean.startsWith('http://') || clean.startsWith('https://')) return clean;
-    if (clean.startsWith('/')) return baseUrlObj.origin + clean;
-    return new URL(clean, baseUrlObj.href).href;
-  } catch(e) {
-    return null;
-  }
-}
-
-function isBadPhotoUrl(url) {
-  const l = url.toLowerCase();
-  if (l.length < 8) return true;
-  if (l.includes('/logo') || l.includes('/logos') || l.includes('sprite')
-    || l.includes('/icon') || l.includes('/icons') || l.includes('favicon')
-    || l.includes('placeholder') || l.includes('/pixel') || l.includes('transparent')
-    || l.includes('tracking') || l.includes('blank')) return true;
-  return false;
-}
-
-function extractImagesFromHtml(html, baseUrlObj) {
-  const urls = [];
-  const push = (raw) => {
-    if (!raw || typeof raw !== 'string') return;
-    const abs = resolveUrl(raw.trim().replace(/^["'\(]|["'\)]$/g, ''), baseUrlObj);
-    if (abs && !isBadPhotoUrl(abs)) urls.push(abs);
-  };
-
-  // 1. meta og:image / twitter:image (cualquier orden de atributos)
-  for (const m of html.matchAll(/<meta[^>]+>/gi)) {
-    const tag = m[0];
-    if (/og:image|twitter:image/i.test(tag)) {
-      const content = tag.match(/content\s*=\s*["']([^"']+)["']/i);
-      if (content) push(content[1]);
-    }
-  }
-
-  // 2. tags <img>: src, data-src, data-original, data-lazy-src, srcset...
-  for (const m of html.matchAll(/<img[^>]+>/gi)) {
-    const tag = m[0];
-    const attrs = ['src','data-src','data-original','data-lazy-src','data-original-src','data-image','data-url','data-full'];
-    for (const a of attrs) {
-      const val = tag.match(new RegExp(a + '\\s*=\\s*["\']([^"\']+)["\']', 'i'));
-      if (val) push(val[1]);
-    }
-    const ss = tag.match(/(?:data-)?srcset\s*=\s*["']([^"']+)["']/i);
-    if (ss) {
-      ss[1].split(',').forEach(part => {
-        const u = part.trim().split(/\s+/)[0];
-        push(u);
-      });
-    }
-  }
-
-  // 3. background-image inline
-  for (const m of html.matchAll(/background(?:-image)?\s*:\s*url\((["']?)([^"')]+)\1\)/gi)) {
-    push(m[2]);
-  }
-
-  // 4. URLs con extensión de imagen en cualquier parte (JSON-LD, atributos, etc.)
-  for (const m of html.matchAll(/["']([^"']*\.(?:jpe?g|png|webp|avif)(?:\?[^"']*)?)["']/gi)) {
-    push(m[1]);
-  }
-
-  return urls;
-}
-
-async function fetchWebpagePhotos(rawUrl) {
-  if (!rawUrl) return [];
-  const cleanUrl = rawUrl.replace(/[.,\)\s]+$/, '').trim();
-  if (!/^https?:\/\//i.test(cleanUrl)) return [];
-
-  let baseUrlObj;
-  try { baseUrlObj = new URL(cleanUrl); } catch(e) { return []; }
-
-  const proxyFactories = [
-    u => `https://api.allorigins.win/get?url=${encodeURIComponent(u)}`,
-    u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
-    u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
-    u => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
-    u => `https://api.cors.lol/?url=${encodeURIComponent(u)}`
-  ];
-
-  for (const getProxyUrl of proxyFactories) {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 6000);
-    try {
-      const proxyUrl = getProxyUrl(cleanUrl);
-      const res = await fetch(proxyUrl, { signal: controller.signal });
-      clearTimeout(timeoutId);
-      if (!res.ok) continue;
-
-      let html = '';
-      const contentType = res.headers.get('content-type') || '';
-      if (contentType.includes('application/json') || proxyUrl.includes('allorigins.win/get')) {
-        const json = await res.json();
-        html = json.contents || '';
-      } else {
-        html = await res.text();
-      }
-
-      if (!html || html.length < 200) continue;
-
-      const photoUrls = extractImagesFromHtml(html, baseUrlObj);
-      const uniquePhotos = [...new Set(photoUrls.filter(Boolean))].slice(0, 12);
-      if (uniquePhotos.length > 0) {
-        console.log('[Web Photos Found]', uniquePhotos);
-        return uniquePhotos;
-      }
-    } catch(e) {
-      clearTimeout(timeoutId);
-    }
-  }
-  return [];
-}
-
-let lastExtractedWebPhotos = [];
-
 async function analyzeWithAI() {
   const mailText = document.getElementById('hosp-mail-text').value.trim();
   const webLink = document.getElementById('hosp-web-link').value.trim();
@@ -2159,29 +2010,11 @@ async function analyzeWithAI() {
   document.getElementById('hosp-web-link').style.display = 'none';
   if (document.getElementById('btn-analyze')) document.getElementById('btn-analyze').disabled = true;
 
-  // Recopilar enlaces web opcionales para fotos
-  const linksToScrape = [];
-  if (webLink && webLink.startsWith('http')) linksToScrape.push(webLink);
-  const linksInMail = mailText.match(/https?:\/\/[^\s]+/gi) || [];
-  linksInMail.forEach(l => { if (!linksToScrape.includes(l)) linksToScrape.push(l); });
-
-  lastExtractedWebPhotos = [];
-
-  // Intento de extracción de fotos (máximo 4.5s por proxy, fallback automático)
-  if (linksToScrape.length > 0) {
-    loadingEl.querySelector('p').textContent = '📸 Buscando fotos en el sitio web... ✨';
-    for (const targetUrl of linksToScrape.slice(0, 2)) {
-      const photos = await fetchWebpagePhotos(targetUrl);
-      if (photos && photos.length > 0) {
-        lastExtractedWebPhotos.push(...photos);
-      }
-    }
-    lastExtractedWebPhotos = [...new Set(lastExtractedWebPhotos)];
-  }
-
-  let fullInput = mailText || webLink;
-  if (lastExtractedWebPhotos.length > 0) {
-    fullInput += `\n\n[FOTOS ENCONTRADAS EN LA WEB]:\n${JSON.stringify(lastExtractedWebPhotos)}`;
+  // El link web opcional entra como complemento de información (no se buscan fotos)
+  let fullInput = mailText;
+  if (webLink) {
+    fullInput += (fullInput ? '\n\n' : '') +
+      'LINK WEB DEL ALOJAMIENTO (contexto complementario):\n' + webLink;
   }
 
   const prompt = buildPrompt(fullInput);
@@ -2477,6 +2310,9 @@ function showPreview(data, mailText) {
   document.getElementById('step-preview').style.display = '';
   document.getElementById('preview-json').textContent = JSON.stringify(data, null, 2);
 
+  const webLinkEl = document.getElementById('hosp-web-link');
+  const webLink = webLinkEl ? webLinkEl.value.trim() : '';
+
   // Extraer lista de opciones (compatibilidad con objeto único o array de opciones)
   let options = [];
   if (Array.isArray(data.opciones) && data.opciones.length > 0) {
@@ -2484,10 +2320,10 @@ function showPreview(data, mailText) {
       ...opt,
       alojamiento_general: data.alojamiento_general || opt.nombre,
       referencia_dolar: opt.referencia_dolar || data.referencia_dolar,
-      fotos_urls: [...new Set([...(opt.fotos_urls || []), ...lastExtractedWebPhotos])]
+      web_link: webLink || opt.web_link
     }));
   } else if (data.nombre || data.precio_por_noche) {
-    data.fotos_urls = [...new Set([...(data.fotos_urls || []), ...lastExtractedWebPhotos])];
+    data.web_link = webLink || data.web_link;
     options = [data];
   } else {
     options = [data];
@@ -2500,7 +2336,7 @@ function showPreview(data, mailText) {
     return hospCard(fakeHosp)
       .replace(/onclick="openEditScore\([^)]+\)"/g, '')
       .replace(/onclick="(openLightbox|setFavPhoto)\([^)]+\)"/g, '')
-      .replace(/onclick="(viewMail|confirmDeleteHosp|openAddLinkModal)\([^)]+\)"/g, 'style="display:none"');
+      .replace(/onclick="(viewMail|confirmDeleteHosp|openWebLink)\([^)]+\)"/g, 'style="display:none"');
   }).join('');
 
   document.getElementById('preview-card').innerHTML = `
@@ -2519,6 +2355,7 @@ function resetAddHosp() {
   pendingExtracted = null;
   document.getElementById('step-paste').style.display = '';
   document.getElementById('hosp-mail-text').style.display = '';
+  document.getElementById('hosp-web-link').style.display = '';
   document.getElementById('step-preview').style.display = 'none';
   document.getElementById('add-hosp-footer').innerHTML = `
     <button class="btn btn-ghost" onclick="closeModal('modal-add-hosp')">Cancelar</button>
