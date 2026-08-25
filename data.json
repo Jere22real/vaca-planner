@@ -600,7 +600,8 @@
                 "instagram": null,
                 "fotos_urls": [
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/116733172.jpg?k=d36e743678faf08522efed4dc2f235c4aa97e136e48ab87a14072c6dda662d30&o=",
-                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/698751093.jpg?k=8e640a3b9840e6f93089ee1eebb3022604717718e7b54485e300bb550dcbec35&o="
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/698751093.jpg?k=8e640a3b9840e6f93089ee1eebb3022604717718e7b54485e300bb550dcbec35&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/698757162.jpg?k=09dae490ec381127f6f6394bef820659961cd4ee1a2b0f750c45edc8827b73e5&o="
                 ],
                 "notas_adicionales": "A 250m de la ruta principal, 700m del río y lago Correntoso, 6.8 km del centro y 20 min del Cerro Bayo. Diván cama en el estar separado del comedor. Predio de 1 hectárea.",
                 "calificacion_ia": 9.5,
@@ -621,6 +622,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787700854402
+    "updated_at": 1787700862118
   }
 }
