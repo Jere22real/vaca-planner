@@ -440,7 +440,10 @@
                 "forma_pago": null,
                 "contacto": "Luna / Tel: 02944-494834 / WA: +54 9 294 4326757 / Email: info@hostellaangostura.com.ar / Instagram: @hostel_la_angostura",
                 "instagram": "@hostel_la_angostura",
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://images-new.pxsol.com/_eKPxKu5iw4N43vwy65pflcXljci8yak79aAyTvZ4P8/rs:fill:1000:0:1/q:80/plain/https%3A%2F%2Ffiles-p.pxsol.com%2F21912%2Fcompany%2Flibrary%2Fuser%2F28164431936bc29fd5f10236377fc1d9d2b3d479019.jpg@jpg",
+                  "https://images-new.pxsol.com/Jnswv1kXU61nHy5k33r-05BUH9EK1sp5Dh7hquS_u3Y/rs:fill:1000:0:1/q:80/plain/https%3A%2F%2Ffiles-p.pxsol.com%2F21912%2Fcompany%2Flibrary%2Fuser%2F2288359910258e93c00fc8c421e6db3e568478ca00e.jpg@jpg"
+                ],
                 "notas_adicionales": "Habitación acogedora de 12 m2 con vista al jardín. Incluye desayuno patagónico artesanal (dulces regionales, budines caseros, etc.). El establecimiento cuenta con recepción 24 horas y área de juegos (pool, ping pong, dardos).",
                 "calificacion_ia": 8.5,
                 "razon_calificacion": "Excelente relación calidad-precio con desayuno completo casero, toallas, sábanas y baño privado incluidos.",
@@ -461,6 +464,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787697122784
+    "updated_at": 1787697134446
   }
 }
