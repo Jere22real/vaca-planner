@@ -585,24 +585,27 @@
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label>🔑 API Keys</label>
+        <label>🔑 API Keys (Gemini, Groq, OpenRouter)</label>
         <div class="key-add-row">
-          <input type="password" id="cfg-new-key" placeholder="Pegá una API Key (Gemini u OpenRouter)...">
+          <input type="password" id="cfg-new-key" placeholder="Pegá una API Key (Gemini, Groq u OpenRouter)...">
           <button class="btn btn-ghost btn-sm" onclick="addPendingKey()">➕ Agregar</button>
         </div>
         <div id="cfg-keys-list"></div>
         <p class="form-hint">
-          Se prueban <strong>primero las keys de Gemini</strong> (todos los modelos); si se quedan sin créditos, la app cae automáticamente a <strong>OpenRouter</strong>.<br>
-          Obtené keys gratis en <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent)">aistudio.google.com</a> y <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--accent)">openrouter.ai</a>. Se guardan solo en tu browser.
+          Se prueban en orden: <strong>Gemini</strong> &rarr; <strong>Groq (100% gratis)</strong> &rarr; <strong>OpenRouter</strong>.<br>
+          Keys gratuitas sin tarjeta:
+          <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent)">🔑 Gemini</a> &middot;
+          <a href="https://console.groq.com/keys" target="_blank" style="color:var(--green)">⚡ Groq (Ultra rápido y gratis)</a> &middot;
+          <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--cyan)">🌐 OpenRouter</a>
         </p>
       </div>
       <div class="divider"></div>
 
       <div class="form-group">
-        <label>⚡ API Key de <strong>DeepSeek</strong> <span style="font-size:0.75rem;color:var(--cyan)">(Respaldo opcional si Gemini/OpenRouter fallan)</span></label>
+        <label>⚡ API Key de <strong>DeepSeek Directo</strong> <span style="font-size:0.75rem;color:var(--cyan)">(Requiere saldo prepago en su web)</span></label>
         <input type="password" id="cfg-api-key-deepseek" placeholder="sk-... (opcional)" autocomplete="off" value="">
         <p class="form-hint">
-          Gratis en <a href="https://platform.deepseek.com/api_keys" target="_blank" style="color:var(--cyan)">platform.deepseek.com</a> &middot; Se activa automáticamente cuando Gemini y OpenRouter devuelven error de cuota.
+          ⚠️ <em>api.deepseek.com</em> requiere saldo prepago ($). Si no tenés saldo en DeepSeek, te recomendamos agregar una key gratis de <a href="https://console.groq.com/keys" target="_blank" style="color:var(--green)">Groq</a> o <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--cyan)">OpenRouter</a> arriba.
         </p>
       </div>
       <div class="config-row">
@@ -2117,13 +2120,29 @@ ${mailText}
 JSON:`;
 }
 
-// Modelos en orden de preferencia — si uno falla, prueba el siguiente
+// Modelos de Gemini oficiales en orden de preferencia
 const GEMINI_MODELS = [
+  'gemini-2.0-flash',
   'gemini-1.5-flash',
-  'gemini-2.5-flash-lite',
-  'gemini-2.5-flash',
-  'gemini-3.6-flash',
+  'gemini-1.5-flash-8b',
+  'gemini-2.0-flash-lite',
   'gemini-1.5-pro'
+];
+
+// Modelos gratuitos de OpenRouter (incluyendo DeepSeek y LLaMA gratis)
+const OPENROUTER_MODELS = [
+  'deepseek/deepseek-chat:free',
+  'deepseek/deepseek-r1:free',
+  'meta-llama/llama-3.3-70b-instruct:free',
+  'meta-llama/llama-3.1-8b-instruct:free',
+  'google/gemini-2.0-flash-exp:free',
+  'mistralai/mistral-7b-instruct:free'
+];
+
+// Modelos de Groq (100% gratis en console.groq.com)
+const GROQ_MODELS = [
+  'llama-3.3-70b-versatile',
+  'llama-3.1-8b-instant'
 ];
 
 async function callGeminiModel(key, model, prompt) {
@@ -2136,7 +2155,7 @@ async function callGeminiModel(key, model, prompt) {
       generationConfig: {
         temperature: 0.1,
         maxOutputTokens: 8192,
-        responseMimeType: 'application/json'  // fuerza JSON puro, sin markdown
+        responseMimeType: 'application/json'
       }
     })
   });
@@ -2147,22 +2166,14 @@ async function callGeminiModel(key, model, prompt) {
   const data = await res.json();
   const candidate = data.candidates?.[0];
   
-  if (candidate?.finishReason === 'MAX_TOKENS') {
-    console.warn('[Gemini truncated due to MAX_TOKENS]');
-  }
-
-  // Algunos modelos devuelven parts[0]=thought, parts[1]=text
-  // Concatenamos TODOS los parts de tipo text para no perder nada
   const parts = candidate?.content?.parts || [];
   const raw = parts
     .filter(p => p.text != null)
     .map(p => p.text)
     .join('\n');
   if (!raw) {
-    console.warn('[Gemini raw response]', JSON.stringify(data, null, 2));
     throw new Error('La IA no devolvió texto en la respuesta');
   }
-  console.log('[Gemini raw text length]', raw.length, raw.slice(0, 300));
   return parseJsonFromAI(raw);
 }
 
@@ -2189,7 +2200,6 @@ async function callGemini(prompt) {
       if (exhausted.has(key)) continue;
       try {
         const result = await callGeminiModel(key, model, prompt);
-        // Guardamos key y modelo que funcionaron para probarlos primero la próxima vez
         if (state.config.working_model !== model || state.config.working_key !== key) {
           state.config.working_model = model;
           state.config.working_key = key;
@@ -2199,15 +2209,54 @@ async function callGemini(prompt) {
       } catch(e) {
         lastError = e;
         const msg = e.message || '';
-        // Error de key (inválida/sin créditos/rate limit) → probar la siguiente key
         if (KEY_SKIP_RE.test(msg)) { exhausted.add(key); continue; }
-        // Modelo no disponible → probar el siguiente modelo
         if (MODEL_SKIP_RE.test(msg)) break;
         throw e;
       }
     }
   }
   throw lastError || new Error('Sin créditos en todas las keys de Gemini.');
+}
+
+// ============================================================
+// GROQ FALLBACK (100% GRATIS)
+// ============================================================
+async function callGroqKey(key, prompt) {
+  let lastErr;
+  for (const model of GROQ_MODELS) {
+    try {
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 0.1,
+          response_format: { type: 'json_object' }
+        })
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: { message: res.statusText } }));
+        const msg = err?.error?.message || `HTTP ${res.status}`;
+        if (res.status === 404 || msg.includes('model') || msg.includes('decommissioned')) {
+          lastErr = new Error(msg);
+          continue;
+        }
+        throw new Error('Groq: ' + msg);
+      }
+      const data = await res.json();
+      const raw = data.choices?.[0]?.message?.content || '';
+      if (!raw) throw new Error('Groq no devolvió respuesta');
+      return parseJsonFromAI(raw);
+    } catch(e) {
+      lastErr = e;
+      if (KEY_SKIP_RE.test(e.message || '')) throw e;
+    }
+  }
+  throw lastErr || new Error('Groq: ningún modelo respondió');
 }
 
 // ============================================================
@@ -2233,7 +2282,11 @@ async function callDeepSeek(prompt) {
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({ error: { message: res.statusText } }));
-    throw new Error('DeepSeek: ' + (err?.error?.message || `HTTP ${res.status}`));
+    const msg = err?.error?.message || `HTTP ${res.status}`;
+    if (msg.toLowerCase().includes('insufficient balance') || res.status === 402) {
+      throw new Error('DeepSeek directo requiere saldo prepago ($). Te recomendamos usar Groq (console.groq.com - 100% gratis) u OpenRouter (openrouter.ai con DeepSeek gratis).');
+    }
+    throw new Error('DeepSeek: ' + msg);
   }
   const data = await res.json();
   const raw = data.choices?.[0]?.message?.content || '';
@@ -2242,34 +2295,53 @@ async function callDeepSeek(prompt) {
 }
 
 async function callOpenRouterKey(key, prompt) {
-  const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${key}`,
-      'HTTP-Referer': 'https://vacaplanner.app',
-    },
-    body: JSON.stringify({
-      model: 'meta-llama/llama-3.1-8b-instruct:free',
-      messages: [{ role:'user', content: prompt }],
-      temperature: 0.1,
-    })
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(()=>({error:{message:res.statusText}}));
-    throw new Error(err?.error?.message || `HTTP ${res.status}`);
+  let lastErr;
+  for (const model of OPENROUTER_MODELS) {
+    try {
+      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`,
+          'HTTP-Referer': 'https://vacaplanner.app',
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: [{ role:'user', content: prompt }],
+          temperature: 0.1,
+        })
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(()=>({error:{message:res.statusText}}));
+        const msg = err?.error?.message || `HTTP ${res.status}`;
+        if (res.status === 404 || msg.includes('not found') || msg.includes('unavailable') || res.status === 429) {
+          lastErr = new Error(msg);
+          continue;
+        }
+        throw new Error('OpenRouter: ' + msg);
+      }
+      const data = await res.json();
+      const raw = data.choices?.[0]?.message?.content || '';
+      if (!raw) continue;
+      return parseJsonFromAI(raw);
+    } catch(e) {
+      lastErr = e;
+      if (KEY_SKIP_RE.test(e.message || '')) throw e;
+    }
   }
-  const data = await res.json();
-  const raw = data.choices?.[0]?.message?.content || '';
-  return parseJsonFromAI(raw);
+  throw lastErr || new Error('OpenRouter: ningún modelo gratuito respondió');
 }
 
 async function callOpenRouter(prompt) {
   const keys = getApiKeys();
-  if (!keys.length) throw new Error('No hay API Keys de OpenRouter configuradas.');
+  if (!keys.length) throw new Error('No hay API Keys configuradas.');
   let lastError;
   for (const key of keys) {
     try {
+      // Si la key empieza con gsk_ es de Groq
+      if (key.startsWith('gsk_')) {
+        return await callGroqKey(key, prompt);
+      }
       const result = await callOpenRouterKey(key, prompt);
       if (state.config.working_key !== key) {
         state.config.working_key = key;
@@ -2283,7 +2355,7 @@ async function callOpenRouter(prompt) {
       throw e;
     }
   }
-  throw lastError || new Error('Sin créditos en OpenRouter.');
+  throw lastError || new Error('Sin créditos en OpenRouter / Groq.');
 }
 
 function tryRepairTruncatedJson(str) {
@@ -2540,16 +2612,34 @@ async function testApiKey() {
     if (statusEl) statusEl.textContent = '⏳';
     let label = '❌';
     try {
-      await probeGeminiKey(key, testPrompt);
-      label = '✅ Gemini';
-      ok++;
+      if (key.startsWith('gsk_')) {
+        await callGroqKey(key, testPrompt);
+        label = '✅ Groq (Gratis)';
+        ok++;
+      } else {
+        await probeGeminiKey(key, testPrompt);
+        label = '✅ Gemini';
+        ok++;
+      }
     } catch(e) {
       try {
-        await callOpenRouterKey(key, testPrompt);
-        label = '✅ OpenRouter';
-        ok++;
+        if (key.startsWith('gsk_')) {
+          await callGroqKey(key, testPrompt);
+          label = '✅ Groq (Gratis)';
+          ok++;
+        } else {
+          await callOpenRouterKey(key, testPrompt);
+          label = '✅ OpenRouter';
+          ok++;
+        }
       } catch(e2) {
-        label = '❌ ' + ((e2.message || e.message || '').slice(0, 40));
+        try {
+          await callGroqKey(key, testPrompt);
+          label = '✅ Groq (Gratis)';
+          ok++;
+        } catch(e3) {
+          label = '❌ ' + ((e2.message || e.message || '').slice(0, 40));
+        }
       }
     }
     if (statusEl) statusEl.textContent = label;
