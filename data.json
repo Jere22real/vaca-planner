@@ -545,7 +545,10 @@
                 "forma_pago": "Transferencia o Efectivo (100% o 50% al reservar y resto al check-in)",
                 "contacto": "María Dolores / Tel: 2995187453 / Email / Instagram: @cabanasnaxara",
                 "instagram": "@cabanasnaxara",
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/597556676.jpg?k=e046b51d0fc7634b702b8bd3f6fe51c8cd951c47b02e2d1aa7880f07168a13f6&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/115978540.jpg?k=7b3c60abc1d4f9a8efb35d864e1bba68d346b2e0915a620d24755225c6a35a9d&o="
+                ],
                 "notas_adicionales": "Tarifa para 2 pax: 3 noches a $98.000/día; de 4 a 7 noches a $89.000/día. Check-in: 14:30 a 20:30 hs, Check-out: hasta las 10 hs. No se admiten mascotas.",
                 "calificacion_ia": 9.1,
                 "razon_calificacion": "Excelente puntuación según opiniones de huéspedes (9.1/10), amplio predio arbolado y buena atención.",
@@ -564,6 +567,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787699115975
+    "updated_at": 1787699134603
   }
 }
