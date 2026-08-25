@@ -461,6 +461,54 @@
                 "foto_portada": "https://images-new.pxsol.com/eJR-QD4uMDxor29zf3InFg37nCWUzfOD1SoG_yB9Lc8/rs:fill:1900:910:1/q:80/plain/https%3A%2F%2Ffiles-p.pxsol.com%2F21912%2Fcompany%2Flibrary%2Fuser%2F52808309251129c481a4340d53ec69cc799d47a57a.jpg@jpg"
               },
               "editado_manualmente": false
+            },
+            {
+              "id": "mt99jtuziykjb",
+              "fecha_agregado": "2026-08-25T22:55:35.147Z",
+              "mail_original": "",
+              "datos": {
+                "nombre": "Hostería Puertas del Sol — Habitación Doble Estándar",
+                "tipo": "habitación",
+                "precio_por_noche": 90000,
+                "moneda": "ARS",
+                "precio_total": null,
+                "precio_noche_usd": null,
+                "referencia_dolar": null,
+                "fechas_disponibles": null,
+                "capacidad": "2 personas",
+                "habitaciones": 1,
+                "banos": null,
+                "caracteristicas": [
+                  "Vista al Lago Nahuel Huapi y Cordillera de los Andes",
+                  "Desayuno",
+                  "WiFi",
+                  "Estacionamiento privado (no techado)",
+                  "Living con hogar a leña",
+                  "Servicio de limpieza diario",
+                  "Piscina climatizada",
+                  "Piscina y Jacuzzi exterior (en temporada estival)",
+                  "Gimnasio",
+                  "Sauna"
+                ],
+                "ubicacion": "Villa La Angostura, Neuquén, Argentina",
+                "politica_cancelacion": "1 noche: pago total del 100% por transferencia. 2 o más noches: seña del 20% por transferencia, saldo al check-in.",
+                "forma_pago": "Transferencia bancaria",
+                "contacto": "Clara",
+                "instagram": null,
+                "fotos_urls": [
+                  "https://www.hosteriapuertasdelsol.com/es/index.html"
+                ],
+                "notas_adicionales": "Todas las tarifas incluyen impuestos. Ubicación con vistas a bosques, lagos y montañas.",
+                "calificacion_ia": 8.5,
+                "razon_calificacion": "Excelente propuesta con desayuno, impuestos y amplios servicios de relax e instalaciones incluidas.",
+                "datos_faltantes": [
+                  "horario check-in/out",
+                  "cantidad de baños"
+                ],
+                "texto_original_resumido": "Habitación Doble Estándar a $90.000/noche con vista al Lago Nahuel Huapi y Cordillera. Incluye impuestos, desayuno, wifi y estacionamiento.",
+                "alojamiento_general": "Hostería Puertas del Sol"
+              },
+              "editado_manualmente": false
             }
           ]
         }
@@ -468,6 +516,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787697160565
+    "updated_at": 1787698535147
   }
 }
