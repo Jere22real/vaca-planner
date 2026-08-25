@@ -300,12 +300,60 @@
           "id": "mt97xninyrzd0",
           "nombre": "Villa Traful",
           "emoji": "🌄",
-          "hospedajes": []
+          "hospedajes": [
+            {
+              "id": "mt98awbzdyi6x",
+              "fecha_agregado": "2026-08-25T22:20:38.831Z",
+              "mail_original": "¡¡  Nota: ponlo como una sola opcion, pero detalla el diferencial por estacionamiento!!\n\n¡Hola  , muchas gracias por comunicarse con Hostería Traunco!\n\nNuestro establecimiento, se encuentra ubicado en pleno centro de Villa la Angostura, a una (1) cuadra de la Avenida Principal (Av. Arrayanes), a 150 metros de la Terminal de Ómnibus y a escasos metros de la Plaza principal.\n\nServicios:\n\n- TV por cable en cada habitación\n\n- Wi-Fi\n\n- Amenities\n\n- Servicio de limpieza diario\n\n- Desayuno Buffet\n\n- Calefacción por loza radiante en pisos de madera \n\nDisponibilidad y Tarifas:\n\nAl momento contamos con disponibilidad para las fechas solicitadas:\n\nEl valor de la Habitación Doble Standard (CAMA MATRIMONIAL/TWIN+BAÑERA), CON DESAYUNO INCLUIDO es de: $75.000 por noche. (PLANTA BAJA) (Sin estacionamiento).\n\n            El valor de la Habitación Doble Confort (CAMA   MATRIMONIAL/TWIN+BAÑERA) + ESTACIONAMIENTO + AIRE ACONDICIONADO, CON DESAYUNO INCLUIDO es de: $85.000 por noche. (PLANTA ALTA)\n\nFormas de pago y RESERVA: Para confirmar la reserva le pediremos la seña de una noche, el saldo pendiente se podrá abonar en el check-in, teniendo un 10% si abona en efectivo (sobre el saldo restante).\n\n---\nSaludos cordiales, Paula.\n\nHostería Traunco\n\nLas Frambuesas 52 - Villa la Angostura\n\nWhatsApp: +54 9 2944 899 947\n\nwww.traunco.com.ar\n\n\n\nbooking: Hostería Traunco\n\nLas Frambuesas 52 , 8407 Villa La Angostura, Argentina\nUbicación excelente, ¡puntuada con 9.8/10!(puntaje basado en 333 comentarios)\nValorado por las personas después de hospedarse en el Hostería Traunco.\n–Excelente ubicación - Ver en el mapa\n\nEl edificio en el que está la hostería\n\nUna cama o camas en una habitación de Hostería Traunco\n\nUn baño de Hostería Traunco\n\nFoto de la galería de Hostería Traunco en Villa La Angostura\n\nUna televisión o centro de entretenimiento en Hostería Traunco\n\nEl edificio en el que está la hostería\n\nUna cama o camas en una habitación de Hostería Traunco\n\nComida en la hostería o alrededores 8 fotos más\n8 fotos más\nPuntaje: 9.1\n9,1\nCalificación: fantástica\nFantástico\n340 comentarios\nA los huéspedes que se alojaron acá les encantó:\n“Muy buena atención y amabilidad de la chica que sirve el desayuno, todo muy rico.”\n\nMariángelesArgentinaArgentina\n“Todo, es hermosa la hostería, la habitación re calentita con loza radiante. El desayuno muy rico. La atención de todo el personal muy amables. La...”\n\nOrtizArgentinaArgentina\n“Ubicación: perfecta. A una cuadra de la terminal de ómnibus (larga distancia y locales). Una cuadra del centro. En la esquina una YPF y una ACA. A...”\n\nGuadalupeArgentinaArgentina\n“La verdad es que es altamente recomendable el lugar. Buena atención. Buena ubicación. Buen precio.”\n\nVaninaArgentinaArgentina\n“La ubicación del lugar es excelente. A una cuadra de Av Arrayanes y a dos de la Terminal de micros lo que permite movilizarte con facilidad si no...”\n\nVivianaArgentinaArgentina\n“Que esta muy cercano al centro. Muy cordiales. Y un excelente desayuno”\n\nPerazzoArgentinaArgentina\n“Cuando tenes 50 opciones para elegir, la diferencia SIEMPRE se da en el capital humano. Se mantuvieron presentes desde el inicio al final de la...”\n\nEduardoArgentinaArgentina\n“El trato del personal.\nLa ubicación.\nEl desayuno muy completo.\nLa calefacción.”\n\nYaninaArgentinaArgentina\n“Hostería con el encanto de la madera y con toques de refinamiento.”\n\nAdrianaArgentinaArgentina\n“La hostería es muy acogedora y las chicas que nos recibieron fueron muy atentas y amables. El desayuno riquísimo y completo. La ubicación...”\n\nMflorfpArgentinaArgentina\n\n¡Ubicación excelente!9,8\n\nVer en el mapa\nEste hotel se encuentra en la pintoresca Villa La Angostura, a solo 17 km del bosque de Arrayanes, y ofrece habitaciones bonitas con vistas al jardín. Cuenta con conexión de wifi gratis y un bar de estilo alpino con chimenea.\n\nLas habitaciones de la Hostería Traunco están decoradas con elementos regionales y tienen calefacción, TV por cable y teléfono. La recepción está abierta durante las 24 horas.\n\nTodas las mañanas, el alojamiento sirve un desayuno buffet abundante que incluye bollería y pan recién hechos en el comedor, muy acogedor.\n\nLa Hostería Traunco dispone de mostrador de información turística y estacionamiento gratuito. Se encuentra a solo 100 metros de la avenida Arrayanes y del centro de la ciudad, donde hay varias tiendas y restaurantes gourmet. La terminal de micros está a 2 calles.\n\nA las parejas les gusta la ubicación. Le pusieron un puntaje de 9,8 para un viaje de a dos.",
+              "datos": {
+                "nombre": "Hostería Traunco — Habitación Doble (Standard / Confort)",
+                "tipo": "hostería",
+                "precio_por_noche": 75000,
+                "moneda": "ARS",
+                "precio_total": null,
+                "precio_noche_usd": null,
+                "referencia_dolar": null,
+                "fechas_disponibles": "Fechas solicitadas",
+                "capacidad": "2 personas",
+                "habitaciones": 1,
+                "banos": 1,
+                "caracteristicas": [
+                  "Desayuno Buffet incluido",
+                  "Wi-Fi",
+                  "TV por cable",
+                  "Bañera",
+                  "Calefacción por losa radiante",
+                  "Servicio de limpieza diario",
+                  "Amenities",
+                  "Recepción 24 hs"
+                ],
+                "ubicacion": "Las Frambuesas 52, Villa La Angostura (Centro, a 1 cuadra de Av. Arrayanes y a 150m de la Terminal)",
+                "politica_cancelacion": "Se solicita la seña de una noche para confirmar la reserva",
+                "forma_pago": "Efectivo (10% de descuento sobre el saldo pendiente en check-in), Transferencia",
+                "contacto": "Paula / WhatsApp: +54 9 2944 899 947 / www.traunco.com.ar",
+                "instagram": null,
+                "fotos_urls": [
+                  "https://www.booking.com/hotel/ar/hosteria-traunco.es-ar.html"
+                ],
+                "notas_adicionales": "Diferencial de la opción: Habitación Doble Standard (Planta Baja, sin estacionamiento): $75.000 por noche. Habitación Doble Confort (Planta Alta, incluye Estacionamiento + Aire Acondicionado): $85.000 por noche.",
+                "calificacion_ia": 9.2,
+                "razon_calificacion": "Excelente ubicación céntrica con excelente puntaje de huéspedes (9.8/10 en ubicación), incluye desayuno buffet y opciones adaptadas a si se requiere estacionamiento o no.",
+                "datos_faltantes": [
+                  "horario check-in/out",
+                  "fechas exactas de estadía"
+                ],
+                "texto_original_resumido": "Habitación Doble Standard a $75.000/noche (PB, sin estacionamiento) o Habitación Doble Confort a $85.000/noche (PA, con estacionamiento y AC). Incluye desayuno buffet. Seña de 1 noche y 10% desc. en efectivo sobre el saldo.",
+                "alojamiento_general": "Hostería Traunco",
+                "web_link": "https://www.booking.com/hotel/ar/hosteria-traunco.es-ar.html"
+              },
+              "editado_manualmente": false
+            }
+          ]
         }
       ]
     }
   ],
   "meta": {
-    "updated_at": 1787695820879
+    "updated_at": 1787696438831
   }
 }
