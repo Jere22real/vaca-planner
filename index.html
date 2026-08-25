@@ -596,6 +596,15 @@
           Obtené keys gratis en <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent)">aistudio.google.com</a> y <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--accent)">openrouter.ai</a>. Se guardan solo en tu browser.
         </p>
       </div>
+      <div class="divider"></div>
+
+      <div class="form-group">
+        <label>⚡ API Key de <strong>DeepSeek</strong> <span style="font-size:0.75rem;color:var(--cyan)">(Respaldo opcional si Gemini/OpenRouter fallan)</span></label>
+        <input type="password" id="cfg-api-key-deepseek" placeholder="sk-... (opcional)" autocomplete="off" value="">
+        <p class="form-hint">
+          Gratis en <a href="https://platform.deepseek.com/api_keys" target="_blank" style="color:var(--cyan)">platform.deepseek.com</a> &middot; Se activa automáticamente cuando Gemini y OpenRouter devuelven error de cuota.
+        </p>
+      </div>
       <div class="config-row">
         <span class="api-status" id="api-status-badge">
           <span class="status-dot warn" id="api-dot"></span>
@@ -2028,12 +2037,21 @@ async function analyzeWithAI() {
       gemErr = e;
     }
     if (!extracted) {
-      try {
-        extracted = await callOpenRouter(prompt);
-      } catch(orErr) {
+      // Fallback 2: DeepSeek (si hay key configurada)
+      const dsKey = state.config.api_key_deepseek;
+      if (dsKey && dsKey.length > 10) {
+        try {
+          loadingEl.querySelector('p').textContent = '⚡ Probando DeepSeek como respaldo... ✨';
+          extracted = await callDeepSeek(prompt);
+          toast('Gemini/OpenRouter sin cuota — se usó DeepSeek ✅', 'info', 4000);
+        } catch(dsErr) {
+          throw new Error('Sin créditos en todas las IAs' +
+            (gemErr ? ' (Gemini: ' + gemErr.message + ')' : '') +
+            ' / DeepSeek: ' + dsErr.message);
+        }
+      } else {
         throw new Error('Sin créditos en todas las keys' +
-          (gemErr ? ' (Gemini: ' + gemErr.message + ')' : '') +
-          (orErr ? ' / OpenRouter: ' + orErr.message : ''));
+          (gemErr ? ' (Gemini: ' + gemErr.message + ')' : ''));
       }
     }
 
@@ -2190,6 +2208,37 @@ async function callGemini(prompt) {
     }
   }
   throw lastError || new Error('Sin créditos en todas las keys de Gemini.');
+}
+
+// ============================================================
+// DEEPSEEK FALLBACK
+// ============================================================
+async function callDeepSeek(prompt) {
+  const key = state.config.api_key_deepseek;
+  if (!key || key.length < 10) throw new Error('No hay API Key de DeepSeek configurada.');
+
+  const res = await fetch('https://api.deepseek.com/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${key}`,
+    },
+    body: JSON.stringify({
+      model: 'deepseek-chat',
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.1,
+      max_tokens: 8192,
+      response_format: { type: 'json_object' }
+    })
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: { message: res.statusText } }));
+    throw new Error('DeepSeek: ' + (err?.error?.message || `HTTP ${res.status}`));
+  }
+  const data = await res.json();
+  const raw = data.choices?.[0]?.message?.content || '';
+  if (!raw) throw new Error('DeepSeek no devolvió respuesta');
+  return parseJsonFromAI(raw);
 }
 
 async function callOpenRouterKey(key, prompt) {
@@ -2397,6 +2446,8 @@ let pendingKeys = [];
 function openConfig() {
   pendingKeys = getApiKeys();
   renderConfigKeys();
+  const dsInput = document.getElementById('cfg-api-key-deepseek');
+  if (dsInput) dsInput.value = state.config.api_key_deepseek || '';
   updateApiStatus();
   openModal('modal-config');
   const input = document.getElementById('cfg-new-key');
@@ -2446,9 +2497,10 @@ function updateApiStatus() {
   const dot = document.getElementById('api-dot');
   const txt = document.getElementById('api-status-text');
   const n = getApiKeys().length;
-  if (n) {
+  const hasDs = !!(state.config.api_key_deepseek && state.config.api_key_deepseek.length > 10);
+  if (n || hasDs) {
     dot.className = 'status-dot ok';
-    txt.textContent = `${n} API key${n !== 1 ? 's' : ''} configurada${n !== 1 ? 's' : ''}`;
+    txt.textContent = `${n} key${n !== 1 ? 's' : ''}${hasDs ? ' + DeepSeek' : ''} configurada${n !== 1 ? 's' : ''}`;
   } else {
     dot.className = 'status-dot warn';
     txt.textContent = 'Sin configurar';
@@ -2469,7 +2521,10 @@ async function probeGeminiKey(key, prompt) {
 }
 
 async function testApiKey() {
-  if (!pendingKeys.length) { toast('No hay keys para probar. Agregá una primero', 'error'); return; }
+  const dsInput = document.getElementById('cfg-api-key-deepseek');
+  const dsKey = dsInput ? dsInput.value.trim() : '';
+
+  if (!pendingKeys.length && !dsKey) { toast('No hay keys para probar. Agregá una primero', 'error'); return; }
 
   const dot = document.getElementById('api-dot');
   const txt = document.getElementById('api-status-text');
@@ -2500,15 +2555,32 @@ async function testApiKey() {
     if (statusEl) statusEl.textContent = label;
   }
 
+  if (dsKey) {
+    try {
+      const prevKey = state.config.api_key_deepseek;
+      state.config.api_key_deepseek = dsKey;
+      await callDeepSeek(testPrompt);
+      state.config.api_key_deepseek = prevKey;
+      toast('DeepSeek API Key válida ✅', 'success', 3000);
+      ok++;
+    } catch(err) {
+      toast('DeepSeek: ' + err.message, 'error', 4000);
+    }
+  }
+
+  const total = pendingKeys.length + (dsKey ? 1 : 0);
   dot.className = ok ? 'status-dot ok' : 'status-dot err';
-  txt.textContent = `${ok}/${pendingKeys.length} key${pendingKeys.length !== 1 ? 's' : ''} válida${pendingKeys.length !== 1 ? 's' : ''}`;
-  toast(ok ? `${ok} de ${pendingKeys.length} keys funcionan ✅` : 'Ninguna key funcionó ❌', ok ? 'success' : 'error', 6000);
+  txt.textContent = `${ok}/${total} key${total !== 1 ? 's' : ''} válida${total !== 1 ? 's' : ''}`;
+  toast(ok ? `${ok} de ${total} keys funcionan ✅` : 'Ninguna key funcionó ❌', ok ? 'success' : 'error', 6000);
 }
 
 function saveConfig() {
   state.config.api_keys = pendingKeys.filter(k => k && k.trim());
+  const dsInput = document.getElementById('cfg-api-key-deepseek');
+  if (dsInput) state.config.api_key_deepseek = dsInput.value.trim();
   saveState();
   closeModal('modal-config');
+  updateApiStatus();
   toast('Configuración guardada ✅', 'success');
 }
 
@@ -2525,8 +2597,17 @@ function esc(s) {
 // ============================================================
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
-    ['modal-config','modal-new-trip','modal-new-destino','modal-add-hosp','modal-view-mail','modal-confirm-del','modal-photos','modal-edit-score','modal-add-link','modal-lightbox']
+    ['modal-config','modal-new-trip','modal-new-destino','modal-view-mail','modal-confirm-del','modal-photos','modal-edit-score','modal-add-link','modal-lightbox']
       .forEach(id => { if (!document.getElementById(id).classList.contains('hidden')) closeModal(id); });
+    // modal-add-hosp: solo cerrar con ESC si NO hay datos procesados pendientes
+    const addHospEl = document.getElementById('modal-add-hosp');
+    if (addHospEl && !addHospEl.classList.contains('hidden')) {
+      if (pendingExtracted) {
+        toast('⚠️ Ya procesaste con IA. Usá el botón "Cancelar" o confirmá el alojamiento.', 'info', 4000);
+      } else {
+        closeModal('modal-add-hosp');
+      }
+    }
   }
   const lightboxEl = document.getElementById('modal-lightbox');
   if (lightboxEl && !lightboxEl.classList.contains('hidden')) {
@@ -2535,10 +2616,14 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// Close modal clicking overlay
+// Close modal clicking overlay — modal-add-hosp protegido si ya se procesó con IA
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
   overlay.addEventListener('click', e => {
     if (e.target === overlay) {
+      if (overlay.id === 'modal-add-hosp' && pendingExtracted) {
+        toast('⚠️ Ya procesaste con IA. Usá el botón "Cancelar" o confirmá el alojamiento.', 'info', 4000);
+        return;
+      }
       overlay.classList.add('hidden');
     }
   });
