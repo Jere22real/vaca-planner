@@ -599,8 +599,6 @@
                 "contacto": "Cel: 11-4419-0782 / 11 5011-1199 | e-mail: paisaje.bandurrias@gmail.com",
                 "instagram": null,
                 "fotos_urls": [
-                  "https://youtube.com/shorts/sGEyWC5yMrc?si=iULFYck316kfB5-9",
-                  "http://www.paisajebandurrias.com.ar",
                   "https://goo.gl/maps/gyP6wXHfAar",
                   "https://www.booking.com/hotel/ar/paisaje-bandurrias.es-ar.html"
                 ],
@@ -623,6 +621,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787700692771
+    "updated_at": 1787700836751
   }
 }
