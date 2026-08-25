@@ -2129,12 +2129,14 @@ const GEMINI_MODELS = [
   'gemini-1.5-pro'
 ];
 
-// Modelos gratuitos de OpenRouter (incluyendo DeepSeek y LLaMA gratis)
+// Modelos gratuitos de OpenRouter (en orden de mayor disponibilidad y estabilidad)
 const OPENROUTER_MODELS = [
-  'deepseek/deepseek-chat:free',
-  'deepseek/deepseek-r1:free',
   'meta-llama/llama-3.3-70b-instruct:free',
   'meta-llama/llama-3.1-8b-instruct:free',
+  'qwen/qwen-2.5-coder-32b-instruct:free',
+  'mistralai/mistral-small-24b-instruct-2501:free',
+  'deepseek/deepseek-chat:free',
+  'deepseek/deepseek-r1:free',
   'google/gemini-2.0-flash-exp:free',
   'mistralai/mistral-7b-instruct:free'
 ];
@@ -2295,7 +2297,7 @@ async function callDeepSeek(prompt) {
 }
 
 async function callOpenRouterKey(key, prompt) {
-  let lastErr;
+  let lastErr = null;
   for (const model of OPENROUTER_MODELS) {
     try {
       const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -2304,32 +2306,35 @@ async function callOpenRouterKey(key, prompt) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${key}`,
           'HTTP-Referer': 'https://vacaplanner.app',
+          'X-Title': 'VacaPlanner'
         },
         body: JSON.stringify({
           model: model,
-          messages: [{ role:'user', content: prompt }],
+          messages: [{ role: 'user', content: prompt }],
           temperature: 0.1,
         })
       });
       if (!res.ok) {
-        const err = await res.json().catch(()=>({error:{message:res.statusText}}));
+        const err = await res.json().catch(() => ({ error: { message: res.statusText } }));
         const msg = err?.error?.message || `HTTP ${res.status}`;
-        if (res.status === 404 || msg.includes('not found') || msg.includes('unavailable') || res.status === 429) {
-          lastErr = new Error(msg);
-          continue;
+        // Si la key es totalmente inválida (401 Unauthorized), no seguimos probando modelos
+        if (res.status === 401 || msg.toLowerCase().includes('invalid api key')) {
+          throw new Error('OpenRouter key inválida: ' + msg);
         }
-        throw new Error('OpenRouter: ' + msg);
+        // Para cualquier otro error de modelo (402, 403, 404, 429, unavailable, credits), probamos el siguiente modelo
+        lastErr = new Error(`[${model}] ${msg}`);
+        continue;
       }
       const data = await res.json();
       const raw = data.choices?.[0]?.message?.content || '';
       if (!raw) continue;
       return parseJsonFromAI(raw);
     } catch(e) {
+      if (e.message && e.message.includes('key inválida')) throw e;
       lastErr = e;
-      if (KEY_SKIP_RE.test(e.message || '')) throw e;
     }
   }
-  throw lastErr || new Error('OpenRouter: ningún modelo gratuito respondió');
+  throw lastErr || new Error('Ningún modelo gratuito de OpenRouter está disponible en este momento.');
 }
 
 async function callOpenRouter(prompt) {
@@ -2614,7 +2619,11 @@ async function testApiKey() {
     try {
       if (key.startsWith('gsk_')) {
         await callGroqKey(key, testPrompt);
-        label = '✅ Groq (Gratis)';
+        label = '✅ Groq';
+        ok++;
+      } else if (key.startsWith('sk-or-') || key.startsWith('sk-or')) {
+        await callOpenRouterKey(key, testPrompt);
+        label = '✅ OpenRouter';
         ok++;
       } else {
         await probeGeminiKey(key, testPrompt);
@@ -2623,22 +2632,20 @@ async function testApiKey() {
       }
     } catch(e) {
       try {
-        if (key.startsWith('gsk_')) {
-          await callGroqKey(key, testPrompt);
-          label = '✅ Groq (Gratis)';
-          ok++;
-        } else {
+        if (!key.startsWith('gsk_') && !key.startsWith('sk-or')) {
           await callOpenRouterKey(key, testPrompt);
           label = '✅ OpenRouter';
           ok++;
+        } else {
+          throw e;
         }
       } catch(e2) {
         try {
           await callGroqKey(key, testPrompt);
-          label = '✅ Groq (Gratis)';
+          label = '✅ Groq';
           ok++;
         } catch(e3) {
-          label = '❌ ' + ((e2.message || e.message || '').slice(0, 40));
+          label = '❌ ' + ((e.message || e2.message || '').slice(0, 35));
         }
       }
     }
