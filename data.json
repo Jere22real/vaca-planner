@@ -295,11 +295,17 @@
           "nombre": "San Martin de los Andes",
           "emoji": "🏔️",
           "hospedajes": []
+        },
+        {
+          "id": "mt97xninyrzd0",
+          "nombre": "Villa Traful",
+          "emoji": "🌄",
+          "hospedajes": []
         }
       ]
     }
   ],
   "meta": {
-    "updated_at": 1786656527011
+    "updated_at": 1787695820879
   }
 }
