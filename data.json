@@ -390,7 +390,8 @@
                 "fotos_urls": [
                   "https://www.hosteriabajocero.com/s/s106/fotos/foto-6-3.jpg?date=2025.04.23.18.09.20",
                   "https://www.hosteriabajocero.com/s/s106/fotos/foto-6-1.jpg?date=2025.04.23.18.09.20",
-                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/613550612.jpg?k=bac27feefc4a49a064603a9f6a982ee746a6d6f9a6d957199711b189ecd9b6aa&o="
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/613550612.jpg?k=bac27feefc4a49a064603a9f6a982ee746a6d6f9a6d957199711b189ecd9b6aa&o=",
+                  "https://www.hosteriabajocero.com/s/s106/fotos/foto-6-9.jpg?date=2025.04.23.18.09.20"
                 ],
                 "notas_adicionales": "Calificación 9.0 (Fantástico) con 233 comentarios en Booking. A 7 km del Parque Nacional Los Arrayanes y a 24 km del paso Cardenal Samoré. Ofrece alquiler de bicicletas y asistencia para excursiones.",
                 "calificacion_ia": 9,
@@ -412,6 +413,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787696750425
+    "updated_at": 1787696768767
   }
 }
