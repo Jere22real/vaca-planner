@@ -333,7 +333,7 @@
                 "contacto": "Paula / WhatsApp: +54 9 2944 899 947 / www.traunco.com.ar",
                 "instagram": null,
                 "fotos_urls": [
-                  "https://www.booking.com/hotel/ar/hosteria-traunco.es-ar.html"
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/3979563.jpg?k=a9b95b0a6fe507d1dc55faa1a24af5bc196598b17ea996474915d6318e928da8&o="
                 ],
                 "notas_adicionales": "Diferencial de la opción: Habitación Doble Standard (Planta Baja, sin estacionamiento): $75.000 por noche. Habitación Doble Confort (Planta Alta, incluye Estacionamiento + Aire Acondicionado): $85.000 por noche.",
                 "calificacion_ia": 9.2,
@@ -354,6 +354,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787696438831
+    "updated_at": 1787696464877
   }
 }
