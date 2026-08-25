@@ -545,11 +545,7 @@
                 "forma_pago": "Transferencia o Efectivo (100% o 50% al reservar y resto al check-in)",
                 "contacto": "María Dolores / Tel: 2995187453 / Email / Instagram: @cabanasnaxara",
                 "instagram": "@cabanasnaxara",
-                "fotos_urls": [
-                  "https://www.booking.com/hotel/ar/cabanas-naxara.es-ar.html?aid=356980&label=gog235jc-10CAsoDEIOY2FiYW5hcy1uYXhhcmFILFgDaAyIAQGYATO4ARfIAQzYAQPoAQH4AQGIAgGoAgG4Av-8uNQGwAIB0gIkNmFmZjNmYjktYzNjMe00ZThmLWE2YzMtMjYwNGE4YjNiNTM02AIB4AIB&sid=036413d57ed4ab049e4eab42373374f4&all_sr_blocks=241687201_123574909_2_0_0&checkin=2026-09-29&checkout=2026-10-01&dest_id=-1018998&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=241687201_123574909_2_0_0&hpos=1&matching_block_id=241687201_123574909_2_0_0&no_rooms=1&req_adults=2&req_children=0&sb_price_type=total&sr_order=popularity&sr_pri_blocks=241687201_123574909_2_0_0__12240&srepoch=1787698888&srpvid=44c2a1c0627000b7&type=total&ucfs=1&",
-                  "https://instagram.com/cabanasnaxara",
-                  "https://facebook.com/naxara.vla"
-                ],
+                "fotos_urls": [],
                 "notas_adicionales": "Tarifa para 2 pax: 3 noches a $98.000/día; de 4 a 7 noches a $89.000/día. Check-in: 14:30 a 20:30 hs, Check-out: hasta las 10 hs. No se admiten mascotas.",
                 "calificacion_ia": 9.1,
                 "razon_calificacion": "Excelente puntuación según opiniones de huéspedes (9.1/10), amplio predio arbolado y buena atención.",
@@ -568,6 +564,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787699105589
+    "updated_at": 1787699115975
   }
 }
