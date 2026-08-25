@@ -406,6 +406,59 @@
                 "web_link": "https://www.booking.com/hotel/ar/hostel-bajo-cero.es-ar.html?aid=356980&label=gog235jc-10CAsoDEIQaG9zdGVsLWJham8tY2Vyb0gsWANoDIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgCqKu41AbAAgHSAiRmMDU3NGVhMS0yYWM2LTRiN2YtYjA5Yi0yZjcyNGIwNTExOGPYAgHgAgE&sid=9ecaf9cfc669bc6aa4f10e292a039aba&all_sr_blocks=43181820_440302316_2_2_0&checkin=2026-09-29&checkout=2026-10-01&dest_id=-1018998&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=43181820_440302316_2_2_0&hpos=1&matching_block_id=43181820_440302316_2_2_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=43181820_440302316_2_2_0__8280&srepoch=1787696568&srpvid=c6509d54e69e005f&type=total&ucfs=1&"
               },
               "editado_manualmente": false
+            },
+            {
+              "id": "mt98pd5omm0nw",
+              "fecha_agregado": "2026-08-25T22:31:53.820Z",
+              "mail_original": "Buenas tardes Jeremias!\n\nSolo contamos con disponibilidad en habitaciones dobles privadas para las\n\nfechas del 30/09 al 02/10 (2 noches).\n\nEl valor por noche es de $92.000 e incluye desayuno y toallas.\n\nCualquier consulta, no dudes en escribirnos!\n\nSaludos\n\nLuna\n\nHostel La Angostura\n\nBarbagelata 157\n8407 - Villa La Angostura - Neuquen\nTel/Fax: 02944-494834\n\nWhatsapp +54 9 294 - 4326757\ninfo@hostellaangostura.com.ar\nwww.hostellaangostura.com.ar\nHabitación DOBLE privada c/desayuno Patagonico, toallas, tv y baño privado. Todas las habitaciones son acogedoras y luminosas, con vista al jardin.\n\n\n*Desayuno Patagonico (dulces regionales hechos en casa, dulce de leche, manteca, Pan y Budines Caseros calentitos, granola, jugo de naranja, te, mate cocido, cafe, leche y chocolate)...,\nTamaño\n12 m2\nDesayuno Incluido\nSi\nEstacionamiento\nSi\nFumadores\nNo\nTV\nSi\nWi-Fi\nGratuito en todo el establecimiento.\nBaño Privado\nSi\nCocina\nSi\nCalefacción\nSi\n \n\nfacebook.com/hostel.laangostura/\n\ntwitter.com/HostelVLA\n\ninstagram.com/hostel_la_angostura/\n\nBienvenido a\nHostel La Angostura\nSomos un lugar de alojamiento ideal para viajeros jóvenes y adultos, sin limite de edad, con ganas de conocer e intercambiar experiencias con otras personas, tanto del ámbito cultural, deportivo, educativo y por supuesto experiencias de viajes en común. La idea es disfrutar del HOSTEL, la naturaleza, las montañas, los lagos, los paisajes, de la convivencia e intercambio enriquecedor con gente de la Argentina y de otros países también.\nEn el Hostel tenemos, habitaciones a compartir mixtas, cuádruples, quíntuples, séxtuples y dobles matrimoniales. Todas con baño privado.\nTambién tenemos departamentos completos privados hasta 6 personas\n\nTodas las habitaciones son acogedoras y luminosas, con baño privado y vista al jardín... Los departamentos tambien tienen vista a los cerros.\n\nServicios: \nTV\nDesayuno\nCalefacción\nEstacionamiento\nWi-Fi\nNo fumadores\nCocina\nRecepción las 24 horas\nBaño privado\nSABANAS INCLUIDAS EN LA TARIFA\nAlquiler de toallas\nPool, ping pong, dardos, Juegos de mesa.\n\nSERVICIOS",
+              "datos": {
+                "nombre": "Hostel La Angostura — Habitación Doble Privada",
+                "tipo": "habitación doble",
+                "precio_por_noche": 92000,
+                "moneda": "ARS",
+                "precio_total": 184000,
+                "precio_noche_usd": null,
+                "referencia_dolar": null,
+                "fechas_disponibles": "30/09 al 02/10",
+                "capacidad": "2 personas",
+                "habitaciones": 1,
+                "banos": 1,
+                "caracteristicas": [
+                  "Desayuno Patagónico incluido",
+                  "Baño privado",
+                  "Toallas y sábanas incluidas",
+                  "TV",
+                  "Wi-Fi gratuito",
+                  "Vista al jardín",
+                  "Estacionamiento",
+                  "Cocina",
+                  "Calefacción",
+                  "No fumadores"
+                ],
+                "ubicacion": "Barbagelata 157, Villa La Angostura, Neuquén",
+                "politica_cancelacion": null,
+                "forma_pago": null,
+                "contacto": "Luna / Tel: 02944-494834 / WA: +54 9 294 4326757 / Email: info@hostellaangostura.com.ar / Instagram: @hostel_la_angostura",
+                "instagram": "@hostel_la_angostura",
+                "fotos_urls": [
+                  "https://facebook.com/hostel.laangostura/",
+                  "https://twitter.com/HostelVLA",
+                  "https://instagram.com/hostel_la_angostura/",
+                  "https://www.hostellaangostura.com.ar/"
+                ],
+                "notas_adicionales": "Habitación acogedora de 12 m2 con vista al jardín. Incluye desayuno patagónico artesanal (dulces regionales, budines caseros, etc.). El establecimiento cuenta con recepción 24 horas y área de juegos (pool, ping pong, dardos).",
+                "calificacion_ia": 8.5,
+                "razon_calificacion": "Excelente relación calidad-precio con desayuno completo casero, toallas, sábanas y baño privado incluidos.",
+                "datos_faltantes": [
+                  "horarios de check-in / check-out",
+                  "política de cancelación",
+                  "formas de pago aceptadas"
+                ],
+                "texto_original_resumido": "Habitación doble privada disponible del 30/09 al 02/10 (2 noches) a $92.000 por noche, con desayuno patagónico, toallas, TV y baño privado incluidos.",
+                "alojamiento_general": "Hostel La Angostura",
+                "web_link": "https://www.hostellaangostura.com.ar/"
+              },
+              "editado_manualmente": false
             }
           ]
         }
@@ -413,6 +466,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787696768767
+    "updated_at": 1787697113820
   }
 }
