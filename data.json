@@ -599,8 +599,8 @@
                 "contacto": "Cel: 11-4419-0782 / 11 5011-1199 | e-mail: paisaje.bandurrias@gmail.com",
                 "instagram": null,
                 "fotos_urls": [
-                  "https://goo.gl/maps/gyP6wXHfAar",
-                  "https://www.booking.com/hotel/ar/paisaje-bandurrias.es-ar.html"
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/116733172.jpg?k=d36e743678faf08522efed4dc2f235c4aa97e136e48ab87a14072c6dda662d30&o=",
+                  "https://www.booking.com/hotel/ar/paisaje-bandurrias.es-ar.html?aid=356980&label=gog235jc-10CAsoDEIScGFpc2FqZS1iYW5kdXJyaWFzSCxYA2gMiAEBmAEzuAEXyAEM2AED6AEB-AEBiAIBqAIBuALNxbjUBsACAdICJGM3YmVlYzhjLWI0OWUtNDQyMi04YzA3LTZmNDZhMDFhMDcxZNgCAeACAQ&sid=324b2cf6d27930a522bdc2b0a2e81fac&all_sr_blocks=277231301_123575886_2_0_0&checkin=2026-09-29&checkout=2026-10-01&dest_id=-1018998&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=277231301_123575886_2_0_0&hpos=1&matching_block_id=277231301_123575886_2_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=277231301_123575886_2_0_0__13000&srepoch=1787699977&srpvid=898ca3e7ac870033&type=total&ucfs=1&activeTab=photosGallery"
                 ],
                 "notas_adicionales": "A 250m de la ruta principal, 700m del río y lago Correntoso, 6.8 km del centro y 20 min del Cerro Bayo. Diván cama en el estar separado del comedor. Predio de 1 hectárea.",
                 "calificacion_ia": 9.5,
@@ -621,6 +621,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787700836751
+    "updated_at": 1787700845883
   }
 }
