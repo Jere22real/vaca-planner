@@ -2264,9 +2264,7 @@ async function callGemini(prompt) {
 // Modelos de Groq (100% gratis en console.groq.com)
 const GROQ_MODELS = [
   'llama-3.3-70b-versatile',
-  'llama-3.1-8b-instant',
-  'gemma2-9b-it',
-  'mixtral-8x7b-32768'
+  'llama-3.1-8b-instant'
 ];
 
 async function callGroqKey(key, prompt) {
@@ -2281,15 +2279,17 @@ async function callGroqKey(key, prompt) {
         },
         body: JSON.stringify({
           model: model,
-          messages: [{ role: 'user', content: prompt }],
-          temperature: 0.1,
-          response_format: { type: 'json_object' }
+          messages: [
+            { role: 'system', content: 'You are a helpful travel accommodation analyzer that strictly outputs valid JSON.' },
+            { role: 'user', content: prompt }
+          ],
+          temperature: 0.1
         })
       });
       if (!res.ok) {
         const err = await res.json().catch(() => ({ error: { message: res.statusText } }));
         const msg = err?.error?.message || `HTTP ${res.status}`;
-        if (res.status === 401 || msg.toLowerCase().includes('invalid api key')) {
+        if (res.status === 401 || msg.toLowerCase().includes('invalid api key') || msg.toLowerCase().includes('unauthorized')) {
           throw new Error('Groq key inválida: ' + msg);
         }
         lastErr = new Error(`[${model}] ${msg}`);
@@ -2304,7 +2304,7 @@ async function callGroqKey(key, prompt) {
       lastErr = e;
     }
   }
-  throw lastErr || new Error('Groq: ningún modelo respondió');
+  throw lastErr || new Error('Groq no respondió');
 }
 
 async function callGroq(prompt) {
@@ -2366,7 +2366,7 @@ async function callOpenRouterKey(key, prompt) {
       if (!res.ok) {
         const err = await res.json().catch(() => ({ error: { message: res.statusText } }));
         const msg = err?.error?.message || `HTTP ${res.status}`;
-        if (res.status === 401 || msg.toLowerCase().includes('invalid api key')) {
+        if (res.status === 401 || msg.toLowerCase().includes('invalid api key') || msg.toLowerCase().includes('unauthorized')) {
           throw new Error('OpenRouter key inválida: ' + msg);
         }
         lastErr = new Error(`[${model}] ${msg}`);
