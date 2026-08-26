@@ -2261,7 +2261,16 @@ async function callGemini(prompt) {
   throw lastError || new Error('Sin créditos en todas las keys de Gemini.');
 }
 
+// Modelos de Groq (100% gratis en console.groq.com)
+const GROQ_MODELS = [
+  'llama-3.3-70b-versatile',
+  'llama-3.1-8b-instant',
+  'gemma2-9b-it',
+  'mixtral-8x7b-32768'
+];
+
 async function callGroqKey(key, prompt) {
+  let lastErr = null;
   for (const model of GROQ_MODELS) {
     try {
       const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -2277,14 +2286,25 @@ async function callGroqKey(key, prompt) {
           response_format: { type: 'json_object' }
         })
       });
-      if (!res.ok) continue;
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: { message: res.statusText } }));
+        const msg = err?.error?.message || `HTTP ${res.status}`;
+        if (res.status === 401 || msg.toLowerCase().includes('invalid api key')) {
+          throw new Error('Groq key inválida: ' + msg);
+        }
+        lastErr = new Error(`[${model}] ${msg}`);
+        continue;
+      }
       const data = await res.json();
       const raw = data.choices?.[0]?.message?.content || '';
       if (!raw) continue;
       return parseJsonFromAI(raw);
-    } catch(e) {}
+    } catch(e) {
+      if (e.message && e.message.includes('Groq key inválida')) throw e;
+      lastErr = e;
+    }
   }
-  throw new Error('Groq: ningún modelo respondió');
+  throw lastErr || new Error('Groq: ningún modelo respondió');
 }
 
 async function callGroq(prompt) {
@@ -2298,9 +2318,36 @@ async function callGroq(prompt) {
   throw new Error('Groq no respondió');
 }
 
+async function fetchOpenRouterFreeModels() {
+  try {
+    const res = await fetch('https://openrouter.ai/api/v1/models');
+    if (res.ok) {
+      const data = await res.json();
+      const freeModels = (data.data || [])
+        .filter(m => {
+          const isFreeId = (m.id || '').endsWith(':free') || (m.id || '').includes(':free');
+          const isFreePricing = m.pricing && m.pricing.prompt === '0' && m.pricing.completion === '0';
+          return isFreeId || isFreePricing;
+        })
+        .map(m => m.id);
+      if (freeModels.length > 0) return freeModels;
+    }
+  } catch(e) {}
+  return [
+    'meta-llama/llama-3.3-70b-instruct:free',
+    'meta-llama/llama-3.1-8b-instruct:free',
+    'qwen/qwen-2.5-coder-32b-instruct:free',
+    'mistralai/mistral-small-24b-instruct-2501:free',
+    'google/gemini-2.0-flash-exp:free',
+    'deepseek/deepseek-r1:free',
+    'deepseek/deepseek-chat:free'
+  ];
+}
+
 async function callOpenRouterKey(key, prompt) {
+  const dynamicModels = await fetchOpenRouterFreeModels();
   let lastErr = null;
-  for (const model of OPENROUTER_MODELS) {
+  for (const model of dynamicModels) {
     try {
       const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
