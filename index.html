@@ -2142,9 +2142,23 @@ function getOpenRouterKeys() {
   return getApiKeys().filter(k => detectKeyProvider(k) === 'openrouter');
 }
 
+async function fetchGeminiAvailableModels(key) {
+  try {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
+    if (res.ok) {
+      const data = await res.json();
+      const list = (data.models || [])
+        .filter(m => m.supportedGenerationMethods && m.supportedGenerationMethods.includes('generateContent'))
+        .map(m => m.name.replace(/^models\//, ''));
+      if (list.length) return list;
+    }
+  } catch(e) {}
+  return ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-1.5-pro'];
+}
+
 async function callGeminiModel(key, model, prompt) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
-  const res = await fetch(url, {
+  let res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -2156,6 +2170,20 @@ async function callGeminiModel(key, model, prompt) {
       }
     })
   });
+  if (!res.ok) {
+    // Si el modelo no soporta responseMimeType en v1beta, reintenta sin esa propiedad
+    res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          temperature: 0.1,
+          maxOutputTokens: 8192
+        }
+      })
+    });
+  }
   if (!res.ok) {
     const err = await res.json().catch(()=>({error:{message:res.statusText}}));
     throw new Error(err?.error?.message || `HTTP ${res.status}`);
@@ -2177,8 +2205,15 @@ const KEY_SKIP_RE = /api key|invalid|permission|quota|rate limit|429|403|exhaust
 const MODEL_SKIP_RE = /no longer available|not found|404|not exist|not supported|unavailable/i;
 
 async function probeGeminiKey(key, prompt) {
-  let lastErr;
-  for (const m of GEMINI_MODELS) {
+  const available = await fetchGeminiAvailableModels(key);
+  const pref = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.0-flash-lite', 'gemini-1.5-pro', 'gemini-pro'];
+  const modelsToTry = [
+    ...pref.filter(m => available.includes(m)),
+    ...available.filter(m => !pref.includes(m))
+  ];
+
+  let lastErr = null;
+  for (const m of modelsToTry) {
     try {
       return await callGeminiModel(key, m, prompt);
     } catch(e) {
@@ -2187,7 +2222,6 @@ async function probeGeminiKey(key, prompt) {
       if (msg.includes('api_key_invalid') || msg.includes('api key not valid') || msg.includes('permission_denied')) {
         throw e;
       }
-      if (MODEL_SKIP_RE.test(e.message || '')) continue;
     }
   }
   throw lastErr || new Error('Ningún modelo de Gemini respondió');
@@ -2198,9 +2232,17 @@ async function callGemini(prompt) {
   if (!keys.length) throw new Error('No hay API Keys de Gemini configuradas.');
   const exhausted = new Set();
   let lastError;
-  for (const model of GEMINI_MODELS) {
-    for (const key of keys) {
-      if (exhausted.has(key)) continue;
+
+  for (const key of keys) {
+    if (exhausted.has(key)) continue;
+    const available = await fetchGeminiAvailableModels(key);
+    const pref = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.0-flash-lite', 'gemini-1.5-pro', 'gemini-pro'];
+    const modelsToTry = [
+      ...pref.filter(m => available.includes(m)),
+      ...available.filter(m => !pref.includes(m))
+    ];
+
+    for (const model of modelsToTry) {
       try {
         const result = await callGeminiModel(key, model, prompt);
         if (state.config.working_model !== model || state.config.working_key !== key) {
@@ -2211,10 +2253,8 @@ async function callGemini(prompt) {
         return result;
       } catch(e) {
         lastError = e;
-        const msg = e.message || '';
-        if (KEY_SKIP_RE.test(msg)) { exhausted.add(key); continue; }
-        if (MODEL_SKIP_RE.test(msg)) break;
-        throw e;
+        const msg = (e.message || '').toLowerCase();
+        if (KEY_SKIP_RE.test(msg)) { exhausted.add(key); break; }
       }
     }
   }
