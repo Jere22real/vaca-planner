@@ -587,25 +587,17 @@
       <div class="form-group">
         <label>🔑 API Keys (Gemini, Groq, OpenRouter)</label>
         <div class="key-add-row">
-          <input type="password" id="cfg-new-key" placeholder="Pegá una API Key (Gemini, Groq u OpenRouter)...">
+          <input type="password" id="cfg-new-key" placeholder="Pegá tu API Key de Gemini (AIza...), Groq o OpenRouter...">
           <button class="btn btn-ghost btn-sm" onclick="addPendingKey()">➕ Agregar</button>
         </div>
         <div id="cfg-keys-list"></div>
         <p class="form-hint">
           Se prueban en orden: <strong>Gemini</strong> &rarr; <strong>Groq (100% gratis)</strong> &rarr; <strong>OpenRouter</strong>.<br>
+          Las keys válidas se guardan automáticamente y no se vuelven a testear en cada prueba.<br>
           Keys gratuitas sin tarjeta:
-          <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent)">🔑 Gemini</a> &middot;
-          <a href="https://console.groq.com/keys" target="_blank" style="color:var(--green)">⚡ Groq (Ultra rápido y gratis)</a> &middot;
+          <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent)">🔑 Gemini (Google)</a> &middot;
+          <a href="https://console.groq.com/keys" target="_blank" style="color:var(--green)">⚡ Groq (Rápido y gratis)</a> &middot;
           <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--cyan)">🌐 OpenRouter</a>
-        </p>
-      </div>
-      <div class="divider"></div>
-
-      <div class="form-group">
-        <label>⚡ API Key de <strong>DeepSeek Directo</strong> <span style="font-size:0.75rem;color:var(--cyan)">(Requiere saldo prepago en su web)</span></label>
-        <input type="password" id="cfg-api-key-deepseek" placeholder="sk-... (opcional)" autocomplete="off" value="">
-        <p class="form-hint">
-          ⚠️ <em>api.deepseek.com</em> requiere saldo prepago ($). Si no tenés saldo en DeepSeek, te recomendamos agregar una key gratis de <a href="https://console.groq.com/keys" target="_blank" style="color:var(--green)">Groq</a> o <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--cyan)">OpenRouter</a> arriba.
         </p>
       </div>
       <div class="config-row">
@@ -915,8 +907,9 @@ function loadState() {
     try { state = JSON.parse(raw); } catch(e) {}
   }
   // defaults
-  if (!state.config) state.config = { ia_provider:'gemini', api_keys:[], tema:'dark' };
+  if (!state.config) state.config = { ia_provider:'gemini', api_keys:[], verified_keys:{}, tema:'dark' };
   if (!state.config.api_keys) state.config.api_keys = [];
+  if (!state.config.verified_keys) state.config.verified_keys = {};
   if (state.config.api_key && !state.config.api_keys.length) {
     state.config.api_keys = [state.config.api_key];
     delete state.config.api_key;
@@ -2022,7 +2015,6 @@ async function analyzeWithAI() {
   document.getElementById('hosp-web-link').style.display = 'none';
   if (document.getElementById('btn-analyze')) document.getElementById('btn-analyze').disabled = true;
 
-  // El link web opcional entra como complemento de información (no se buscan fotos)
   let fullInput = mailText;
   if (webLink) {
     fullInput += (fullInput ? '\n\n' : '') +
@@ -2039,23 +2031,23 @@ async function analyzeWithAI() {
     } catch(e) {
       gemErr = e;
     }
+
     if (!extracted) {
-      // Fallback 2: DeepSeek (si hay key configurada)
-      const dsKey = state.config.api_key_deepseek;
-      if (dsKey && dsKey.length > 10) {
-        try {
-          loadingEl.querySelector('p').textContent = '⚡ Probando DeepSeek como respaldo... ✨';
-          extracted = await callDeepSeek(prompt);
-          toast('Gemini/OpenRouter sin cuota — se usó DeepSeek ✅', 'info', 4000);
-        } catch(dsErr) {
-          throw new Error('Sin créditos en todas las IAs' +
-            (gemErr ? ' (Gemini: ' + gemErr.message + ')' : '') +
-            ' / DeepSeek: ' + dsErr.message);
-        }
-      } else {
-        throw new Error('Sin créditos en todas las keys' +
-          (gemErr ? ' (Gemini: ' + gemErr.message + ')' : ''));
-      }
+      try {
+        extracted = await callGroq(prompt);
+        if (extracted) toast('Se usó Groq como respaldo ✅', 'info', 3000);
+      } catch(groqErr) {}
+    }
+
+    if (!extracted) {
+      try {
+        extracted = await callOpenRouter(prompt);
+        if (extracted) toast('Se usó OpenRouter como respaldo ✅', 'info', 3000);
+      } catch(orErr) {}
+    }
+
+    if (!extracted) {
+      throw new Error(gemErr ? `Gemini: ${gemErr.message}` : 'Sin créditos en las API keys configuradas.');
     }
 
     pendingExtracted = extracted;
@@ -2120,32 +2112,35 @@ ${mailText}
 JSON:`;
 }
 
-// Modelos de Gemini oficiales en orden de preferencia
-const GEMINI_MODELS = [
-  'gemini-2.0-flash',
-  'gemini-1.5-flash',
-  'gemini-1.5-flash-8b',
-  'gemini-2.0-flash-lite',
-  'gemini-1.5-pro'
-];
+const GEMINI_MODELS = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.0-flash-lite', 'gemini-1.5-pro'];
+const OPENROUTER_MODELS = ['meta-llama/llama-3.3-70b-instruct:free', 'meta-llama/llama-3.1-8b-instruct:free', 'qwen/qwen-2.5-coder-32b-instruct:free', 'mistralai/mistral-small-24b-instruct-2501:free', 'deepseek/deepseek-chat:free', 'deepseek/deepseek-r1:free', 'google/gemini-2.0-flash-exp:free', 'mistralai/mistral-7b-instruct:free'];
+const GROQ_MODELS = ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant'];
 
-// Modelos gratuitos de OpenRouter (en orden de mayor disponibilidad y estabilidad)
-const OPENROUTER_MODELS = [
-  'meta-llama/llama-3.3-70b-instruct:free',
-  'meta-llama/llama-3.1-8b-instruct:free',
-  'qwen/qwen-2.5-coder-32b-instruct:free',
-  'mistralai/mistral-small-24b-instruct-2501:free',
-  'deepseek/deepseek-chat:free',
-  'deepseek/deepseek-r1:free',
-  'google/gemini-2.0-flash-exp:free',
-  'mistralai/mistral-7b-instruct:free'
-];
+function detectKeyProvider(key) {
+  if (!key) return 'gemini';
+  const k = key.trim();
+  if (k.startsWith('gsk_')) return 'groq';
+  if (k.startsWith('sk-or-') || k.startsWith('sk-or')) return 'openrouter';
+  return 'gemini';
+}
 
-// Modelos de Groq (100% gratis en console.groq.com)
-const GROQ_MODELS = [
-  'llama-3.3-70b-versatile',
-  'llama-3.1-8b-instant'
-];
+function getGeminiKeys() {
+  const keys = getApiKeys().filter(k => detectKeyProvider(k) === 'gemini');
+  const wk = state.config.working_key;
+  if (wk && keys.includes(wk)) {
+    const i = keys.indexOf(wk);
+    if (i > 0) keys.unshift(keys.splice(i, 1)[0]);
+  }
+  return keys;
+}
+
+function getGroqKeys() {
+  return getApiKeys().filter(k => detectKeyProvider(k) === 'groq');
+}
+
+function getOpenRouterKeys() {
+  return getApiKeys().filter(k => detectKeyProvider(k) === 'openrouter');
+}
 
 async function callGeminiModel(key, model, prompt) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
@@ -2167,7 +2162,6 @@ async function callGeminiModel(key, model, prompt) {
   }
   const data = await res.json();
   const candidate = data.candidates?.[0];
-  
   const parts = candidate?.content?.parts || [];
   const raw = parts
     .filter(p => p.text != null)
@@ -2182,19 +2176,26 @@ async function callGeminiModel(key, model, prompt) {
 const KEY_SKIP_RE = /api key|invalid|permission|quota|rate limit|429|403|exhausted|blocked|forbidden|unauthorized|401|no credits|insufficient/i;
 const MODEL_SKIP_RE = /no longer available|not found|404|not exist|not supported|unavailable/i;
 
-function getGeminiKeys() {
-  const keys = getApiKeys();
-  const wk = state.config.working_key;
-  if (wk) {
-    const i = keys.indexOf(wk);
-    if (i > 0) keys.unshift(keys.splice(i, 1)[0]);
+async function probeGeminiKey(key, prompt) {
+  let lastErr;
+  for (const m of GEMINI_MODELS) {
+    try {
+      return await callGeminiModel(key, m, prompt);
+    } catch(e) {
+      lastErr = e;
+      const msg = (e.message || '').toLowerCase();
+      if (msg.includes('api_key_invalid') || msg.includes('api key not valid') || msg.includes('permission_denied')) {
+        throw e;
+      }
+      if (MODEL_SKIP_RE.test(e.message || '')) continue;
+    }
   }
-  return keys;
+  throw lastErr || new Error('Ningún modelo de Gemini respondió');
 }
 
 async function callGemini(prompt) {
   const keys = getGeminiKeys();
-  if (!keys.length) throw new Error('No hay API Keys configuradas. Andá a ⚙️ Config.');
+  if (!keys.length) throw new Error('No hay API Keys de Gemini configuradas.');
   const exhausted = new Set();
   let lastError;
   for (const model of GEMINI_MODELS) {
@@ -2220,11 +2221,7 @@ async function callGemini(prompt) {
   throw lastError || new Error('Sin créditos en todas las keys de Gemini.');
 }
 
-// ============================================================
-// GROQ FALLBACK (100% GRATIS)
-// ============================================================
 async function callGroqKey(key, prompt) {
-  let lastErr;
   for (const model of GROQ_MODELS) {
     try {
       const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
@@ -2240,60 +2237,25 @@ async function callGroqKey(key, prompt) {
           response_format: { type: 'json_object' }
         })
       });
-      if (!res.ok) {
-        const err = await res.json().catch(() => ({ error: { message: res.statusText } }));
-        const msg = err?.error?.message || `HTTP ${res.status}`;
-        if (res.status === 404 || msg.includes('model') || msg.includes('decommissioned')) {
-          lastErr = new Error(msg);
-          continue;
-        }
-        throw new Error('Groq: ' + msg);
-      }
+      if (!res.ok) continue;
       const data = await res.json();
       const raw = data.choices?.[0]?.message?.content || '';
-      if (!raw) throw new Error('Groq no devolvió respuesta');
+      if (!raw) continue;
       return parseJsonFromAI(raw);
-    } catch(e) {
-      lastErr = e;
-      if (KEY_SKIP_RE.test(e.message || '')) throw e;
-    }
+    } catch(e) {}
   }
-  throw lastErr || new Error('Groq: ningún modelo respondió');
+  throw new Error('Groq: ningún modelo respondió');
 }
 
-// ============================================================
-// DEEPSEEK FALLBACK
-// ============================================================
-async function callDeepSeek(prompt) {
-  const key = state.config.api_key_deepseek;
-  if (!key || key.length < 10) throw new Error('No hay API Key de DeepSeek configurada.');
-
-  const res = await fetch('https://api.deepseek.com/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${key}`,
-    },
-    body: JSON.stringify({
-      model: 'deepseek-chat',
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.1,
-      max_tokens: 8192,
-      response_format: { type: 'json_object' }
-    })
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({ error: { message: res.statusText } }));
-    const msg = err?.error?.message || `HTTP ${res.status}`;
-    if (msg.toLowerCase().includes('insufficient balance') || res.status === 402) {
-      throw new Error('DeepSeek directo requiere saldo prepago ($). Te recomendamos usar Groq (console.groq.com - 100% gratis) u OpenRouter (openrouter.ai con DeepSeek gratis).');
-    }
-    throw new Error('DeepSeek: ' + msg);
+async function callGroq(prompt) {
+  const keys = getGroqKeys();
+  if (!keys.length) throw new Error('No hay keys de Groq configuradas');
+  for (const key of keys) {
+    try {
+      return await callGroqKey(key, prompt);
+    } catch(e) {}
   }
-  const data = await res.json();
-  const raw = data.choices?.[0]?.message?.content || '';
-  if (!raw) throw new Error('DeepSeek no devolvió respuesta');
-  return parseJsonFromAI(raw);
+  throw new Error('Groq no respondió');
 }
 
 async function callOpenRouterKey(key, prompt) {
@@ -2317,11 +2279,9 @@ async function callOpenRouterKey(key, prompt) {
       if (!res.ok) {
         const err = await res.json().catch(() => ({ error: { message: res.statusText } }));
         const msg = err?.error?.message || `HTTP ${res.status}`;
-        // Si la key es totalmente inválida (401 Unauthorized), no seguimos probando modelos
         if (res.status === 401 || msg.toLowerCase().includes('invalid api key')) {
           throw new Error('OpenRouter key inválida: ' + msg);
         }
-        // Para cualquier otro error de modelo (402, 403, 404, 429, unavailable, credits), probamos el siguiente modelo
         lastErr = new Error(`[${model}] ${msg}`);
         continue;
       }
@@ -2338,39 +2298,21 @@ async function callOpenRouterKey(key, prompt) {
 }
 
 async function callOpenRouter(prompt) {
-  const keys = getApiKeys();
-  if (!keys.length) throw new Error('No hay API Keys configuradas.');
-  let lastError;
+  const keys = getOpenRouterKeys();
+  if (!keys.length) throw new Error('No hay keys de OpenRouter configuradas');
   for (const key of keys) {
     try {
-      // Si la key empieza con gsk_ es de Groq
-      if (key.startsWith('gsk_')) {
-        return await callGroqKey(key, prompt);
-      }
-      const result = await callOpenRouterKey(key, prompt);
-      if (state.config.working_key !== key) {
-        state.config.working_key = key;
-        saveState();
-      }
-      return result;
-    } catch(e) {
-      lastError = e;
-      const msg = e.message || '';
-      if (KEY_SKIP_RE.test(msg)) continue;
-      throw e;
-    }
+      return await callOpenRouterKey(key, prompt);
+    } catch(e) {}
   }
-  throw lastError || new Error('Sin créditos en OpenRouter / Groq.');
+  throw new Error('OpenRouter no respondió');
 }
 
 function tryRepairTruncatedJson(str) {
   let s = str.trim();
-  // 1. Si hay comillas sin cerrar, cerramos la string
   const quotes = (s.match(/(?<!\\)"/g) || []).length;
   if (quotes % 2 !== 0) s += '"';
-  // 2. Limpiar comas o colons al final
   s = s.replace(/[:,\s]+$/, '');
-  // 3. Balancear corchetes y llaves
   let openBrackets = (s.match(/\[/g) || []).length - (s.match(/\]/g) || []).length;
   while (openBrackets > 0) { s += ']'; openBrackets--; }
   let openBraces = (s.match(/\{/g) || []).length - (s.match(/\}/g) || []).length;
@@ -2382,18 +2324,14 @@ function parseJsonFromAI(raw) {
   if (!raw || !raw.trim()) throw new Error('La IA devolvió una respuesta vacía');
   let clean = raw.trim();
 
-  // 1. Extraer bloque ```json ... ``` si existe
   const fenceMatch = clean.match(/```(?:json)?\s*([\s\S]*?)```/i);
   if (fenceMatch) clean = fenceMatch[1].trim();
 
-  // 2. Buscar el primer {
   const start = clean.indexOf('{');
   if (start === -1) {
-    console.error('[parseJsonFromAI] Sin { en:', clean.slice(0, 400));
     throw new Error(`La IA no devolvió JSON. Respuesta: "${clean.slice(0, 120)}..."`);
   }
 
-  // Encontrar el } de cierre balanceado
   let depth = 0, end = -1;
   for (let i = start; i < clean.length; i++) {
     if (clean[i] === '{') depth++;
@@ -2402,78 +2340,69 @@ function parseJsonFromAI(raw) {
       if (depth === 0) { end = i; break; }
     }
   }
-  if (end === -1) end = clean.lastIndexOf('}');
-
   let jsonStr = (end !== -1 && end > start) ? clean.slice(start, end + 1) : clean.slice(start);
 
   try {
     return JSON.parse(jsonStr);
   } catch(e) {
-    // Intento 1: reparación básica (trailing commas)
     try {
-      const fixed = jsonStr
-        .replace(/,\s*([}\]])/g, '$1')  // trailing commas
-        .replace(/([{,]\s*)(\w+)\s*:/g, '$1"$2":'); // unquoted keys
-      return JSON.parse(fixed);
-    } catch(e2) {
-      // Intento 2: reparación de JSON cortado (por tokens)
-      try {
-        return tryRepairTruncatedJson(jsonStr);
-      } catch(e3) {
-        console.error('[parseJsonFromAI] JSON fallido:', jsonStr.slice(0, 600));
-        throw new Error(`JSON malformado o cortado: ${e.message}. Copiá este error si persiste.`);
-      }
+      return tryRepairTruncatedJson(jsonStr);
+    } catch(repairErr) {
+      throw new Error(`JSON incompleto de la IA: ${e.message}`);
     }
   }
 }
 
-// ============================================================
-// PREVIEW AFTER AI
-// ============================================================
-function showPreview(data, mailText) {
+function showPreview(extracted, originalMail) {
   document.getElementById('loading-ai').style.display = 'none';
   document.getElementById('step-paste').style.display = 'none';
   document.getElementById('step-preview').style.display = '';
-  document.getElementById('preview-json').textContent = JSON.stringify(data, null, 2);
 
-  const webLinkEl = document.getElementById('hosp-web-link');
-  const webLink = webLinkEl ? webLinkEl.value.trim() : '';
+  const options = extracted.opciones || [extracted];
+  pendingExtracted = options;
 
-  // Extraer lista de opciones (compatibilidad con objeto único o array de opciones)
-  let options = [];
-  if (Array.isArray(data.opciones) && data.opciones.length > 0) {
-    options = data.opciones.map(opt => ({
-      ...opt,
-      alojamiento_general: data.alojamiento_general || opt.nombre,
-      referencia_dolar: opt.referencia_dolar || data.referencia_dolar,
-      web_link: webLink || opt.web_link
-    }));
-  } else if (data.nombre || data.precio_por_noche) {
-    data.web_link = webLink || data.web_link;
-    options = [data];
-  } else {
-    options = [data];
-  }
+  const cardHtml = options.map((opt, i) => {
+    const fullTitle = opt.nombre || 'Sin nombre';
+    const score = opt.calificacion_ia;
+    const scoreClass = score >= 7.5 ? 'high' : score >= 5 ? 'mid' : 'low';
+    const feats = opt.caracteristicas || [];
+    const missing = opt.datos_faltantes || [];
 
-  pendingExtracted = options; // Guardamos el array de opciones
+    return `
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:14px;margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+        <div>
+          <strong style="font-size:1rem;color:var(--text);">${esc(fullTitle)}</strong>
+          ${opt.tipo ? `<span class="hosp-tipo" style="margin-left:6px;">${esc(opt.tipo)}</span>` : ''}
+        </div>
+        ${score != null ? `<div class="score-badge ${scoreClass}">${score}</div>` : ''}
+      </div>
 
-  const cardHtmls = options.map((optData, idx) => {
-    const fakeHosp = { id: 'preview_' + idx, datos: optData, mail_original: mailText };
-    return hospCard(fakeHosp)
-      .replace(/onclick="openEditScore\([^)]+\)"/g, '')
-      .replace(/onclick="(openLightbox|setFavPhoto)\([^)]+\)"/g, '')
-      .replace(/onclick="(viewMail|confirmDeleteHosp|openWebLink)\([^)]+\)"/g, 'style="display:none"');
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin:8px 0;font-size:0.85rem;color:var(--text2);">
+        ${opt.precio_por_noche ? `<span>💰 <strong>${opt.precio_por_noche} ${opt.moneda||''}</strong>/noche</span>` : ''}
+        ${opt.precio_total ? `<span>💵 Total: <strong>${opt.precio_total} ${opt.moneda||''}</strong></span>` : ''}
+        ${opt.capacidad ? `<span>👥 ${esc(opt.capacidad)}</span>` : ''}
+      </div>
+
+      ${opt.ubicacion ? `<div style="font-size:0.8rem;color:var(--text2);margin-bottom:6px;">📍 ${esc(opt.ubicacion)}</div>` : ''}
+
+      ${feats.length ? `
+      <div class="features-list" style="margin-top:6px;">
+        ${feats.map(f=>`<span class="feat-tag">${esc(f)}</span>`).join('')}
+      </div>` : ''}
+
+      ${missing.length ? `
+      <div style="margin-top:6px;font-size:0.75rem;color:var(--red);">
+        ⚠️ Faltan: ${missing.map(m=>esc(m)).join(', ')}
+      </div>` : ''}
+    </div>`;
   }).join('');
 
-  document.getElementById('preview-card').innerHTML = `
-    <p style="font-weight:700;color:var(--cyan);margin-bottom:12px;font-size:0.9rem;">
-      ✨ La IA extrajo ${options.length} ${options.length === 1 ? 'opción' : 'opciones/alternativas'} de este mensaje:
-    </p>
-    <div style="display:flex;flex-direction:column;gap:16px;">${cardHtmls}</div>
-  `;
+  document.getElementById('preview-card').innerHTML = cardHtml;
+  document.getElementById('preview-json').textContent = JSON.stringify(extracted, null, 2);
 
   document.getElementById('add-hosp-footer').innerHTML = `
-    <button class="btn btn-ghost" onclick="resetAddHosp()">← Volver</button>
+    <button class="btn btn-ghost" onclick="resetAddHosp()">← Modificar</button>
     <button class="btn btn-primary" onclick="confirmAddHosp()">✅ Confirmar y Agregar ${options.length} ${options.length === 1 ? 'Opción' : 'Opciones'}</button>`;
 }
 
@@ -2523,8 +2452,6 @@ let pendingKeys = [];
 function openConfig() {
   pendingKeys = getApiKeys();
   renderConfigKeys();
-  const dsInput = document.getElementById('cfg-api-key-deepseek');
-  if (dsInput) dsInput.value = state.config.api_key_deepseek || '';
   updateApiStatus();
   openModal('modal-config');
   const input = document.getElementById('cfg-new-key');
@@ -2538,14 +2465,19 @@ function renderConfigKeys() {
     list.innerHTML = '<div class="key-empty">Todavía no agregaste ninguna API Key.</div>';
     return;
   }
-  list.innerHTML = pendingKeys.map((k, i) => `
+  state.config.verified_keys = state.config.verified_keys || {};
+  list.innerHTML = pendingKeys.map((k, i) => {
+    const info = state.config.verified_keys[k];
+    const badge = info?.ok ? (info.label || '✅ Conectada') : '<span style="color:var(--text3);font-size:0.75rem;">(sin probar)</span>';
+    return `
     <div class="key-row" id="key-row-${i}">
       <span class="key-mask">${maskKey(k)}</span>
-      <span class="key-status" id="key-status-${i}"></span>
+      <span class="key-status" id="key-status-${i}">${badge}</span>
       <span class="key-actions">
         <button class="key-del" title="Eliminar key" onclick="removePendingKey(${i})">✕</button>
       </span>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function maskKey(k) {
@@ -2558,126 +2490,118 @@ function addPendingKey() {
   const input = document.getElementById('cfg-new-key');
   const val = input.value.trim();
   if (!val) { toast('Pegá una API Key primero', 'error'); return; }
-  if (pendingKeys.includes(val)) { toast('Esa key ya está agregada', 'error'); return; }
+  if (pendingKeys.includes(val)) { toast('Esa key ya está en la lista', 'error'); return; }
   pendingKeys.push(val);
   input.value = '';
+  saveConfigQuiet();
   renderConfigKeys();
   input.focus();
+  testSingleKey(pendingKeys.length - 1);
 }
 
 function removePendingKey(i) {
-  pendingKeys.splice(i, 1);
+  const removed = pendingKeys.splice(i, 1)[0];
+  if (removed && state.config.verified_keys) {
+    delete state.config.verified_keys[removed];
+  }
+  saveConfigQuiet();
   renderConfigKeys();
 }
 
 function updateApiStatus() {
   const dot = document.getElementById('api-dot');
   const txt = document.getElementById('api-status-text');
-  const n = getApiKeys().length;
-  const hasDs = !!(state.config.api_key_deepseek && state.config.api_key_deepseek.length > 10);
-  if (n || hasDs) {
+  if (!dot || !txt) return;
+  const keys = getApiKeys();
+  const verifiedMap = state.config.verified_keys || {};
+  const okKeys = keys.filter(k => verifiedMap[k]?.ok);
+  const n = keys.length;
+  if (okKeys.length) {
     dot.className = 'status-dot ok';
-    txt.textContent = `${n} key${n !== 1 ? 's' : ''}${hasDs ? ' + DeepSeek' : ''} configurada${n !== 1 ? 's' : ''}`;
+    txt.textContent = `${okKeys.length} key${okKeys.length !== 1 ? 's' : ''} conectada${okKeys.length !== 1 ? 's' : ''}`;
+  } else if (n) {
+    dot.className = 'status-dot warn';
+    txt.textContent = `${n} key${n !== 1 ? 's' : ''} (pendiente de probar)`;
   } else {
     dot.className = 'status-dot warn';
     txt.textContent = 'Sin configurar';
   }
 }
 
-async function probeGeminiKey(key, prompt) {
-  let lastErr;
-  for (const m of GEMINI_MODELS) {
-    try {
-      return await callGeminiModel(key, m, prompt);
-    } catch(e) {
-      lastErr = e;
-      if (!MODEL_SKIP_RE.test(e.message || '')) throw e;
+async function testSingleKey(i) {
+  const key = pendingKeys[i];
+  if (!key) return false;
+  const statusEl = document.getElementById('key-status-' + i);
+  if (statusEl) statusEl.textContent = '⏳ Probando...';
+  const testPrompt = 'Responde SOLO con este JSON exacto sin nada más: {"ok":true}';
+  const prov = detectKeyProvider(key);
+
+  state.config.verified_keys = state.config.verified_keys || {};
+
+  try {
+    if (prov === 'groq') {
+      await callGroqKey(key, testPrompt);
+      const label = '✅ Groq';
+      if (statusEl) statusEl.textContent = label;
+      state.config.verified_keys[key] = { provider: 'groq', ok: true, label };
+      saveConfigQuiet();
+      toast('Key de Groq conectada y guardada ✅', 'success', 3500);
+      return true;
+    } else if (prov === 'openrouter') {
+      await callOpenRouterKey(key, testPrompt);
+      const label = '✅ OpenRouter';
+      if (statusEl) statusEl.textContent = label;
+      state.config.verified_keys[key] = { provider: 'openrouter', ok: true, label };
+      saveConfigQuiet();
+      toast('Key de OpenRouter conectada y guardada ✅', 'success', 3500);
+      return true;
+    } else {
+      await probeGeminiKey(key, testPrompt);
+      const label = '✅ Gemini';
+      if (statusEl) statusEl.textContent = label;
+      state.config.verified_keys[key] = { provider: 'gemini', ok: true, label };
+      saveConfigQuiet();
+      toast('Key de Gemini conectada y guardada ✅', 'success', 3500);
+      return true;
     }
+  } catch(err) {
+    const label = '❌ ' + (err.message || 'Error').slice(0, 35);
+    if (statusEl) statusEl.textContent = label;
+    if (state.config.verified_keys) delete state.config.verified_keys[key];
+    saveConfigQuiet();
+    toast(`Error en key (${prov.toUpperCase()}): ` + err.message, 'error', 6000);
+    return false;
   }
-  throw lastErr;
 }
 
 async function testApiKey() {
-  const dsInput = document.getElementById('cfg-api-key-deepseek');
-  const dsKey = dsInput ? dsInput.value.trim() : '';
+  if (!pendingKeys.length) { toast('No hay keys para probar. Agregá una primero', 'error'); return; }
 
-  if (!pendingKeys.length && !dsKey) { toast('No hay keys para probar. Agregá una primero', 'error'); return; }
-
-  const dot = document.getElementById('api-dot');
-  const txt = document.getElementById('api-status-text');
-  dot.className = 'status-dot warn';
-  txt.textContent = 'Probando...';
-
-  const testPrompt = 'Responde SOLO con este JSON exacto sin nada más: {"ok":true}';
-  let ok = 0;
-
+  state.config.verified_keys = state.config.verified_keys || {};
+  let testedCount = 0;
   for (let i = 0; i < pendingKeys.length; i++) {
     const key = pendingKeys[i];
-    const statusEl = document.getElementById('key-status-' + i);
-    if (statusEl) statusEl.textContent = '⏳';
-    let label = '❌';
-    try {
-      if (key.startsWith('gsk_')) {
-        await callGroqKey(key, testPrompt);
-        label = '✅ Groq';
-        ok++;
-      } else if (key.startsWith('sk-or-') || key.startsWith('sk-or')) {
-        await callOpenRouterKey(key, testPrompt);
-        label = '✅ OpenRouter';
-        ok++;
-      } else {
-        await probeGeminiKey(key, testPrompt);
-        label = '✅ Gemini';
-        ok++;
-      }
-    } catch(e) {
-      try {
-        if (!key.startsWith('gsk_') && !key.startsWith('sk-or')) {
-          await callOpenRouterKey(key, testPrompt);
-          label = '✅ OpenRouter';
-          ok++;
-        } else {
-          throw e;
-        }
-      } catch(e2) {
-        try {
-          await callGroqKey(key, testPrompt);
-          label = '✅ Groq';
-          ok++;
-        } catch(e3) {
-          label = '❌ ' + ((e.message || e2.message || '').slice(0, 35));
-        }
-      }
-    }
-    if (statusEl) statusEl.textContent = label;
-  }
-
-  if (dsKey) {
-    try {
-      const prevKey = state.config.api_key_deepseek;
-      state.config.api_key_deepseek = dsKey;
-      await callDeepSeek(testPrompt);
-      state.config.api_key_deepseek = prevKey;
-      toast('DeepSeek API Key válida ✅', 'success', 3000);
-      ok++;
-    } catch(err) {
-      toast('DeepSeek: ' + err.message, 'error', 4000);
+    if (!state.config.verified_keys[key]?.ok) {
+      testedCount++;
+      await testSingleKey(i);
     }
   }
 
-  const total = pendingKeys.length + (dsKey ? 1 : 0);
-  dot.className = ok ? 'status-dot ok' : 'status-dot err';
-  txt.textContent = `${ok}/${total} key${total !== 1 ? 's' : ''} válida${total !== 1 ? 's' : ''}`;
-  toast(ok ? `${ok} de ${total} keys funcionan ✅` : 'Ninguna key funcionó ❌', ok ? 'success' : 'error', 6000);
+  if (testedCount === 0) {
+    toast('Todas las keys ya están conectadas y funcionando ✅', 'info', 3000);
+  }
+  updateApiStatus();
+}
+
+function saveConfigQuiet() {
+  state.config.api_keys = pendingKeys.filter(k => k && k.trim());
+  saveState();
+  updateApiStatus();
 }
 
 function saveConfig() {
-  state.config.api_keys = pendingKeys.filter(k => k && k.trim());
-  const dsInput = document.getElementById('cfg-api-key-deepseek');
-  if (dsInput) state.config.api_key_deepseek = dsInput.value.trim();
-  saveState();
+  saveConfigQuiet();
   closeModal('modal-config');
-  updateApiStatus();
   toast('Configuración guardada ✅', 'success');
 }
 
