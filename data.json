@@ -615,6 +615,58 @@
                 "web_link": "https://www.booking.com/hotel/ar/paisaje-bandurrias.es-ar.html"
               },
               "editado_manualmente": false
+            },
+            {
+              "id": "mtc9ansi3c57j",
+              "fecha_agregado": "2026-08-28T01:11:45.906Z",
+              "mail_original": "\nNicolas Scala <larocahosteria@gmail.com>\n25 ago 2026, 8:49 (hace 2 días)\npara mí\n\nhola buen dia, tenemos disponible\nla Roca hostería, es una cálida hostería de 10 habitaciones en total, en pleno centro de Villa la Angostura, a solo 150mts de la avenida principal,  con una excelente vista al cerro Bayo, un amplio y tranquilo living para deleitarse con la vista al Cerro Bayo o la cordillera.\n\n                \n\nHabitacion doble, con baño privado, cama queen size o twin, televisión con direct tv, wifi, amenites, secador de pelo.\n\nPrecio por habitación, por noche $100000, con desayuno incluido\n\nLas reservas son por este medio, con datos completos, la cual una vez generada, se confirma mediante depósito bancario o por medio de mercado pago (todas las opciones de pago habilitadas)\n\nAsesoramiento turístico de la zona y alrededores\n\nA disposición\n\nSaludos\n\n\n\nLa Roca de la Patagonia\nBoulevard Pascotto 145 - Villa la Angostura - Patagonia Argentina\nte:  0294-4494497 - whatsapp +54 9 2944 214750\nwww.larocadelapatagonia.com.ar \n\nBienvenidos\n\nHostería La Roca\nsubrayado\nNos encontramos en el núcleo comercial de Villa La Angostura. En una encantadora hostería de estilo alpino, rodeada de un jardín y con vista panorámica al Cerro Bayo. Ofrecemos habitaciones con conexión Wi-Fi gratuita y TV vía satélite\n\nMás info\nInicio\nInicio\nUbicación\nsubrayado\nEstamos estratégicamente ubicados a tan solo 3 km del Parque Nacional Los Arrayanes y de la carretera que lleva a la estación de esquí de Bayo, a 5 minutos a pie de la Terminal de Ómnibus y la plaza principal de la ciudad\n\nCómo Llegar\n\nervicios\nsubrayado\ncama\n10 habitaciones con sommiers y baño privado\nmesa\nSalón desayunador con vista panorámica al Cerro Bayo\ntv\nTelevisión en las habitaciones con Direct TV\ncalefa\nCalefacción central\n \ncaja\nCofres de seguridad\nwifi\nWI FI\nguia\nAsesoramiento turístico",
+              "datos": {
+                "nombre": "La Roca de la Patagonia — Habitación Doble",
+                "tipo": "hostería",
+                "precio_por_noche": 100000,
+                "moneda": "ARS",
+                "precio_total": 100000,
+                "precio_noche_usd": 0,
+                "referencia_dolar": 0,
+                "fechas_disponibles": "Bajo consulta",
+                "capacidad": "2 personas",
+                "habitaciones": 1,
+                "banos": 1,
+                "caracteristicas": [
+                  "Baño privado",
+                  "Cama queen size o twin",
+                  "Televisión con Direct TV",
+                  "WiFi gratuita",
+                  "Amenites",
+                  "Secador de pelo",
+                  "Desayuno incluido",
+                  "Calefacción central",
+                  "Cofre de seguridad",
+                  "Vista panorámica al Cerro Bayo",
+                  "Salón desayunador con vista al Cerro Bayo",
+                  "Asesoramiento turístico"
+                ],
+                "ubicacion": "Boulevard Pascotto 145 - Villa la Angostura - Patagonia Argentina",
+                "politica_cancelacion": "No especificada. Reserva confirmada mediante depósito bancario o Mercado Pago.",
+                "forma_pago": "Depósito bancario, Mercado Pago",
+                "contacto": "Nicolas Scala / Email: larocahosteria@gmail.com / Tel: 0294-4494497 / WhatsApp: +54 9 2944 214750",
+                "instagram": null,
+                "fotos_urls": [],
+                "notas_adicionales": "A 3 km del Parque Nacional Los Arrayanes y de la carretera a la estación de esquí de Bayo. A 5 minutos a pie de la Terminal de Ómnibus y la plaza principal. En el núcleo comercial de Villa La Angostura, a 150 m de la avenida principal.",
+                "calificacion_ia": 7.5,
+                "razon_calificacion": "Ubicación céntrica con vista panorámica al Cerro Bayo, desayuno incluido y servicios completos en hostería de estilo alpino",
+                "datos_faltantes": [
+                  "fechas específicas de disponibilidad",
+                  "horario check-in/check-out",
+                  "política de cancelación",
+                  "cuenta de Instagram",
+                  "precio en USD",
+                  "fotos del establecimiento",
+                  "calificaciones de huéspedes"
+                ],
+                "texto_original_resumido": "Habitación doble con baño privado, desayuno incluido, a $100.000 ARS/noche en La Roca de la Patagonia, Villa la Angostura."
+              },
+              "editado_manualmente": false
             }
           ]
         }
@@ -622,6 +674,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787705633228
+    "updated_at": 1787879505907
   }
 }
