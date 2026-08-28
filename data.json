@@ -654,7 +654,8 @@
                 "fotos_urls": [
                   "https://larocadelapatagonia.com.ar/wp-content/uploads/20250501_094229-scaled.jpg",
                   "https://larocadelapatagonia.com.ar/wp-content/uploads/gal07.jpg",
-                  "https://larocadelapatagonia.com.ar/wp-content/uploads/serv11.jpg"
+                  "https://larocadelapatagonia.com.ar/wp-content/uploads/serv11.jpg",
+                  "https://larocadelapatagonia.com.ar/wp-content/uploads/serv12.jpg"
                 ],
                 "notas_adicionales": "A 3 km del Parque Nacional Los Arrayanes y de la carretera a la estación de esquí de Bayo. A 5 minutos a pie de la Terminal de Ómnibus y la plaza principal. En el núcleo comercial de Villa La Angostura, a 150 m de la avenida principal.",
                 "calificacion_ia": 7.5,
@@ -678,6 +679,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787879845715
+    "updated_at": 1787879858999
   }
 }
