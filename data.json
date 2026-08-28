@@ -669,7 +669,8 @@
                   "fotos del establecimiento",
                   "calificaciones de huéspedes"
                 ],
-                "texto_original_resumido": "Habitación doble con baño privado, desayuno incluido, a $100.000 ARS/noche en La Roca de la Patagonia, Villa la Angostura."
+                "texto_original_resumido": "Habitación doble con baño privado, desayuno incluido, a $100.000 ARS/noche en La Roca de la Patagonia, Villa la Angostura.",
+                "foto_portada": "https://larocadelapatagonia.com.ar/wp-content/uploads/gal07.jpg"
               },
               "editado_manualmente": false
             }
@@ -679,6 +680,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787879858999
+    "updated_at": 1787879863814
   }
 }
