@@ -959,29 +959,49 @@ async function syncNow() {
     setSyncStatus('syncing', '🔄 Sync...');
     // 1) BAJAR lo publicado (cache-bust) — sin auth, todos lo ven
     const res = await fetch(rawDataUrl() + '?_t=' + Date.now());
-    if (res.ok) {
-      const data = await res.json();
-      if (isValidCloudData(data)) {
-        const remoteTs = (data.meta && data.meta.updated_at) || 0;
-        if (remoteTs > localTs()) {
-          syncingRemote = true;
-          state.viajes = data.viajes || [];
-          state.meta = data.meta ? { ...data.meta } : { updated_at: remoteTs };
-          migrateState();
-          saveState();
-          syncingRemote = false;
-          lastUploadedTs = localTs();
-          // Solo re-renderiza el contenido de la vista actual, sin cambiar de pantalla
-          renderAfterSync();
-        }
-      }
+    const remote = res.ok ? await res.json().catch(() => null) : null;
+    const remoteOk = remote && isValidCloudData(remote);
+    const remoteTs = remoteOk ? ((remote.meta && remote.meta.updated_at) || 0) : 0;
+    const localTripCount = (state.viajes || []).length;
+    const remoteTripCount = remoteOk ? (remote.viajes || []).length : 0;
+
+    // Preferir SIEMPRE la nube cuando es una fuente válida y está más completa
+    // o más reciente que el estado local. Esto evita que un dispositivo con
+    // localStorage vacío/viejo borre los datos para todos.
+    const remoteWins =
+      remoteOk && (
+        (localTripCount === 0 && remoteTripCount > 0) ||
+        (remoteTripCount > localTripCount) ||
+        (remoteTripCount === localTripCount && remoteTs > localTs())
+      );
+
+    if (remoteWins) {
+      syncingRemote = true;
+      state.viajes = remote.viajes || [];
+      state.meta = remote.meta ? { ...remote.meta } : { updated_at: remoteTs };
+      migrateState();
+      saveState();
+      syncingRemote = false;
+      lastUploadedTs = localTs();
+      setSyncStatus('ok', '✅ Datos restaurados');
+      // Solo re-renderiza el contenido de la vista actual, sin cambiar de pantalla
+      renderAfterSync();
     }
 
-    // 2) SUBIR cambios de este dispositivo (solo si tiene token y cambió algo)
-    if (localTs() > lastUploadedTs && getToken()) {
+    // 2) SUBIR cambios de este dispositivo SOLO si:
+    //    - tiene token,
+    //    - no perdió contra la nube en el paso anterior, y
+    //    - este dispositivo tiene datos propios (nunca subir un estado vacío
+    //      que pisaría la nube). "Datos propios" = tiene viajes, o localTs más
+    //      nuevo que la nube con al menos tantos viajes.
+    const localHasData =
+      localTripCount > 0 &&
+      (remoteTripCount === 0 || localTripCount >= remoteTripCount);
+
+    if (!remoteWins && localHasData && localTs() > lastUploadedTs && getToken()) {
       setSyncStatus('syncing', '☁️ Guardando...');
       await pushCurrentState();
-    } else {
+    } else if (!remoteWins) {
       setSyncStatus('ok', '✅ Nube lista');
     }
   } catch(e) {
@@ -992,6 +1012,9 @@ async function syncNow() {
 async function pushCurrentState() {
   const token = getToken();
   if (!token) return;
+  // Protección anti-clobbering: nunca publicar un estado sin viajes. SIEMPRE
+  // debe haber contenido, o no subimos (evita borrar la nube para todos).
+  if (!Array.isArray(state.viajes) || state.viajes.length === 0) return;
   const api = apiDataUrl();
   const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' };
 
@@ -2068,7 +2091,6 @@ REGLAS OBLIGATORIAS:
 1. TITULO COMPLETO EN CADA OPCION: En "nombre", SIEMPRE combina el nombre del complejo o establecimiento con la opción específica. Ejemplo: "Bungalows Nahuel Malal — Bungalow B". NUNCA devuelvas solo "Bungalow B" o "Opción A".
 2. PRECIOS COMO NÚMEROS PUROS: "precio_por_noche" y "precio_total" deben ser números enteros sin letras ni símbolos (ej: 107000, NUNCA "ARS 107000").
 3. CONTACTO E INSTAGRAM: Extrae teléfonos, WhatsApp, emails y cuentas de Instagram (ej: @bungalows.nahuelmalal).
-4. LINKS Y FOTOS: Si hay enlaces a Booking, Instagram, Google Drive o fotos en el mensaje, agrégalos a "fotos_urls".
 
 ESTRUCTURA EXACTA REQUERIDA:
 
@@ -2260,12 +2282,6 @@ async function callGemini(prompt) {
   }
   throw lastError || new Error('Sin créditos en todas las keys de Gemini.');
 }
-
-// Modelos de Groq (100% gratis en console.groq.com)
-const GROQ_MODELS = [
-  'llama-3.3-70b-versatile',
-  'llama-3.1-8b-instant'
-];
 
 async function callGroqKey(key, prompt) {
   let lastErr = null;
