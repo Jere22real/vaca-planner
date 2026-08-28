@@ -651,7 +651,9 @@
                 "forma_pago": "Depósito bancario, Mercado Pago",
                 "contacto": "Nicolas Scala / Email: larocahosteria@gmail.com / Tel: 0294-4494497 / WhatsApp: +54 9 2944 214750",
                 "instagram": null,
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://larocadelapatagonia.com.ar/wp-content/uploads/20250501_094229-scaled.jpg"
+                ],
                 "notas_adicionales": "A 3 km del Parque Nacional Los Arrayanes y de la carretera a la estación de esquí de Bayo. A 5 minutos a pie de la Terminal de Ómnibus y la plaza principal. En el núcleo comercial de Villa La Angostura, a 150 m de la avenida principal.",
                 "calificacion_ia": 7.5,
                 "razon_calificacion": "Ubicación céntrica con vista panorámica al Cerro Bayo, desayuno incluido y servicios completos en hostería de estilo alpino",
@@ -674,6 +676,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787879515078
+    "updated_at": 1787879750515
   }
 }
