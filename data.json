@@ -710,9 +710,7 @@
                 "forma_pago": "50% de la estadía como depósito al reservar (reservas de una noche abonan el total). Saldo restante al check-in con tarjeta de crédito o débito (Visa/MasterCard) o en efectivo.",
                 "contacto": "info@arbolarweb.com.ar / Tel: +54 9 294 423-4589",
                 "instagram": null,
-                "fotos_urls": [
-                  "https://arbolarweb.com.ar/web/apart-8/"
-                ],
+                "fotos_urls": [],
                 "notas_adicionales": "8 unidades en el complejo, cada una con deck y parrilla propia. Estacionamiento frente a cada apart, techado según categoría. Recepción abierta de 9 a 22 hs. No se permite ingreso de mascotas. No hay servicio de desayuno; se deja un desayuno seco de bienvenida (té, café, azúcar, leche en polvo, endulzantes). Blancos completos con recambio cada 3 noches. Mucama diaria (no incluye lavado de vajilla). Club House con piscinas climatizadas (adultos y niños), vestuarios, toallones, sala de juegos (pool, metegol, ping-pong), gimnasio y juegos infantiles al aire libre. El complejo no se responsabiliza por condiciones climáticas siempre que haya al menos un acceso habilitado. Unidad ubicada en planta baja junto a la recepción. Consultar al reservar si se viaja con persona con movilidad reducida. Los números de unidades pueden modificarse por disponibilidad o mantenimiento.",
                 "calificacion_ia": 7.5,
                 "razon_calificacion": "Buena infraestructura con piscinas climatizadas, gimnasio y juegos; ubicación en Villa La Angostura con acceso a naturaleza. Punto débil: sin desayuno completo, sin mascotas permitidas y sin referencia de precio en dólares.",
@@ -734,6 +732,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787880159652
+    "updated_at": 1787880236960
   }
 }
