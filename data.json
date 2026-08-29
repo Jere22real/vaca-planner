@@ -223,7 +223,8 @@
                 ],
                 "texto_original_resumido": "Habitación Doble Estándar con vista al lago por $270.000 ARS (promoción efectivo/transferencia por 3 noches) o $300.000 ARS precio estándar.",
                 "alojamiento_general": "Tangoinn Bariloche",
-                "web_link": "https://tangoinn.com/index.php/hostel/"
+                "web_link": "https://tangoinn.com/index.php/hostel/",
+                "foto_portada": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/638116387.jpg?k=570ecd77b896dec031c158b99706b0c03870bc38221df2430cb5a0d7b9cc6a2c&o="
               },
               "editado_manualmente": false
             },
@@ -736,6 +737,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787880397619
+    "updated_at": 1787967455263
   }
 }
