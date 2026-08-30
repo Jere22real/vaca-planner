@@ -787,7 +787,9 @@
                 "forma_pago": "Visa y MasterCard (3 cuotas sin interés), transferencia bancaria (10% de descuento)",
                 "contacto": "No disponible en el mensaje",
                 "instagram": null,
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://dynamic-media-cdn.tripadvisor.com/media/photo-s/02/c9/1e/57/hosteria-cohuel.jpg?w=600&h=-1&s=1"
+                ],
                 "notas_adicionales": "Tarifa final que incluye desayuno y servicio diario de mucama. Ubicada en el bosque de Puerto Manzano, Villa La Angostura, a orillas del lago Nahuel Huapi. Check-in: 12:00 h / Check-out: 10:00 h. 17 habitaciones equipadas con baño privado, calefacción y aire acondicionado. Web: https://www.cohuel.com.ar/es/",
                 "calificacion_ia": null,
                 "razon_calificacion": "No es posible calificar: no se proporcionan fotos, reseñas ni datos completos de contacto",
@@ -816,6 +818,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788133858862
+    "updated_at": 1788133929914
   }
 }
