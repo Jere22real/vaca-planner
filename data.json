@@ -730,6 +730,85 @@
                 "texto_original_resumido": "Monoambiente de 24 m² en planta baja para 2 personas (capacidad hasta 4) con cocina integrada, sommier Queen, baño completo, deck con parrilla, TV DIRECTV, Wi-fi y calefacción a gas. Tarifa $90.000 ARS/noche. Apart Hotel Arbolar en Villa La Angostura."
               },
               "editado_manualmente": false
+            },
+            {
+              "id": "mtggqbsd3t8s1",
+              "fecha_agregado": "2026-08-30T23:50:58.861Z",
+              "mail_original": "¡Hola! 😊 Te comparto nuestras tarifas de *Temporada Media/Baja – Hostería Cohuel*:\n\n* Habitación Doble: *$95.000*\n\nLas tarifas son *finales* e incluyen *desayuno y servicio diario de mucama* ☕🛏️\n\n\n\nTambién contamos con beneficios de pago:\n💳 *3 cuotas sin interés con Visa y MasterCard*\n💰 *10% de descuento abonando por transferencia*\n\nQuedo a disposición por cualquier consulta o si necesitás información sobre disponibilidad 😊\n\nHostería Cohuel se encuentra en el bosque de Puerto Manzano, Villa La Angostura, una aldea de montaña enmarcada en una zona paradisíaca de la Patagonia Argentina.\nVilla La Angostura se encuentra a orillas del espectacular lago Nahuel Huapi e inmersa en un bosque centenario.Mezclada entre pinos, coihues, radales, ñires, maitenes, cipreses y múltiples y coloridas flores, Cohuel surge a la vista del caminante en total armonía con el ambiente e integrándose al medio natural de manera espontánea. Belleza, sencillez y comodidad son características del bosque al cual pertenecemos y donde el poder de la naturaleza, con sus colores, texturas, aromas y sonidos, lo inunda todo. Los invitamos a disfrutar de los paisajes que Villa La Angostura y la Patagonia ofrecen...\n\nHostería Cohuel es un encantador alojamiento ubicado en el corazón del bosque de Puerto Manzano, en Villa La Angostura, una pintoresca aldea de montaña situada en una de las zonas más paradisíacas de la Patagonia Argentina. Con un total de 17 habitaciones, todas equipadas con baño privado, calefacción y aire acondicionado, la hostería ofrece un ambiente cálido y acogedor. Las habitaciones están decoradas de manera sencilla, pero con mucho encanto, y algunas de ellas permiten disfrutar de vistas al exuberante bosque o al impresionante lago Nahuel Huapi.\n\nPara asegurar una estadía placentera, Hostería Cohuel pone a disposición de sus huéspedes una variedad de servicios, incluyendo un delicioso desayuno casero servido en un acogedor desayunador. Además, dispone de un restaurante, un bar, una piscina climatizada y un relajante spa, lo que garantiza una experiencia completa de descanso y bienestar.\n\nSu ubicación es ideal para aquellos que buscan explorar la belleza natural de la zona, estando a solo 2 kilómetros del acceso al centro de esquí Cerro Bayo y a pocos minutos de las playas del lago Nahuel Huapi. Los huéspedes de Hostería Cohuel tienen la oportunidad de disfrutar de la tranquilidad y magia de la Patagonia, sin renunciar a las comodidades que ofrece este acogedor refugio.\n\nServicios\n\nAlquiler por día\nAlquiler por semana\nAmenities en el baño\nBañera\nBiblioteca\nCaja de seguridad en el establecimiento\nCalefacción\nCancha de golf a menos de 5 Km.\nCon vista al cerro\nDepósito de equipaje\nDesayuno\nEn el centro de esquí\nEn las afueras\nEn parque nacional\nEstacionamiento gratis\nHogar a leña\nInformación turística\nParrilla individual\nRecreación\nRoom Service\nSecador de cabello\nServicio de despertador\nServicio de limpieza\nTerraza / Solárium\nTransfers pago\nWi-Fi gratis\nDistancia al aeropuerto: 65 kilometros\nAtención Personalizada\nJardin de 3000 Mts.\nCheck in: 12:00 h\nCheck out: 10:00 h",
+              "datos": {
+                "nombre": "Hostería Cohuel — Habitación Doble (Temporada Media/Baja)",
+                "tipo": "hosteria",
+                "precio_por_noche": 95000,
+                "moneda": "ARS",
+                "precio_total": 95000,
+                "precio_noche_usd": null,
+                "referencia_dolar": null,
+                "fechas_disponibles": "Temporada Media/Baja (fechas específicas no indicadas)",
+                "capacidad": "2 personas",
+                "habitaciones": 1,
+                "banos": 1,
+                "caracteristicas": [
+                  "Baño privado",
+                  "Calefacción",
+                  "Aire acondicionado",
+                  "Desayuno incluido",
+                  "Servicio diario de mucama",
+                  "Hogar a leña",
+                  "Parrilla individual",
+                  "Wi-Fi gratis",
+                  "Estacionamiento gratis",
+                  "Piscina climatizada",
+                  "Spa",
+                  "Restaurante",
+                  "bar",
+                  "Terraza / Solárium",
+                  "Sala de estar / Biblioteca",
+                  "Caja de seguridad",
+                  "Secador de cabello",
+                  "Amenities en el baño / Bañera",
+                  "Servicio de limpieza",
+                  "Servicio de despertador",
+                  "Room Service",
+                  "Depósito de equipaje",
+                  "Información turística",
+                  "Recreación",
+                  "Transfers",
+                  "Jardín de 3000 m²",
+                  "Con vista al cerro",
+                  "Algunas habitaciones con vista al lago Nahuel Huapi o al bosque",
+                  "En parque nacional",
+                  "Cerca del centro de esquí Cerro Bayo (2 km)",
+                  "Cerca de playas del lago Nahuel Huapi",
+                  "Cancha de golf a menos de 5 km",
+                  "Alquiler por día y por semana"
+                ],
+                "ubicacion": "Puerto Manzano, Villa La Angostura, Patagonia Argentina (a 2 km del acceso a Cerro Bayo, 65 km del aeropuerto)",
+                "politica_cancelacion": "No especificada en el mensaje",
+                "forma_pago": "Visa y MasterCard (3 cuotas sin interés), transferencia bancaria (10% de descuento)",
+                "contacto": "No disponible en el mensaje",
+                "instagram": null,
+                "fotos_urls": [],
+                "notas_adicionales": "Tarifa final que incluye desayuno y servicio diario de mucama. Ubicada en el bosque de Puerto Manzano, Villa La Angostura, a orillas del lago Nahuel Huapi. Check-in: 12:00 h / Check-out: 10:00 h. 17 habitaciones equipadas con baño privado, calefacción y aire acondicionado. Web: https://www.cohuel.com.ar/es/",
+                "calificacion_ia": null,
+                "razon_calificacion": "No es posible calificar: no se proporcionan fotos, reseñas ni datos completos de contacto",
+                "datos_faltantes": [
+                  "teléfono de contacto",
+                  "WhatsApp",
+                  "email",
+                  "cuenta de Instagram",
+                  "referencia de dólar",
+                  "precio_total por estadía",
+                  "fechas disponibles específicas",
+                  "política de cancelación",
+                  "fotos",
+                  "calificación/reseñas",
+                  "opciones de habitaciones adicionales",
+                  "capacidad máxima por habitación",
+                  "precio por semana"
+                ],
+                "texto_original_resumido": "Hostería Cohuel ofrece Habitación Doble a $95.000 ARS/noche en temporada Media/Baja, con desayuno y mucama incluidos. 3 cuotas sin interés con Visa/MC y 10% descuento por transferencia. Ubicada en Puerto Manzano, Villa La Angostura, con servicios de spa, pileta climatizada, restaurante y bar."
+              },
+              "editado_manualmente": false
             }
           ]
         }
@@ -737,6 +816,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788133350562
+    "updated_at": 1788133858862
   }
 }
