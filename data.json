@@ -299,7 +299,7 @@
         },
         {
           "id": "mt97xninyrzd0",
-          "nombre": "Villa Traful",
+          "nombre": "Villa La Angostura",
           "emoji": "🌄",
           "hospedajes": [
             {
@@ -737,6 +737,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1787967455263
+    "updated_at": 1788133350562
   }
 }
