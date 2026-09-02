@@ -269,7 +269,8 @@
       background: rgba(124,111,247,0.1); border: 1px solid rgba(124,111,247,0.2);
       border-radius: 5px; padding: 2px 8px; font-size: 0.72rem; color: var(--accent);
     }
-    .feat-tag.more { background: var(--bg3); border-color: var(--border); color: var(--text3); }
+    .feat-tag.more { background: var(--bg3); border-color: var(--border); color: var(--text3); cursor: pointer; transition: var(--trans); }
+    .feat-tag.more:hover { border-color: var(--accent); color: var(--accent); }
 
     .hosp-extra { font-size: 0.78rem; color: var(--text2); }
     .hosp-extra strong { color: var(--text); }
@@ -278,7 +279,9 @@
     .missing-tag {
       background: rgba(240,82,82,0.08); border: 1px solid rgba(240,82,82,0.2);
       border-radius: 5px; padding: 1px 7px; font-size: 0.70rem; color: var(--red);
+      cursor: pointer; transition: var(--trans);
     }
+    .missing-tag:hover { background: rgba(240,82,82,0.2); transform: translateY(-1px); }
 
     .hosp-card-footer {
       padding: 12px 20px; border-top: 1px solid var(--border);
@@ -806,6 +809,92 @@ Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-photos')">Listo ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Editar Hospedaje / Cambiar Ciudad -->
+<div class="modal-overlay hidden" id="modal-edit-hosp">
+  <div class="modal" style="max-width:560px;">
+    <div class="modal-header">
+      <span class="modal-title">✏️ Editar Hospedaje y Datos</span>
+      <button class="modal-close" onclick="closeModal('modal-edit-hosp')">✕</button>
+    </div>
+    <div class="modal-body" style="display:flex;flex-direction:column;gap:12px;">
+      <div class="form-group">
+        <label>🗺️ Ciudad / Destino (Transferir)</label>
+        <select id="edithosp-destino"></select>
+      </div>
+      <div class="form-group">
+        <label>Nombre del Hospedaje</label>
+        <input type="text" id="edithosp-nombre" placeholder="Ej: Bungalows Nahuel Malal — Bungalow B">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="form-group">
+          <label>Precio por Noche</label>
+          <input type="number" id="edithosp-precio-noche" placeholder="Ej: 107000">
+        </div>
+        <div class="form-group">
+          <label>Precio Total</label>
+          <input type="number" id="edithosp-precio-total" placeholder="Ej: 321000">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+        <div class="form-group">
+          <label>Moneda</label>
+          <input type="text" id="edithosp-moneda" placeholder="ARS / USD">
+        </div>
+        <div class="form-group">
+          <label>Habitaciones</label>
+          <input type="number" id="edithosp-habitaciones" placeholder="Ej: 2">
+        </div>
+        <div class="form-group">
+          <label>Baños</label>
+          <input type="number" id="edithosp-banos" placeholder="Ej: 1">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="form-group">
+          <label>Capacidad</label>
+          <input type="text" id="edithosp-capacidad" placeholder="Ej: 2 a 4 personas">
+        </div>
+        <div class="form-group">
+          <label>Fechas Disponibles</label>
+          <input type="text" id="edithosp-fechas" placeholder="Ej: 15/01 al 22/01">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>📍 Ubicación</label>
+        <input type="text" id="edithosp-ubicacion" placeholder="Ej: Av. Bustillo km 12.4, Bariloche">
+      </div>
+      <div class="form-group">
+        <label>✨ Características (separadas por comas)</label>
+        <input type="text" id="edithosp-caracteristicas" placeholder="Ej: Vista al lago, WiFi, Parrilla, Cochera">
+      </div>
+      <div class="form-group">
+        <label>📋 Política de Cancelación</label>
+        <input type="text" id="edithosp-cancelacion" placeholder="Ej: Reserva 30%, reintegro hasta 10 días antes">
+      </div>
+      <div class="form-group">
+        <label>💳 Forma de Pago</label>
+        <input type="text" id="edithosp-pago" placeholder="Ej: Efectivo, Transferencia, MP">
+      </div>
+      <div class="form-group">
+        <label>📞 Contacto / Teléfono / WhatsApp</label>
+        <input type="text" id="edithosp-contacto" placeholder="Ej: +54 9 2944 123456">
+      </div>
+      <div class="form-group">
+        <label>⚠️ Datos Faltantes (separados por comas)</label>
+        <input type="text" id="edithosp-faltantes" placeholder="Ej: Horario check-in, Depósito de garantía">
+      </div>
+      <div class="form-group">
+        <label>🗒️ Notas Adicionales</label>
+        <textarea id="edithosp-notas" style="height:65px;"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-edit-hosp')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveEditHosp()">💾 Guardar Cambios</button>
     </div>
   </div>
 </div>
@@ -1637,12 +1726,12 @@ function hospCard(h) {
         <span>📍</span><span>${esc(d.ubicacion)}</span>
       </div>` : ''}
 
-      ${shownFeats.length ? `
+      ${feats.length ? `
       <div>
         <div class="section-label">Características</div>
-        <div class="features-list">
+        <div class="features-list" id="feats-list-${h.id}">
           ${shownFeats.map(f=>`<span class="feat-tag">${esc(f)}</span>`).join('')}
-          ${extraFeats > 0 ? `<span class="feat-tag more">+${extraFeats} más</span>` : ''}
+          ${extraFeats > 0 ? `<span class="feat-tag more" onclick="toggleAllFeats('${h.id}')" id="feats-btn-${h.id}">+${extraFeats} más</span>` : ''}
         </div>
       </div>` : ''}
 
@@ -1664,16 +1753,17 @@ function hospCard(h) {
 
       ${missing.length ? `
       <div>
-        <div class="section-label" style="color:var(--red);">⚠️ Datos faltantes</div>
+        <div class="section-label" style="color:var(--red);">⚠️ Datos faltantes (clic para completar)</div>
         <div class="missing-tags">
-          ${missing.map(m=>`<span class="missing-tag">${esc(m)}</span>`).join('')}
+          ${missing.map(m=>`<span class="missing-tag" onclick="openEditHosp('${h.id}')" title="Clic para agregar o editar este dato">${esc(m)}</span>`).join('')}
         </div>
       </div>` : ''}
     </div>
     <div class="hosp-card-footer">
+      <button class="btn btn-ghost btn-sm" onclick="openEditHosp('${h.id}')" title="Editar datos o cambiar ciudad">✏️ Editar</button>
       <button class="btn btn-ghost btn-sm" onclick="openPhotoModal('${h.id}')">📷 Fotos (${photos.length})</button>
       <button class="btn btn-ghost btn-sm" onclick="openWebLink('${h.id}')">🔗 Link</button>
-      <button class="btn btn-ghost btn-sm" onclick="viewMail('${h.id}')">📧 Ver mail</button>
+      <button class="btn btn-ghost btn-sm" onclick="viewMail('${h.id}')">📧 Mail</button>
       <button class="btn btn-danger btn-sm" onclick="confirmDeleteHosp('${h.id}')">🗑️</button>
     </div>
   </div>`;
@@ -1892,6 +1982,126 @@ function getHospById(id) {
     if (h) return h;
   }
   return null;
+}
+
+function toggleAllFeats(hospId) {
+  const hosp = getHospById(hospId);
+  if (!hosp) return;
+  const feats = (hosp.datos && hosp.datos.caracteristicas) || [];
+  const container = document.getElementById(`feats-list-${hospId}`);
+  if (!container) return;
+
+  const isExpanded = container.getAttribute('data-expanded') === 'true';
+  if (isExpanded) {
+    const shown = feats.slice(0, 5);
+    const extra = feats.length - 5;
+    container.innerHTML = `
+      ${shown.map(f => `<span class="feat-tag">${esc(f)}</span>`).join('')}
+      ${extra > 0 ? `<span class="feat-tag more" onclick="toggleAllFeats('${hospId}')" id="feats-btn-${hospId}">+${extra} más</span>` : ''}
+    `;
+    container.setAttribute('data-expanded', 'false');
+  } else {
+    container.innerHTML = feats.map(f => `<span class="feat-tag">${esc(f)}</span>`).join('') +
+      `<span class="feat-tag more" onclick="toggleAllFeats('${hospId}')" id="feats-btn-${hospId}">Ver menos ▴</span>`;
+    container.setAttribute('data-expanded', 'true');
+  }
+}
+
+let editingFullHospId = null;
+
+function openEditHosp(hospId) {
+  const hosp = getHospById(hospId);
+  if (!hosp) return;
+  editingFullHospId = hospId;
+  const d = hosp.datos || {};
+  const trip = getCurrentTrip();
+  if (!trip) return;
+
+  // Cargar selector de destino / ciudad para transferir
+  const destSelect = document.getElementById('edithosp-destino');
+  destSelect.innerHTML = (trip.destinos || []).map(dest =>
+    `<option value="${dest.id}">${esc(dest.emoji || '🗺️')} ${esc(dest.nombre)}</option>`
+  ).join('');
+
+  // Encontrar en qué destino se encuentra actualmente
+  const currentDest = (trip.destinos || []).find(dest =>
+    (dest.hospedajes || []).some(h => h.id === hospId)
+  );
+  if (currentDest) destSelect.value = currentDest.id;
+
+  // Llenar campos del modal con los datos actuales
+  document.getElementById('edithosp-nombre').value = getFullTitle(d) || '';
+  document.getElementById('edithosp-precio-noche').value = d.precio_por_noche || '';
+  document.getElementById('edithosp-precio-total').value = d.precio_total || '';
+  document.getElementById('edithosp-moneda').value = d.moneda || 'ARS';
+  document.getElementById('edithosp-habitaciones').value = d.habitaciones || '';
+  document.getElementById('edithosp-banos').value = d.banos || '';
+  document.getElementById('edithosp-capacidad').value = d.capacidad || '';
+  document.getElementById('edithosp-fechas').value = d.fechas_disponibles || '';
+  document.getElementById('edithosp-ubicacion').value = d.ubicacion || '';
+  document.getElementById('edithosp-caracteristicas').value = (d.caracteristicas || []).join(', ');
+  document.getElementById('edithosp-cancelacion').value = d.politica_cancelacion || '';
+  document.getElementById('edithosp-pago').value = d.forma_pago || '';
+  document.getElementById('edithosp-contacto').value = d.contacto || '';
+  document.getElementById('edithosp-faltantes').value = (d.datos_faltantes || []).join(', ');
+  document.getElementById('edithosp-notas').value = d.notas_adicionales || '';
+
+  openModal('modal-edit-hosp');
+}
+
+function saveEditHosp() {
+  const hosp = getHospById(editingFullHospId);
+  if (!hosp) return;
+  const trip = getCurrentTrip();
+  if (!trip) return;
+
+  const newDestId = document.getElementById('edithosp-destino').value;
+  const d = hosp.datos || {};
+
+  // Actualizar datos
+  d.nombre = document.getElementById('edithosp-nombre').value.trim() || d.nombre;
+  d.precio_por_noche = parseInt(document.getElementById('edithosp-precio-noche').value) || null;
+  d.precio_total = parseInt(document.getElementById('edithosp-precio-total').value) || null;
+  d.moneda = document.getElementById('edithosp-moneda').value.trim().toUpperCase() || 'ARS';
+  d.habitaciones = parseInt(document.getElementById('edithosp-habitaciones').value) || null;
+  d.banos = parseInt(document.getElementById('edithosp-banos').value) || null;
+  d.capacidad = document.getElementById('edithosp-capacidad').value.trim() || null;
+  d.fechas_disponibles = document.getElementById('edithosp-fechas').value.trim() || null;
+  d.ubicacion = document.getElementById('edithosp-ubicacion').value.trim() || null;
+
+  const featsRaw = document.getElementById('edithosp-caracteristicas').value;
+  d.caracteristicas = featsRaw ? featsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+  d.politica_cancelacion = document.getElementById('edithosp-cancelacion').value.trim() || null;
+  d.forma_pago = document.getElementById('edithosp-pago').value.trim() || null;
+  d.contacto = document.getElementById('edithosp-contacto').value.trim() || null;
+
+  const missingRaw = document.getElementById('edithosp-faltantes').value;
+  d.datos_faltantes = missingRaw ? missingRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+
+  d.notas_adicionales = document.getElementById('edithosp-notas').value.trim() || null;
+  hosp.editado_manualmente = true;
+
+  // Lógica de transferencia entre destinos/ciudades
+  let currentDest = (trip.destinos || []).find(dest =>
+    (dest.hospedajes || []).some(h => h.id === editingFullHospId)
+  );
+
+  if (currentDest && currentDest.id !== newDestId) {
+    // Remover de la ciudad anterior
+    currentDest.hospedajes = currentDest.hospedajes.filter(h => h.id !== editingFullHospId);
+    // Agregar a la nueva ciudad
+    const targetDest = (trip.destinos || []).find(dest => dest.id === newDestId);
+    if (targetDest) {
+      targetDest.hospedajes = targetDest.hospedajes || [];
+      targetDest.hospedajes.push(hosp);
+    }
+  }
+
+  saveState();
+  closeModal('modal-edit-hosp');
+  renderHospedajes();
+  toast('Hospedaje actualizado correctamente ✨', 'success');
 }
 
 function openEditScore(hospId) {
