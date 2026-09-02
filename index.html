@@ -191,15 +191,43 @@
       display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;
     }
 
-    /* ===== DESTINOS / CIUDADES ===== */
-    .destino-section { grid-column: 1 / -1; margin-bottom: 8px; }
+    /* ===== DESTINOS / CIUDADES (GRUPO / CONTENEDOR) ===== */
+    .destino-section {
+      grid-column: 1 / -1;
+      margin-bottom: 24px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 16px;
+      transition: var(--trans);
+    }
+    .destino-section:hover {
+      border-color: var(--border2);
+      border-left-color: var(--accent);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
     .destino-header {
       display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
       background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 14px 18px; margin-bottom: 16px;
+      padding: 12px 18px; margin-bottom: 16px; position: sticky; top: 70px; z-index: 10;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
-    .destino-title { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.02em; }
+    .destino-title { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.02em; cursor: pointer; user-select: none; }
     .destino-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .destino-collapse-btn {
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 6px;
+      padding: 4px 10px; font-size: 0.8rem; cursor: pointer; transition: var(--trans);
+      color: var(--text2); display: inline-flex; align-items: center; gap: 6px;
+    }
+    .destino-collapse-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .city-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(124,111,247,0.12); border: 1px solid rgba(124,111,247,0.25);
+      color: var(--accent); border-radius: 6px; padding: 2px 8px; font-size: 0.73rem;
+      font-weight: 700; margin-bottom: 6px;
+    }
 
     /* ===== HOSPEDAJE CARD ===== */
     .hosp-card {
@@ -1612,23 +1640,24 @@ function renderGrid(trip) {
   grid.innerHTML = destinos.map(d => {
     const hosps = d.hospedajes || [];
     const cardsHtml = hosps.length
-      ? `<div class="hospedajes-grid">${hosps.map(h => hospCard(h)).join('')}</div>`
+      ? `<div class="hospedajes-grid" id="destino-grid-${d.id}">${hosps.map(h => hospCard(h, d)).join('')}</div>`
       : `
-        <div class="empty-state">
+        <div class="empty-state" id="destino-grid-${d.id}">
           <div class="empty-icon">🏨</div>
           <div class="empty-title">Sin hospedajes en ${esc(d.nombre)}</div>
           <p class="empty-sub">Agregá el primer hospedaje de esta ciudad.</p>
           <button class="btn btn-primary" onclick="openAddHosp('${d.id}')">➕ Agregar hospedaje</button>
         </div>`;
     return `
-    <div class="destino-section">
-      <div class="destino-header">
+    <div class="destino-section" id="destino-sec-${d.id}">
+      <div class="destino-header" onclick="toggleDestinoSection('${d.id}')">
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <button class="destino-collapse-btn" id="dest-btn-${d.id}">▾ Plegar</button>
           <span style="font-size:1.3rem;">${esc(d.emoji||'🗺️')}</span>
           <span class="destino-title">${esc(d.nombre)}</span>
           <span class="trip-badge accent">${hosps.length} hospedaje${hosps.length!==1?'s':''}</span>
         </div>
-        <div class="destino-actions">
+        <div class="destino-actions" onclick="event.stopPropagation()">
           <button class="btn btn-ghost btn-sm" onclick="openAddHosp('${d.id}')">➕ Hospedaje</button>
           <button class="btn btn-ghost btn-sm btn-icon" onclick="openEditDestino('${d.id}')" title="Renombrar ciudad">✏️</button>
           <button class="btn btn-danger btn-sm btn-icon" onclick="confirmDeleteDestino('${d.id}')" title="Eliminar ciudad">🗑️</button>
@@ -1639,7 +1668,22 @@ function renderGrid(trip) {
   }).join('');
 }
 
-function hospCard(h) {
+function toggleDestinoSection(destinoId) {
+  const container = document.getElementById(`destino-grid-${destinoId}`);
+  const btn = document.getElementById(`dest-btn-${destinoId}`);
+  if (!container || !btn) return;
+
+  const isHidden = container.style.display === 'none';
+  if (isHidden) {
+    container.style.display = '';
+    btn.textContent = '▾ Plegar';
+  } else {
+    container.style.display = 'none';
+    btn.textContent = '▸ Desplegar';
+  }
+}
+
+function hospCard(h, destObj) {
   const d = h.datos || {};
   const score = d.calificacion_ia;
   const scoreClass = score >= 7.5 ? 'high' : score >= 5 ? 'mid' : 'low';
@@ -1651,6 +1695,8 @@ function hospCard(h) {
   const photos = d.fotos_urls || [];
 
   const title = getFullTitle(d);
+  const cityName = destObj ? destObj.nombre : (h._destino || '');
+  const cityEmoji = destObj ? (destObj.emoji || '🗺️') : '🗺️';
 
   let priceHtml = '';
   if (d.precio_por_noche) {
@@ -1705,6 +1751,7 @@ function hospCard(h) {
   <div class="hosp-card" id="card-${h.id}">
     <div class="hosp-card-header">
       <div style="flex:1;min-width:0;">
+        ${cityName ? `<div class="city-badge">${esc(cityEmoji)} ${esc(cityName)}</div>` : ''}
         <div class="hosp-name" style="font-size:1.1rem;font-weight:700;">${esc(title)}</div>
         ${d.tipo ? `<span class="hosp-tipo">${esc(d.tipo)}</span>` : ''}
       </div>
