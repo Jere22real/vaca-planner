@@ -974,12 +974,60 @@
           "id": "mtjccotu30a33",
           "nombre": "Villa Traful",
           "emoji": "☆",
-          "hospedajes": []
+          "hospedajes": [
+            {
+              "id": "mtjchfxc0db8q",
+              "fecha_agregado": "2026-09-02T00:15:24.384Z",
+              "mail_original": "Cabañas Ruca Auca.  Villa Traful. \n\nPodra ver las cabañas en la pagina:\nwww. Ruca Auca .com\nMonoambiente: valor diario $ 80.000\n\nReserva: indicar\n- Cabaña. \n- Nombre completo. \n- Dia ingreso. \n- Dia salida. \n- Deposito reserva 20%\n     Atte. Miriam\n\nMonoambiente\nEl refugio perfecto para una escapada inolvidable.\n\nPensado para 1 o 2 personas, este monoambiente ofrece un espacio cómodo, funcional y completamente equipado para disfrutar de una estadía tranquila a pocos metros del Lago Traful.\n\nServicios y comodidades\n\n🏡 Capacidad para 1 o 2 personas\n📍 Ubicado a 150 metros del Lago Traful\n🌄 Vista al lago\n🛏️ 1 dormitorio\n🍳 Cocina equipada con:\n\n– Cocina a gas con horno\n– Heladera con freezer\n– Pava eléctrica\n– Cafetera\n– Tostadora\n– Vajilla completa\n\n📺 TV LED con servicio satelital\n📶 Wi-Fi\n🛏️ Ropa de cama y toallas incluidas\n🌿 Jardín privado\n🔥 Parrilla\n\n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n \n\n1234\nServicios\nQueremos que disfrutes una estadía cómoda y sin preocupaciones. Además de todas las comodidades de nuestras cabañas, ofrecemos los siguientes servicios para que aproveches al máximo tu visita a Villa Traful.\n \n\nServicios incluidos:\n\n✨ Limpieza general a partir del tercer día de estadía.\n🗺️ Información turística y asesoramiento sobre actividades, senderos y lugares para visitar en Villa Traful.\n\nServicios adicionales:\n\n☕ Desayuno (con reserva previa).\n🧺 Servicio de lavandería.\n🧹 Limpieza diaria.\n💪 Personal trainer.\n🐎 Cabalgatas.\n🥾 Caminatas guiadas junto a guías habilitados del Parque Nacional Nahuel Huapi.\n✈️ Servicio de Traslado a Aeropuertos.\n\nMascotas\n\n🐾 Se admite una mascota por alojamiento. Para garantizar una buena convivencia y el cuidado de las instalaciones, solicitamos tener en cuenta las siguientes condiciones:\n\nNo está permitido dejar a la mascota sola dentro de la cabaña.\nRecordamos que el ingreso de mascotas a los senderos y áreas protegidas del Parque Nacional Nahuel Huapi está prohibido por la normativa vigente",
+              "datos": {
+                "nombre": "Cabañas Ruca Auca — Monoambiente",
+                "tipo": "monoambiente",
+                "precio_por_noche": 80000,
+                "moneda": "ARS",
+                "precio_total": null,
+                "precio_noche_usd": null,
+                "referencia_dolar": null,
+                "fechas_disponibles": null,
+                "capacidad": "1 a 2 personas",
+                "habitaciones": 1,
+                "banos": 1,
+                "caracteristicas": [
+                  "Vista al lago",
+                  "Cocina equipada",
+                  "TV LED con servicio satelital",
+                  "Wi-Fi",
+                  "Ropa de cama y toallas incluidas",
+                  "Jardín privado",
+                  "Parrilla",
+                  "A 150 metros del Lago Traful"
+                ],
+                "ubicacion": "Villa Traful, a 150 metros del Lago Traful",
+                "politica_cancelacion": "Reserva mediante depósito del 20%",
+                "forma_pago": "Depósito de reserva",
+                "contacto": "Miriam / www.rucaauca.com",
+                "instagram": null,
+                "fotos_urls": [],
+                "notas_adicionales": "Se admite una mascota por alojamiento (con condiciones). Servicios adicionales disponibles: desayuno, lavandería, limpieza diaria, personal trainer, cabalgatas, caminatas guiadas y traslados.",
+                "calificacion_ia": 8.8,
+                "razon_calificacion": "Excelente equipamiento y ubicación privilegiada cerca del lago.",
+                "datos_faltantes": [
+                  "precio_total",
+                  "fechas_disponibles",
+                  "teléfono",
+                  "email",
+                  "instagram",
+                  "horario check-in/out"
+                ],
+                "texto_original_resumido": "Monoambiente para 1 o 2 personas en Villa Traful a $80.000 ARS por noche."
+              },
+              "editado_manualmente": false
+            }
+          ]
         }
       ]
     }
   ],
   "meta": {
-    "updated_at": 1788307939354
+    "updated_at": 1788308124384
   }
 }
