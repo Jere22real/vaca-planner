@@ -2085,14 +2085,14 @@ async function analyzeWithAI() {
 }
 
 function buildPrompt(mailText) {
-  return `Eres un extractor experto de información de hospedajes turísticos. Analiza el siguiente mensaje y extrae TODAS las alternativas u opciones de alojamiento ofrecidas.
+  return `Extractor experto de datos de hospedajes turísticos. Extrae TODAS las opciones de alojamiento del mensaje, siguiendo esta estructura JSON exacta.
 
-REGLAS OBLIGATORIAS:
-1. TITULO COMPLETO EN CADA OPCION: En "nombre", SIEMPRE combina el nombre del complejo o establecimiento con la opción específica. Ejemplo: "Bungalows Nahuel Malal — Bungalow B". NUNCA devuelvas solo "Bungalow B" o "Opción A".
-2. PRECIOS COMO NÚMEROS PUROS: "precio_por_noche" y "precio_total" deben ser números enteros sin letras ni símbolos (ej: 107000, NUNCA "ARS 107000").
-3. CONTACTO E INSTAGRAM: Extrae teléfonos, WhatsApp, emails y cuentas de Instagram (ej: @bungalows.nahuelmalal).
+REGLAS:
+1. "nombre" SIEMPRE combina establecimiento + opción específica (ej: "Bungalows Nahuel Malal — Bungalow B"). Nunca solo "Bungalow B" u "Opción A".
+2. "precio_por_noche" y "precio_total": números enteros puros, sin símbolos (107000, no "ARS 107000").
+3. Extraer teléfono, WhatsApp, email e Instagram si aparecen (ej: @bungalows.nahuelmalal).
 
-ESTRUCTURA EXACTA REQUERIDA:
+ESTRUCTURA:
 
 {
   "alojamiento_general": "Bungalows Nahuel Malal",
@@ -2126,11 +2126,10 @@ ESTRUCTURA EXACTA REQUERIDA:
   ]
 }
 
-MENSAJE A ANALIZAR:
+MENSAJE:
 ---
 ${mailText}
 ---
-
 JSON:`;
 }
 
@@ -2192,7 +2191,7 @@ async function callGeminiModel(key, model, prompt) {
       contents: [{ parts: [{ text: prompt }] }],
       generationConfig: {
         temperature: 0.1,
-        maxOutputTokens: 8192,
+        maxOutputTokens: 4096,
         responseMimeType: 'application/json'
       }
     })
@@ -2206,7 +2205,7 @@ async function callGeminiModel(key, model, prompt) {
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {
           temperature: 0.1,
-          maxOutputTokens: 8192
+          maxOutputTokens: 4096
         }
       })
     });
@@ -2234,9 +2233,16 @@ const KEY_SKIP_RE = /api key|invalid|permission|blocked|forbidden|unauthorized|4
 const QUOTA_SKIP_RE = /quota|rate limit|429|resource_exhausted|exhausted/i;
 const MODEL_SKIP_RE = /no longer available|not found|404|not exist|not supported|unavailable/i;
 
+// Orden pensado para equilibrio velocidad/calidad, no solo velocidad:
+// 1) gemini-2.0-flash: el mejor punto medio, rápido y buena calidad de extracción
+// 2) flash-lite / flash-8b: variantes livianas, muy rápidas, calidad algo menor
+// 3) gemini-1.5-flash: buena calidad, algo más lento que 2.0-flash
+// 4) gemini-1.5-pro / gemini-pro: máxima calidad pero lentos — solo si todo lo anterior falló
+const GEMINI_MODEL_PREF = ['gemini-2.0-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-flash-8b', 'gemini-1.5-flash', 'gemini-1.5-pro', 'gemini-pro'];
+
 async function probeGeminiKey(key, prompt) {
   const available = await fetchGeminiAvailableModels(key);
-  const pref = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.0-flash-lite', 'gemini-1.5-pro', 'gemini-pro'];
+  const pref = GEMINI_MODEL_PREF;
   const modelsToTry = [
     ...pref.filter(m => available.includes(m)),
     ...available.filter(m => !pref.includes(m))
@@ -2266,7 +2272,7 @@ async function callGemini(prompt) {
   for (const key of keys) {
     if (exhausted.has(key)) continue;
     const available = await fetchGeminiAvailableModels(key);
-    const pref = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.0-flash-lite', 'gemini-1.5-pro', 'gemini-pro'];
+    const pref = GEMINI_MODEL_PREF;
     const modelsToTry = [
       ...pref.filter(m => available.includes(m)),
       ...available.filter(m => !pref.includes(m))
