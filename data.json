@@ -495,6 +495,49 @@
                 "texto_original_resumido": "Habitación estándar Doble / Matrimonial sin desayuno a $70.000 ARS por noche (Temporada Baja)."
               },
               "editado_manualmente": false
+            },
+            {
+              "id": "mtjemhytmn9zn",
+              "fecha_agregado": "2026-09-02T01:15:19.541Z",
+              "mail_original": "\nHola y gracias por Consultarnos\nEn la fecha solicitada Tenemos Disponibilidad\n.\nSERVICIOS INCLUIDOS en la TARIFA\n* Piscina Climatizada CUBIERTA Abierta todo el año!!\n* Baño y Vestuario dentro de la piscina !\n* Uso del SPA (Sauna e Hidromasajes, la cinta de correr y bicicleta fija)\n* Cancha de Padel (de 15 x 6) (tenemos paletas y pelotitas) y Aro de Básquet\n* 4 Parrillas Exteriores\n* Mirador en la Montaña\n* Mangrullo Gigante con Tobogan, Hamacas, Pasarelas, etc\n* Mini circuito de senderos en montaña (niños)\n* Servicio de Wi - Fi en todo el complejo\nTenemos 2 quinchos:\n* 1 Quincho con 1 Parrilla, Mesa de Pool, y Ping Pong.\n* 1 Quincho Gigante con 3 parrillas, 3 mesas, mesa de Pool, Ping Pong, Metegol y Rockolla!!\n* Hogar a leña en la mayoria de las cabañas.\n* Todos las cabañas tienen Baño con hidromasajes\n* Las camas Matrimoniales son Queen o King Size\n* TV en living, dormitorio Matrimonial y en la mayoria de los otros dormitorios\n* Cocina Completa con vajilla y electrodomesticos\n* Heladera, Microondas, Cafetera, Tostadora, licuadora, juguera\n* Calefacción Central por radiadores\n* Estacionamiento dentro del predio (1 auto x cabaña)\n* Servicio de Mucama diario, Ropa blanca, Toallas y Toallones.\n* Toallas Marrones para la pileta y SPA\n* Amplio Parque con Juegos Infantiles, Casita de bosque, tobogan, etc\n* Cama elastica\n* Sin servicio de Desayuno\n* Ubicadas en el centro de San martin de los Andes\n.\nTemporada Baja (octubre y Nov - Sin feriados-)\nCabaña de 1 Dormitorio hasta 2 personas Tipo \"Cipres\": $ 80.000 x noche\nCabaña de 1 Dormitorio hasta 2 personas Tipo \"Suite Cipres\": $ 80.000 x noche\nCabaña de 1 Dormitorio hasta 2 personas TIPO \"Especial\": $ 90.000 x noche\nCabaña de 1 Dormitorio hasta 2 personas TIPO \"Superior\": $ 100.000 x noche\n.\nDistribución de Plantas:\nLa Cabaña de 1 Dormitorio hasta 2/3 personas TIPO \"Cipres\"  - Esta en 1º piso –\nAbajo: Cocina-comedor, sofa-cama de 1.70 mts. Tv LCD 32\",  Baño completo con hidromasaje. Sin hogar a Leña\nEn Planta Alta: Dormitorio triple (matrimonial + cama) con Tv, (acceso directo por escalera, sin puerta)\n.\nLa Cabaña de 1 Dormitorio hasta 2/3 personas TIPO \"Suite Cipres\": - Esta en 2º piso –\nEn una sola planta: 1 Dormitorio matrimonial con Tv LCD 32\" y piso flotante, baño completo con Ducha escocesa (Sin bañera).\nPequeño Cocina -comedor con Tv LCD 32\", 1 cama Sommier,  Cocina completa, Mobiliario Artesanal en cipres, Sin Hogar a leña.\n.\nLas Cabañas de 1 Dormitorio hasta 3/4 personas TIPO \"Especial\": - Esta en 1º`piso –\nAbajo: Living-comedor, Tv LCD de 32\", 1 o 2 sofá cama, Cocina completa, Hogar a leña.\nEn planta alta: Dormitorio matrimonial con Tv 29\", baño completo con hidromasaje.\n.\nLa Cabaña de 1 Dormitorio hasta 4 personas TIPO \"Superior\": - Esta en 1º Piso –\nEn una sola planta: Dormitorio matrimonial cama 2 x 2, con Tv LCD 32\", baño completo con hidromasaje.\nAmplio Living-comedor, Tv LCD 32\", 1 sofá cama + 1 cama sommier de resortes, Cocina completa, Sin Hogar a leña.\n.\nLas tarifas son Promocionales en Efectivo, con la siguiente Modalidad de pago:\nSeña por transferencia bancaria y saldo en el Apart en efvo.\n.\nEl pago del saldo con tarjeta o Medios electronicos, pierde PROMO de efvo y la tarifa se incrementa 10% para el saldo.\nLa disponibilidad cambia a cada momento.\n.\nPara reservar hay que depositar entre 1 y 4 noches (depende de la cantidad de noches reservadas) y el resto en el apart en efectivo.\nDespués de la confirmación por mail o Tel, te paso los datos bancarios para hacer el depósito bancario o transferencia. .\n.\nNuestro complejo esta habilitado y respetará todas las NORMAS y PROTOCOLOS relacionados al COVID, dispuestas por Nacion, Pcia de Neuquen y Municipio Local\n.\nApart \"Cascadas\" y Cabañas \"Antuken\" es un complejo de Cabañas 3 estrellas, habilitadas por la municipalidad de San martin de los Andes.\nEstamos ubicados en el centro de la ciudad, a 6 cuadras del Lago Lacar, cerca de los supermercados y Restaurantes.\n.\nCualquier otra consulta no dudes en comunicarte con nosotros.\nAtte. Apart Cascadas *** y Cabañas Antuken ***\nPagina WEB:  https://apartcascadas.com.ar\nDireccion: Obeid 859 - Centro de San Martin de los Andes\nTEL: En San Martín: 02972 - 420133 -- Celular / Whatsapp: +549 11 5997 8910\nTodos los dias - de 10:00 a 23:00 Hs.\n.",
+              "datos": {
+                "nombre": "Apart Cascadas y Cabañas Antuken — Cabaña Cipres (hasta 2/3 personas)",
+                "tipo": "cabaña",
+                "precio_por_noche": 80000,
+                "moneda": "ARS",
+                "precio_total": 80000,
+                "precio_noche_usd": 53,
+                "referencia_dolar": 1520,
+                "fechas_disponibles": "Octubre y Noviembre (excepto feriados)",
+                "capacidad": "Hasta 2/3 personas",
+                "habitaciones": 1,
+                "banos": 1,
+                "caracteristicas": [
+                  "Piscina Climatizada Cubierta",
+                  "SPA (Sauna e Hidromasajes)",
+                  "Cancha de Padel",
+                  "Baño con hidromasaje",
+                  "Sin hogar a leña",
+                  "WiFi",
+                  "Estacionamiento",
+                  "Servicio de mucama"
+                ],
+                "ubicacion": "Obeid 859, Centro de San Martín de los Andes (a 6 cuadras del Lago Lácar)",
+                "politica_cancelacion": "Seña por transferencia (1 a 4 noches), saldo en efectivo al ingresar",
+                "forma_pago": "Efectivo (precio promocional), Transferencia, Tarjetas (+10% de recargo)",
+                "contacto": "Tel: 02972-420133 / WhatsApp: +54 9 11 5997 8910",
+                "instagram": null,
+                "fotos_urls": [],
+                "notas_adicionales": "Ubicada en 1º piso. Dormitorio triple en planta alta. No incluye desayuno.",
+                "calificacion_ia": 8.8,
+                "razon_calificacion": "Excelente variedad de servicios (piscina, spa, quinchos) y ubicación céntrica privilegiada.",
+                "datos_faltantes": [
+                  "horario check-in/out",
+                  "Instagram"
+                ],
+                "texto_original_resumido": "Cabaña Cipres para 2 personas a $80.000 ARS/noche en temporada baja."
+              },
+              "editado_manualmente": false
             }
           ]
         },
@@ -1125,6 +1168,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788311711077
+    "updated_at": 1788311735792
   }
 }
