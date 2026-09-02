@@ -969,11 +969,17 @@
               "editado_manualmente": false
             }
           ]
+        },
+        {
+          "id": "mtjccotu30a33",
+          "nombre": "Villa Traful",
+          "emoji": "🏔️",
+          "hospedajes": []
         }
       ]
     }
   ],
   "meta": {
-    "updated_at": 1788307654700
+    "updated_at": 1788307902642
   }
 }
