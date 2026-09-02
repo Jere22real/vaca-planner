@@ -1856,11 +1856,11 @@ function hospCard(h, destObj) {
 // Servicios estándar comparables
 const STANDARD_SERVICES = [
   { id: 'wifi',       label: 'WiFi',        icon: '📶', keywords: ['wifi', 'wi-fi', 'internet'] },
+  { id: 'kitchen',    label: 'Cocina',      icon: '🍳', keywords: ['cocina', 'kitch', 'anaf', 'horno', 'microondas', 'vajilla', 'compartida'] },
   { id: 'pool',       label: 'Pileta',      icon: '🏊', keywords: ['pileta', 'piscina', 'pool'] },
   { id: 'parking',    label: 'Cochera',     icon: '🚗', keywords: ['cochera', 'estacionamiento', 'garage', 'parqueo'] },
   { id: 'grill',      label: 'Parrilla',    icon: '🍖', keywords: ['parrilla', 'asador', 'bbq', 'churrasquera'] },
   { id: 'breakfast',  label: 'Desayuno',   icon: '☕', keywords: ['desayuno', 'breakfast'] },
-  { id: 'pets',       label: 'Mascotas',    icon: '🐾', keywords: ['mascota', 'pet', 'mascotas', 'pet-friendly', 'acepta mascotas'] },
   { id: 'ac',         label: 'Aire acond.', icon: '❄️', keywords: ['aire', 'ac', 'climatizado', 'aire acondicionado'] },
   { id: 'heating',    label: 'Calefacción', icon: '🔥', keywords: ['calefaccion', 'calefacción', 'hogar', 'estufa', 'losa'] }
 ];
@@ -1881,6 +1881,26 @@ function toggleInlineNote(el, fullText) {
   }
 }
 
+// Algoritmo de Ranking Inteligente de Relación Calidad-Precio (Value Score)
+function computeValueScore(h, avgPriceInGroup) {
+  const d = h.datos || {};
+  const scoreIA = d.calificacion_ia != null ? Number(d.calificacion_ia) : 6.0;
+  const price = Number(d.precio_por_noche) || 0;
+
+  if (!price || !avgPriceInGroup) {
+    return scoreIA; // Si no hay precio, usar solo score de IA
+  }
+
+  // Factor de precio relativo (si vale la mitad del promedio -> factor es 2.0, si vale el doble -> 0.5)
+  const priceRatio = avgPriceInGroup / price;
+  // Limitar el beneficio extremo por precio regalado
+  const boundedPriceRatio = Math.max(0.4, Math.min(2.2, priceRatio));
+
+  // 60% peso a la Calidad (Score IA) + 40% peso al Ahorro de precio
+  const valueScore = (scoreIA * 0.6) + (scoreIA * 0.4 * boundedPriceRatio);
+  return Math.round(valueScore * 10) / 10;
+}
+
 function renderTable(hosps) {
   const container = document.getElementById('compare-table');
   if (!container) return;
@@ -1890,116 +1910,172 @@ function renderTable(hosps) {
     return;
   }
 
-  // Buscar mejor precio (más bajo > 0)
-  let minPrice = Infinity;
-  let minPriceIdx = -1;
-  hosps.forEach((h, i) => {
-    const p = (h.datos && h.datos.precio_por_noche) || 0;
-    if (p > 0 && p < minPrice) {
-      minPrice = p;
-      minPriceIdx = i;
-    }
+  // Agrupar hospedajes por Ciudad / Destino
+  const groupedByCity = {};
+  hosps.forEach(h => {
+    const city = h._destino || 'Sin Ciudad';
+    if (!groupedByCity[city]) groupedByCity[city] = [];
+    groupedByCity[city].push(h);
   });
 
-  // Buscar mejor puntaje (más alto)
-  let maxScore = -1;
-  let maxScoreIdx = -1;
-  hosps.forEach((h, i) => {
-    const s = (h.datos && h.datos.calificacion_ia) != null ? Number(h.datos.calificacion_ia) : -1;
-    if (s > maxScore) {
-      maxScore = s;
-      maxScoreIdx = i;
-    }
-  });
+  let fullHtml = '';
 
-  container.innerHTML = hosps.map((h, i) => {
-    const d = h.datos || {};
-    const title = getFullTitle(d);
-    const isBestPrice = i === minPriceIdx && minPrice !== Infinity;
-    const isBestScore = i === maxScoreIdx && maxScore > 0;
+  for (const [cityName, cityHosps] of Object.entries(groupedByCity)) {
+    // Calcular precio promedio en esta ciudad para evaluar valor relativo
+    const validPrices = cityHosps.map(h => Number(h.datos?.precio_por_noche)).filter(p => p > 0);
+    const avgPrice = validPrices.length ? validPrices.reduce((a, b) => a + b, 0) / validPrices.length : 0;
 
-    // 1. Header & Price
-    const priceText = d.precio_por_noche ? fmtPrice(d.precio_por_noche, d.moneda) : '—';
-    const totalText = d.precio_total ? `Total: ${fmtPrice(d.precio_total, d.moneda)}` : (d.precio_por_noche ? '/ noche' : 'Sin precio');
+    // Calcular el Value Score para cada hospedaje y ordenar de MEJOR A PEOR
+    const rankedHosps = cityHosps.map(h => ({
+      hosp: h,
+      valueScore: computeValueScore(h, avgPrice)
+    })).sort((a, b) => b.valueScore - a.valueScore);
 
-    // 2. Matching de servicios
-    const featsNorm = (d.caracteristicas || []).map(f => normalizeStr(f));
-    const matchedSrvIds = new Set();
+    // Buscar el de menor precio absoluto y el de mayor score absoluto
+    let minPrice = Infinity;
+    let minPriceId = null;
+    let maxScore = -1;
+    let maxScoreId = null;
 
-    const matrixHtml = STANDARD_SERVICES.map(srv => {
-      const hasSrv = srv.keywords.some(kw =>
-        featsNorm.some(fn => fn.includes(normalizeStr(kw)))
-      );
-      if (hasSrv) matchedSrvIds.add(srv.id);
-      return `<div class="srv-chip ${hasSrv ? 'active' : 'inactive'}" title="${srv.label}: ${hasSrv ? 'Disponible' : 'No especificado'}">
-        <span>${srv.icon}</span> <span>${srv.label}</span>
+    cityHosps.forEach(h => {
+      const p = Number(h.datos?.precio_por_noche) || 0;
+      if (p > 0 && p < minPrice) { minPrice = p; minPriceId = h.id; }
+      const s = h.datos?.calificacion_ia != null ? Number(h.datos.calificacion_ia) : -1;
+      if (s > maxScore) { maxScore = s; maxScoreId = h.id; }
+    });
+
+    const cityEmoji = cityHosps[0]?._destinoEmoji || '🗺️';
+
+    const colsHtml = rankedHosps.map(({ hosp: h, valueScore }, rankIdx) => {
+      const d = h.datos || {};
+      const title = getFullTitle(d);
+      const isBestPrice = h.id === minPriceId && minPrice !== Infinity;
+      const isBestScore = h.id === maxScoreId && maxScore > 0;
+      const isTopRanked = rankIdx === 0 && rankedHosps.length > 1;
+
+      // Foto principal / portada
+      const photos = d.fotos_urls || [];
+      const portadaUrl = (d.foto_portada && photos.includes(d.foto_portada)) ? d.foto_portada : (photos[0] || null);
+
+      const photoHtml = portadaUrl ? `
+        <div style="height:90px;border-radius:6px;overflow:hidden;margin-bottom:10px;background:var(--bg3);cursor:pointer;" onclick="openPhotoModal('${h.id}')" title="Ver fotos">
+          <img src="${esc(portadaUrl)}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.style.display='none'">
+        </div>` : '';
+
+      // 1. Header & Price
+      const priceText = d.precio_por_noche ? fmtPrice(d.precio_por_noche, d.moneda) : '—';
+      const totalText = d.precio_total ? `Total: ${fmtPrice(d.precio_total, d.moneda)}` : (d.precio_por_noche ? '/ noche' : 'Sin precio');
+
+      // 2. Matching de servicios + Inferencia de Cocina
+      const featsNorm = (d.caracteristicas || []).map(f => normalizeStr(f));
+      const tipoNorm = normalizeStr(d.tipo || '');
+      const nombreNorm = normalizeStr(d.nombre || '');
+
+      const matrixHtml = STANDARD_SERVICES.map(srv => {
+        let hasSrv = srv.keywords.some(kw =>
+          featsNorm.some(fn => fn.includes(normalizeStr(kw)))
+        );
+
+        // Inferencia especial para Cocina si no venia explicito en el JSON
+        if (srv.id === 'kitchen' && !hasSrv) {
+          const esTipoConCocina = /cabaña|cabana|departamento|depto|aparthotel|apart|casa|duplex|bungalow|estudio/i.test(tipoNorm) ||
+                                  /cabaña|cabana|depto|departamento|apart|duplex|bungalow/i.test(nombreNorm);
+          const esHostel = /hostel|hostal|albergue/i.test(tipoNorm) || /hostel|hostal/i.test(nombreNorm);
+          if (esTipoConCocina || esHostel) {
+            hasSrv = true;
+          }
+        }
+
+        return `<div class="srv-chip ${hasSrv ? 'active' : 'inactive'}" title="${srv.label}: ${hasSrv ? 'Disponible' : 'No especificado'}">
+          <span>${srv.icon}</span> <span>${srv.label}</span>
+        </div>`;
+      }).join('');
+
+      // Servicios extra
+      const extraFeats = (d.caracteristicas || []).filter(f => {
+        const fn = normalizeStr(f);
+        return !STANDARD_SERVICES.some(srv => srv.keywords.some(kw => fn.includes(normalizeStr(kw))));
+      });
+
+      const extraFeatsHtml = extraFeats.length ? `
+        <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;">
+          ${extraFeats.slice(0, 3).map(f => `<span class="feat-tag" style="font-size:0.68rem;padding:1px 6px;">${esc(f)}</span>`).join('')}
+          ${extraFeats.length > 3 ? `<span class="feat-tag more" style="font-size:0.68rem;padding:1px 6px;">+${extraFeats.length - 3}</span>` : ''}
+        </div>` : '';
+
+      // 3. Score Visual & Value Rank
+      const scoreVal = d.calificacion_ia != null ? Number(d.calificacion_ia) : null;
+      const scorePercent = scoreVal != null ? Math.min(100, Math.max(0, scoreVal * 10)) : 0;
+      const scoreHtml = scoreVal != null ? `
+        <div class="comp-score-box ${isBestScore ? 'best' : ''}">
+          <div class="comp-score-row">
+            <span>Puntaje IA</span>
+            <span style="color:${isBestScore ? 'var(--yellow)' : 'var(--text)'};">${scoreVal.toFixed(1)} ⭐</span>
+          </div>
+          <div class="comp-score-bar-bg">
+            <div class="comp-score-bar-fill" style="width:${scorePercent}%;"></div>
+          </div>
+        </div>` : `<div class="comp-score-box"><div class="comp-score-row" style="color:var(--text3);">Sin puntaje</div></div>`;
+
+      // 4. Notas recortadas
+      const notesText = d.notas_adicionales || d.razon_calificacion || '';
+      const hasLongNotes = notesText.length > 90;
+      const truncatedNotes = hasLongNotes ? notesText.slice(0, 87) + '…' : notesText;
+      const notesHtml = notesText ? `
+        <div class="comp-notes-box" onclick="toggleInlineNote(this, '${esc(notesText.replace(/'/g, "\\'"))}')" title="Clic para expandir/contraer nota" data-expanded="false">
+          🗒️ ${esc(truncatedNotes)}
+        </div>` : `<div class="comp-notes-box" style="opacity:0.5;cursor:default;">🗒️ Sin notas adicionales</div>`;
+
+      const rankBadge = isTopRanked ? `<span style="background:var(--grad1);color:#fff;font-size:0.68rem;font-weight:800;padding:2px 8px;border-radius:10px;margin-bottom:6px;display:inline-block;">🥇 MEJOR OPCIÓN (PRECIO/CALIDAD)</span>` : `<span style="color:var(--text3);font-size:0.68rem;margin-bottom:6px;display:inline-block;">Puesto #${rankIdx + 1} del ranking</span>`;
+
+      return `
+      <div class="compare-col ${isTopRanked ? 'best-price' : ''}">
+        <div>
+          ${rankBadge}
+          <div class="comp-header">
+            <span class="comp-title" title="${esc(title)}">${esc(title)}</span>
+          </div>
+
+          ${photoHtml}
+
+          <div class="comp-price-box ${isBestPrice ? 'best' : ''}">
+            <div class="comp-price-val">${priceText}</div>
+            <div class="comp-price-sub">${esc(totalText)}</div>
+          </div>
+
+          <div class="section-label" style="font-size:0.7rem;margin-bottom:6px;">Servicios clave</div>
+          <div class="services-matrix">
+            ${matrixHtml}
+          </div>
+          ${extraFeatsHtml}
+        </div>
+
+        <div style="margin-top:12px;">
+          ${scoreHtml}
+          ${notesHtml}
+          <button class="btn btn-ghost btn-sm" style="width:100%;font-size:0.78rem;" onclick="openEditHosp('${h.id}')" title="Ver todos los datos y detalles completos">
+            📋 Ver ficha completa
+          </button>
+        </div>
       </div>`;
     }).join('');
 
-    // Servicios no estándar (extra)
-    const extraFeats = (d.caracteristicas || []).filter(f => {
-      const fn = normalizeStr(f);
-      return !STANDARD_SERVICES.some(srv => srv.keywords.some(kw => fn.includes(normalizeStr(kw))));
-    });
-
-    const extraFeatsHtml = extraFeats.length ? `
-      <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;">
-        ${extraFeats.slice(0, 3).map(f => `<span class="feat-tag" style="font-size:0.68rem;padding:1px 6px;">${esc(f)}</span>`).join('')}
-        ${extraFeats.length > 3 ? `<span class="feat-tag more" style="font-size:0.68rem;padding:1px 6px;">+${extraFeats.length - 3}</span>` : ''}
-      </div>` : '';
-
-    // 3. Score Visual
-    const scoreVal = d.calificacion_ia != null ? Number(d.calificacion_ia) : null;
-    const scorePercent = scoreVal != null ? Math.min(100, Math.max(0, scoreVal * 10)) : 0;
-    const scoreHtml = scoreVal != null ? `
-      <div class="comp-score-box ${isBestScore ? 'best' : ''}">
-        <div class="comp-score-row">
-          <span>Puntaje IA</span>
-          <span style="color:${isBestScore ? 'var(--yellow)' : 'var(--text)'};">${scoreVal.toFixed(1)} ⭐</span>
+    fullHtml += `
+    <div style="width:100%;margin-bottom:28px;">
+      <div class="destino-header" style="position:relative;top:0;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:1.3rem;">${esc(cityEmoji)}</span>
+          <span class="destino-title">${esc(cityName)}</span>
+          <span class="trip-badge accent">${cityHosps.length} opción(es) · Ordenado por Precio/Calidad 📊</span>
         </div>
-        <div class="comp-score-bar-bg">
-          <div class="comp-score-bar-fill" style="width:${scorePercent}%;"></div>
-        </div>
-      </div>` : `<div class="comp-score-box"><div class="comp-score-row" style="color:var(--text3);">Sin puntaje</div></div>`;
-
-    // 4. Notas recortadas
-    const notesText = d.notas_adicionales || d.razon_calificacion || '';
-    const hasLongNotes = notesText.length > 90;
-    const truncatedNotes = hasLongNotes ? notesText.slice(0, 87) + '…' : notesText;
-    const notesHtml = notesText ? `
-      <div class="comp-notes-box" onclick="toggleInlineNote(this, '${esc(notesText.replace(/'/g, "\\'"))}')" title="Clic para expandir/contraer nota" data-expanded="false">
-        🗒️ ${esc(truncatedNotes)}
-      </div>` : `<div class="comp-notes-box" style="opacity:0.5;cursor:default;">🗒️ Sin notas adicionales</div>`;
-
-    return `
-    <div class="compare-col ${isBestPrice ? 'best-price' : ''} ${isBestScore ? 'best-score' : ''}">
-      <div>
-        <div class="comp-header">
-          ${h._destino ? `<div class="city-badge" style="margin-bottom:4px;">🗺️ ${esc(h._destino)}</div>` : ''}
-          <span class="comp-title" title="${esc(title)}">${esc(title)}</span>
-        </div>
-
-        <div class="comp-price-box ${isBestPrice ? 'best' : ''}">
-          <div class="comp-price-val">${priceText}</div>
-          <div class="comp-price-sub">${esc(totalText)}</div>
-        </div>
-
-        <div class="section-label" style="font-size:0.7rem;margin-bottom:6px;">Servicios clave</div>
-        <div class="services-matrix">
-          ${matrixHtml}
-        </div>
-        ${extraFeatsHtml}
       </div>
-
-      <div style="margin-top:12px;">
-        ${scoreHtml}
-        ${notesHtml}
-        <button class="btn btn-ghost btn-sm" style="width:100%;font-size:0.78rem;" onclick="openEditHosp('${h.id}')" title="Ver todos los datos y detalles completos">
-          📋 Ver ficha completa
-        </button>
+      <div class="compare-compact-grid">
+        ${colsHtml}
       </div>
     </div>`;
-  }).join('');
+  }
+
+  container.innerHTML = fullHtml;
 }
 
 // ============================================================
