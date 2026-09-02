@@ -344,6 +344,57 @@
                 "texto_original_resumido": "Habitación DOBLE (twin/matrimonial): Precio promocional CONTADO EFECTIVO $99.900.-"
               },
               "editado_manualmente": false
+            },
+            {
+              "id": "mtjbz4i999w8f",
+              "fecha_agregado": "2026-09-02T00:01:09.777Z",
+              "mail_original": "Hotel Caupolicán ***\n\nHabitación Doble \n\n✔ Desayuno buffet\n\n✔ Servicio diario de limpieza\n\n✔ Estacionamiento dentro del predio (sujeto a disponibilidad)\n\n✔ Sauna seco y sala de masajes\n\n✔ Sala de juegos\n\n✔ Sala de lectura\n\n✔ Recepción 24hs\n\nPromoción en efectivo: $99.900 por noche /\n\n\nHotel Caupolican by Visionnaire\n\n969 Avenida San Martín, 8370 San Martín de los Andes, Argentina\nUbicación excelente, ¡puntuada con 9.3/10!(puntuación basada en 370 comentarios)\nValorado por los clientes después de alojarse en el Hotel Caupolican by Visionnaire.\n–Ubicación excelente - Ver mapa\n\nUna sala de estar con sillas verdes y una mesa de café. en Hotel Caupolican by Visionnaire, en San Martín de los Andes\n\nuna habitación con dos camas, una mesa y un televisor en Hotel Caupolican by Visionnaire, en San Martín de los Andes\n\nun dormitorio con dos camas, un escritorio y una ventana en Hotel Caupolican by Visionnaire, en San Martín de los Andes\n\nuna habitación con una cama con toallas encima en Hotel Caupolican by Visionnaire, en San Martín de los Andes\n\nUna sala de estar con sofás blancos y una chimenea de piedra. en Hotel Caupolican by Visionnaire, en San Martín de los Andes\n\nUna mesa de ping pong con una paleta encima en Hotel Caupolican by Visionnaire, en San Martín de los Andes\n\nuna sala de estar con una mesa y un espejo en Hotel Caupolican by Visionnaire, en San Martín de los Andes\n\nuna habitación con sillas y una mesa en un edificio en Hotel Caupolican by Visionnaire, en San Martín de los Andes 10 fotos más\n10 fotos más\nPuntuación: 7.7\n7,7\nValoración: bien\nBien\n378 comentarios\nLo que más gustó a quienes se alojaron aquí\n“Muy bien ubicado, las instalaciones muy bien y las recepcionistas muy amables”\n\nVanessaArgentinaArgentina\n“La ubicación excelente. La habitación cómoda y con buenísima calefacción. Él personal de recepción y del desayuno, muy amables. La señora de la...”\n\nClaudiaChileChile\n“La cama king size y el desayuno un verdadero lujazo. Me hubiera gustado quedarme un poco más, pero ya tenía el vuelo al otro día.”\n\nGermanArgentinaArgentina\n“El lugar es muy comodo, bien ubicado, la atención muy buena.”\n\nOlaveArgentinaArgentina\n“El lugar es cómodo y céntrico. El personal es excelente!! Amables y considerados con el pasajero. Felicitaciones.!!”\n\nCarcamoArgentinaArgentina\n“Muy buena cama, almohadas y ducha, además la habitación tenía heladera y television”\n\nDiegoArgentinaArgentina\n“El desayuno estuvo increíble, muy variado y muy rico. Había recambio de cosas a cada rato.”\n\nIvetteChileChile\n“Buena ubicación, estacionamiento disponible y personal muy amable. Las camas muy cómodas y la ducha después de un día agotador de caminatas...”\n\nHeinzeArgentinaArgentina\n“Excelente, cómodo, full calefacción, camas y abrigo excepcional, baño complicado por las manijas del agua caliente que están fuera del lugar habitual”\n\nAvendañoCosta RicaCosta Rica\n“Buena ubicación, entorno seguro y tranquilo, la habitación era confortable, lo único fue que la calefacción era demasiada.”\n\nAlejandroChileChile\n¡Excelente ubicación!9,3\n\nVer en el mapa\nHotel Caupolican by Visionnaire está en San Martín de los Andes, en la región de Neuquén Province, a 13 min a pie de Playa de San Martín. Este hotel de 3 estrellas tiene wifi gratis, salón de uso común y servicio de habitaciones. El hotel tiene sauna y recepción 24 horas.\n\nEn el hotel, todas las habitaciones tienen armario. El baño privado está equipado con ducha y artículos de aseo gratuitos. En Hotel Caupolican by Visionnaire, cada habitación cuenta con TV de pantalla plana con canales por cable.\n\nEn el alojamiento se puede disfrutar de un desayuno buffet.\n\nHotel Caupolican by Visionnaire ofrece zona de juegos infantil.\n\nEl aeropuerto (Aeropuerto Aviador Carlos Campos) está a 28 km.\n\nA las parejas les encanta la ubicación — Le han puesto un 9,4 para viajes de dos personas.\n\nLas distancias en la descripción del alojamiento se calculan con OpenStreetMap©\n\nServicios más populares\nParking gratis\nWiFi gratis\nHabitaciones familiares\nSpa y centro de bienestar\nServicio de habitaciones\nHabitaciones sin humo\nRecepción 24 horas\n\nBuen desayuno",
+              "datos": {
+                "nombre": "Hotel Caupolicán — Habitación Doble",
+                "tipo": "habitación",
+                "precio_por_noche": 99900,
+                "moneda": "ARS",
+                "precio_total": 99900,
+                "precio_noche_usd": null,
+                "referencia_dolar": null,
+                "fechas_disponibles": null,
+                "capacidad": "2 personas",
+                "habitaciones": 1,
+                "banos": 1,
+                "caracteristicas": [
+                  "Desayuno buffet",
+                  "Servicio diario de limpieza",
+                  "Estacionamiento en el predio",
+                  "Sauna seco",
+                  "Sala de masajes",
+                  "Sala de juegos",
+                  "Sala de lectura",
+                  "Recepción 24hs",
+                  "WiFi gratis",
+                  "TV de pantalla plana",
+                  "Armario",
+                  "Baño privado"
+                ],
+                "ubicacion": "969 Avenida San Martín, 8370 San Martín de los Andes, Argentina",
+                "politica_cancelacion": null,
+                "forma_pago": "Efectivo",
+                "contacto": null,
+                "instagram": null,
+                "fotos_urls": [],
+                "notas_adicionales": "Ubicación excelente (9.3/10). A 13 min a pie de Playa de San Martín. El aeropuerto está a 28 km.",
+                "calificacion_ia": 7.7,
+                "razon_calificacion": "Buena ubicación y servicios, aunque con valoraciones mixtas sobre la calefacción y detalles en el baño.",
+                "datos_faltantes": [
+                  "teléfono de contacto",
+                  "email",
+                  "instagram",
+                  "fechas disponibles",
+                  "precio total para estadías largas",
+                  "referencia dólar"
+                ],
+                "texto_original_resumido": "Habitación Doble con desayuno buffet en Hotel Caupolicán por $99.900 ARS (promoción en efectivo)."
+              },
+              "editado_manualmente": false
             }
           ]
         },
@@ -870,6 +921,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788307217723
+    "updated_at": 1788307269777
   }
 }
