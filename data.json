@@ -448,6 +448,53 @@
                 "texto_original_resumido": "Habitación doble privada en Puma Hostel por $245.000 ARS por 3 noches, con desayuno incluido."
               },
               "editado_manualmente": false
+            },
+            {
+              "id": "mtjdzr6lavdh9",
+              "fecha_agregado": "2026-09-02T00:57:38.398Z",
+              "mail_original": "\nBuscar\nRe: Visitante de Interpatagonia: Crismalu - 30-08-2026 21:00:19 d\n\nCrismalu Srl\na usuario\nhace 1 díaDetalles\n¡Hola! buenas tardes , Gracias por comunicarte con nosotros\nMe presento mi nombre es celeste \nsi contamos con disponibilidad para la fecha solicita \nte contamos :\nCrismalu es un hotel ⭐⭐ con esencia familiar, fundado en el año 1966.\n\nLa estadía incluye:\n☕ Opciones con y sin desayuno clásico. Contamos con opción sin TACC a pedido.\n\n🧹 Servicio de limpieza a Diario\n\n📲 Wi-Fi.\n\n🛏️ Ropa blanca en la habitación.\n\n🛎️ Recepción de 7 a 24 hs\n\n🔑 Caja de seguridad.\n\n🚗 Estacionamiento cubierto interno (sujeto a disponibilidad).\n\n🧊 Área de uso común: Con pava eléctrica , microondas ,  y heladera a disposición las 24 hs (no apto para cocinar)\n\nAdemás contamos con:\n🪴🌷 Terraza al aire libre.\n\n💻📖 Salón de usos múltiples con juegos de mesa.\n\n🏙️ Estamos ubicados a tres cuadras de la avenida principal San Martín.\nPerfecto para recorrer la ciudad caminando.\n\nhttps://maps.google.com/?q=-40.153221,-71.350227\n\n✅ ¡Tenemos disponibilidad para las fechas solicitadas!\n\n🏨 Tarifas por NOCHE\n🛏️ Habitacion ESTANDARD\n⚠️ Temporada BAJA\n\n👫 Habitación Doble / Matrimonial\n•⁠  ⁠Sin desayuno: $70.000\n\nPolítica de cambios y cancelaciones\n•⁠  ⁠La seña puede reprogramarse o transferirse a un tercero.\n•⁠  ⁠Tiene una validez de 6 meses.\n•⁠  ⁠La seña no es reembolsable.\n\n📩 Reservas y consultas: hotelcrismalu@gmail.com\n🌐 Más información: www.crismalu.com.ar\n\n\nCrismalú\n¡Bienvenidos al Hotel en San Martin de los Andes!\nDesde su inauguración en 1966, el Hotel Crismalu es un clásico de nuestra ciudad reconocido por su ambiente cálido y atención familiar. Hoy, de la mano de la familia Marre, sus dueños originales, iniciamos una nueva etapa que combina la tradición y la historia del hotel con renovaciones pensadas para ofrecerle mayor confort.\n\n\n\nContamos con una ubicación privilegiada, a solo 3 cuadras del casco céntrico, cerca de comercios, restaurantes y de los principales atractivos de la ciudad. Un lugar sencillo, acogedor y con el encanto de siempre, ideal para descansar y disfrutar de la region de los lagos patagonicos.\n\n\n\nSan Martín de los Andes lo espera con una amplia variedad de actividades para todas las temporadas: desde paseos por el lago Lácar, caminatas y excursiones en la Cordillera de los Andes, hasta deportes de invierno en el cerro Chapelco. Disfrute de la gastronomía local, las rutas de los 7 lagos, salidas en bicicleta, pesca deportiva y mucho más, en un entorno natural único.\n\n\n\nLo invitamos a ser parte de esta nueva etapa del Crismalu, donde la calidez humana sigue siendo nuestra mejor propuesta.\n\nInteriores y servicios\nLe ofrecemos un ambiente íntimo y confortable, con una atención cordial y personalizada durante todo el año. \n\n45 habitaciones alfombradas\nDesayuno\nCalefacción\nCocheras cubiertas\nEspacios comunes\nTelevisión por Cable\nWi Fi\nUbicación Céntrica\nA 300 mts. del Centro Comercial\n\nHotel Crismalú\nRudecindo Roca 975, San Martín de los Andes, Neuquén, Argentina\nRecepcion Tel: 02972 427283\nE-mail hotelcrismalu@gmail.com\n\n",
+              "datos": {
+                "nombre": "Hotel Crismalu — Habitación Estándar Doble / Matrimonial (Sin desayuno)",
+                "tipo": "habitación de hotel",
+                "precio_por_noche": 70000,
+                "moneda": "ARS",
+                "precio_total": null,
+                "precio_noche_usd": null,
+                "referencia_dolar": null,
+                "fechas_disponibles": "Disponible para las fechas solicitadas",
+                "capacidad": "2 personas",
+                "habitaciones": 1,
+                "banos": 1,
+                "caracteristicas": [
+                  "Wi-Fi",
+                  "Servicio de limpieza a diario",
+                  "Ropa blanca",
+                  "Recepción de 7 a 24 hs",
+                  "Caja de seguridad",
+                  "Estacionamiento cubierto interno (sujeto a disponibilidad)",
+                  "Área de uso común con pava eléctrica, microondas y heladera las 24 hs",
+                  "Terraza al aire libre",
+                  "Salón de usos múltiples con juegos de mesa",
+                  "Calefacción",
+                  "Televisión por Cable"
+                ],
+                "ubicacion": "Rudecindo Roca 975, San Martín de los Andes, Neuquén, Argentina (a 3 cuadras de la Av. principal San Martín / Centro Comercial)",
+                "politica_cancelacion": "La seña puede reprogramarse o transferirse a un tercero (validez de 6 meses). La seña no es reembolsable.",
+                "forma_pago": null,
+                "contacto": "Celeste / Tel: 02972 427283 / Email: hotelcrismalu@gmail.com / Web: www.crismalu.com.ar",
+                "instagram": null,
+                "fotos_urls": [],
+                "notas_adicionales": "Hotel 2 estrellas de ambiente familiar fundado en 1966. Opción con o sin desayuno (incluye sin TACC a pedido). No apto para cocinar en áreas comunes.",
+                "calificacion_ia": 8,
+                "razon_calificacion": "Excelente ubicación a pocas cuadras del centro, cochera cubierta y buena relación precio/calidad para temporada baja.",
+                "datos_faltantes": [
+                  "horario de check-in / check-out",
+                  "métodos de pago específicos",
+                  "porcentaje o valor de la seña requerida"
+                ],
+                "texto_original_resumido": "Habitación estándar Doble / Matrimonial sin desayuno a $70.000 ARS por noche (Temporada Baja)."
+              },
+              "editado_manualmente": false
             }
           ]
         },
@@ -1078,6 +1125,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788308979530
+    "updated_at": 1788310658399
   }
 }
