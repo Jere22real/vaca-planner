@@ -395,6 +395,59 @@
                 "texto_original_resumido": "Habitación Doble con desayuno buffet en Hotel Caupolicán por $99.900 ARS (promoción en efectivo)."
               },
               "editado_manualmente": false
+            },
+            {
+              "id": "mtjc7dikxnda3",
+              "fecha_agregado": "2026-09-02T00:07:34.700Z",
+              "mail_original": "Hostel Puma\na usuario\nhace 1 díaDetalles\nBuenos dias Jeremias! Gracias por tu consulta.\nSi, tenemos disponibilidad para las fechas consultadas en habitación doble privado.\nEl valor final por 3 noches es de: $245.000.- con desayuno incluido.\n\nAdjuntaré fotos de la habitación más un archivo con info detallada de nosotros, avisame cualquier duda!\nSaludos\nMercedes\n\nPuma Hostel\n\nFosbery 535, 8370 San Martín de los Andes, Argentina\nUbicación excelente, ¡puntuada con 9.1/10!(puntuación basada en 131 comentarios)\nValorado por los clientes después de alojarse en el Puma Hostel.\n–Ubicación excelente - Ver mapa\n\nuna casa con una valla de madera delante en Puma Hostel, en San Martín de los Andes\n\nuna habitación con dos camas con toallas sobre una mesa en Puma Hostel, en San Martín de los Andes\n\nUn grupo de personas sentadas en una habitación tocando la guitarra. en Puma Hostel, en San Martín de los Andes\n\nuna casa con un árbol en la nieve en Puma Hostel, en San Martín de los Andes\n\nuna sala de estar con televisor de pantalla plana y sillas en Puma Hostel, en San Martín de los Andes\n\nuna casa con un letrero delante en Puma Hostel, en San Martín de los Andes\n\nUn edificio rojo en la nieve con un bote de basura. en Puma Hostel, en San Martín de los Andes\n\nDos literas en una habitación con ventana. en Puma Hostel, en San Martín de los Andes 18 fotos más\n18 fotos más\nPuntuación: 9.3\n9,3\nValoración: fantástico\nFantástico\n131 comentarios\nLo que más gustó a quienes se alojaron aquí\n“Hermoso alojamiento súper recomendado. No pasamos frío en la noche, súper linda la cama\nEl personal un 10 y los michitos también 🥰”\n\nAgustinaArgentinaArgentina\n“Hermoso hostel! Las habitaciones súper amplias, el espacio común también y la gente super cálida. Super limpio todo y calentito. Rico desayuno. Se...”\n\nPanettaArgentinaArgentina\n“Todo excelente, el personal muy amable. Buena relacion calidad/precio, me pareció acorde a la habitacion y las instalaciones”\n\nLucasArgentinaArgentina\n“El personal muy buena onda y servicial, si tuviera que volver a sma seguro que volvería este hostel”\n\nNachoArgentinaArgentina\n“El lugar es muy lindo, acogedor, personal agradable.\nEl desayuno es sencillo pero contundente y rico! Eran medialunas y pancitos con mermelada,...”\n\nJanis0011ArgentinaArgentina\n“El lugar es hermoso. Desde el primer momento que llegamos nos recibieron con mucha calidez. La habitación muy cómoda y el desayuno muy rico....”\n\nMaríaArgentinaArgentina\n“Muy lindo el lugar y excelente los anfitriones, me senti como en casa, hermoso, volvería todos los años.”\n\nLuisArgentinaArgentina\n“El hostel es muy limpio y la atención es excelente. El precio-calidad lo vale completamente!”\n\nVictoriaArgentinaArgentina\n“La atención fue excelente.\nLa.cama cómoda.\nLa el agua de la ducha muy bien.\nDespués del check out nos permitieron dejar el equipaje y usar las...”\n\nLilianaArgentinaArgentina\n“La atención fue excelente. Me re salvaron consiguiéndome un taxi de urgencia...gracias a ellos no perdí un micro.\nLa cama muy cómoda.\nLa tirada de...”\n\nLilianaArgentinaArgentina\nWiFi gratis9,9\n\nVer en el mapa\nAlojamientos Confortables: Puma Hostel en San Martín de los Andes ofrece habitaciones familiares con baños privados, bidets y duchas. Cada habitación incluye un secador de pelo y wifi gratuito, asegurando una estancia agradable.\n\nInstalaciones y servicios de Ocio: Los clientes pueden relajarse en la terraza al sol o en el jardín, disfrutar del área de asientos al aire libre y utilizar los espacios para picnic. El hostal proporciona aparcamiento privado gratuito en el establecimiento, aparcamiento para bicicletas y instalaciones para barbacoa.\n\nServicios Convenientes: El hostal ofrece un servicio de transporte de pago, salón, recepción abierta las 24 horas, cocina compartida, área de juegos interior, cafetería y mostrador de información turística. Los servicios adicionales incluyen desayuno en la habitación, check-in y check-out exprés, alquiler de bicicletas y almacenamiento de equipaje.\n\nAtracciones Locales: La Playa San Martín está a menos de 1 km, mientras que el Parque Nacional Lanín se encuentra a 4,4 km. Otros puntos cercanos incluyen la Estación de Autobuses de Junín de los Andes (42 km) y los Jardines Chimehuin (40 km). El Aeropuerto Aviador Carlos Campos está a 29 km del hostal.\n\nA las parejas les encanta la ubicación — Le han puesto un 9,1 para viajes de dos personas.\n\nLas distancias en la descripción del alojamiento se calculan con OpenStreetMap©\n\nServicios más populares\nParking gratis\nWiFi gratis\nHabitaciones familiares\nTraslado aeropuerto\nBarbacoa\nHabitaciones sin humo\nRecepción 24 horas\n\nDesayuno excepcional",
+              "datos": {
+                "nombre": "Puma Hostel — Habitación doble privada",
+                "tipo": "habitación",
+                "precio_por_noche": 81667,
+                "moneda": "ARS",
+                "precio_total": 245000,
+                "precio_noche_usd": 0,
+                "referencia_dolar": 0,
+                "fechas_disponibles": "No especificado",
+                "capacidad": "2 personas",
+                "habitaciones": 1,
+                "banos": 1,
+                "caracteristicas": [
+                  "Desayuno incluido",
+                  "WiFi gratis",
+                  "Baño privado",
+                  "Secador de pelo",
+                  "Terraza al sol",
+                  "Jardín",
+                  "Área de asientos al aire libre",
+                  "Espacios para picnic",
+                  "Aparcamiento privado gratuito",
+                  "Aparcamiento para bicicletas",
+                  "Instalaciones para barbacoa",
+                  "Cocina compartida",
+                  "Recepción 24 horas",
+                  "Almacenamiento de equipaje"
+                ],
+                "ubicacion": "Fosbery 535, 8370 San Martín de los Andes, Argentina",
+                "politica_cancelacion": "No especificada",
+                "forma_pago": "No especificada",
+                "contacto": "Mercedes / https://www.pumahostel.com.ar/",
+                "instagram": null,
+                "fotos_urls": [],
+                "notas_adicionales": "Ubicación excelente cerca de Playa San Martín (< 1 km) y Parque Nacional Lanín (4,4 km). Muy valorado por parejas.",
+                "calificacion_ia": 9.3,
+                "razon_calificacion": "Valoración fantástica de los clientes con excelente puntuación en ubicación y atención del personal.",
+                "datos_faltantes": [
+                  "fechas exactas",
+                  "horario check-in/out",
+                  "teléfono",
+                  "WhatsApp",
+                  "Instagram",
+                  "referencia de dólar"
+                ],
+                "texto_original_resumido": "Habitación doble privada en Puma Hostel por $245.000 ARS por 3 noches, con desayuno incluido."
+              },
+              "editado_manualmente": false
             }
           ]
         },
@@ -921,6 +974,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788307269777
+    "updated_at": 1788307654700
   }
 }
