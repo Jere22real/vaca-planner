@@ -1021,6 +1021,56 @@
                 "texto_original_resumido": "Monoambiente para 1 o 2 personas en Villa Traful a $80.000 ARS por noche."
               },
               "editado_manualmente": false
+            },
+            {
+              "id": "mtjcop02uxikp",
+              "fecha_agregado": "2026-09-02T00:21:02.738Z",
+              "mail_original": "\nPosada Quinen San Martin de los Andes\na usuario\nhace 1 díaDetalles\nHola buenas tardes. Mi nombre es Ema, te escribimos de Posada Quinen por tu consulta de alojamiento para 1 persona.\n\nEn las fechas solicitadas contamos con disponibilidad en una cabaña de 1 habitación.\n\nLes comparto la información de la misma: \n\n \n\n \n\nSector Apart & Cabañas\n\n \n\nCABAÑA 1 DORMITORIO\n\nCon capacidad para hasta 4 personas, cuenta con las siguientes características:\n\n- 45 m2 distribuidos en 1 planta\n\n- 1 dormitorio con cama matrimonial King size.\n\n- Living/comedor con 2 sofá cama.\n\n- Cocina totalmente equipada, con cocina y horno a gas, microondas, heladera y vajilla completa\n\n- Baño con ducha\n\n✅️ Incluye Internet WiFi, TV por cable, ropa blanca, servicio de limpieza, zona de parrillas, estacionamiento privado.\n\n \n\n\nTarifa por noche p/1: $110.000\n\n\n\n¿Podría servirte esta opción? \n\n \n\nTe comparto nuestro número de WhatsApp para que te comuniques directamente con nosotros: 2944317805 \n\n \n\nMuchas Gracias.\n\nSaludos cordiales. \n\nEma. \n\n\n\n\n\n\nPosada Quinen | Hostería, Apart & Cabañas 3 estrellas\nRuta 40 Km. 65,5 | San Martín de los Andes | Neuquén | Patagonia Argentina\nWhatsApp: +54 9 2944317805\nwww.posadaquinen.com.ar\nInstagram: posadaquinen\n\nServicios Generales\nWi-Fi\nLimpieza diaria\nAcceso a piscina\nEstacionamiento\nTransporte al aeropuerto\nRopa Blanca\nDesayuno\nParrillas\nRecepción\n\n\n",
+              "datos": {
+                "nombre": "Posada Quinen — Cabaña 1 Dormitorio",
+                "tipo": "cabaña",
+                "precio_por_noche": 110000,
+                "moneda": "ARS",
+                "precio_total": null,
+                "precio_noche_usd": null,
+                "referencia_dolar": null,
+                "fechas_disponibles": null,
+                "capacidad": "Hasta 4 personas",
+                "habitaciones": 1,
+                "banos": 1,
+                "caracteristicas": [
+                  "45 m2",
+                  "1 dormitorio con cama matrimonial King size",
+                  "Living/comedor con 2 sofá cama",
+                  "Cocina equipada (gas, microondas, heladera, vajilla)",
+                  "WiFi",
+                  "TV por cable",
+                  "Ropa blanca",
+                  "Servicio de limpieza",
+                  "Zona de parrillas",
+                  "Estacionamiento privado",
+                  "Acceso a piscina",
+                  "Desayuno"
+                ],
+                "ubicacion": "Ruta 40 Km. 65,5, San Martín de los Andes, Neuquén",
+                "politica_cancelacion": null,
+                "forma_pago": null,
+                "contacto": "Ema / WhatsApp: +54 9 2944317805 / Instagram: posadaquinen / Web: www.posadaquinen.com.ar",
+                "instagram": "@posadaquinen",
+                "fotos_urls": [],
+                "notas_adicionales": "Hostería, Apart & Cabañas 3 estrellas.",
+                "calificacion_ia": 8.8,
+                "razon_calificacion": "Cabaña de 45m2 bien equipada con servicios de hostería como piscina y desayuno.",
+                "datos_faltantes": [
+                  "precio_total",
+                  "fechas_disponibles",
+                  "politica_cancelacion",
+                  "forma_pago",
+                  "referencia_dolar"
+                ],
+                "texto_original_resumido": "Cabaña de 1 dormitorio en Posada Quinen para hasta 4 personas a $110.000 ARS por noche."
+              },
+              "editado_manualmente": false
             }
           ]
         }
@@ -1028,6 +1078,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788308124384
+    "updated_at": 1788308462738
   }
 }
