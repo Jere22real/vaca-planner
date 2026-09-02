@@ -628,9 +628,7 @@
 
     <!-- Table / Compact Compare view -->
     <div id="hosp-table-view" style="display:none;">
-      <div class="table-wrap">
-        <div class="compare-compact-grid" id="compare-table"></div>
-      </div>
+      <div id="compare-table" style="display:flex;flex-direction:column;gap:24px;"></div>
     </div>
   </div>
 
@@ -2026,7 +2024,10 @@ function renderTable(hosps) {
           🗒️ ${esc(truncatedNotes)}
         </div>` : `<div class="comp-notes-box" style="opacity:0.5;cursor:default;">🗒️ Sin notas adicionales</div>`;
 
-      const rankBadge = isTopRanked ? `<span style="background:var(--grad1);color:#fff;font-size:0.68rem;font-weight:800;padding:2px 8px;border-radius:10px;margin-bottom:6px;display:inline-block;">🥇 MEJOR OPCIÓN (PRECIO/CALIDAD)</span>` : `<span style="color:var(--text3);font-size:0.68rem;margin-bottom:6px;display:inline-block;">Puesto #${rankIdx + 1} del ranking</span>`;
+      const rankLabel = `${rankIdx + 1}°`;
+      const rankBadge = isTopRanked
+        ? `<span style="background:var(--grad1);color:#fff;font-size:0.75rem;font-weight:800;padding:2px 8px;border-radius:6px;margin-bottom:6px;display:inline-block;" title="Mejor relación precio/calidad">🥇 1°</span>`
+        : `<span style="color:var(--text2);background:var(--bg3);border:1px solid var(--border);font-size:0.75rem;font-weight:700;padding:2px 8px;border-radius:6px;margin-bottom:6px;display:inline-block;">${rankLabel}</span>`;
 
       return `
       <div class="compare-col ${isTopRanked ? 'best-price' : ''}">
@@ -2061,16 +2062,18 @@ function renderTable(hosps) {
     }).join('');
 
     fullHtml += `
-    <div style="width:100%;margin-bottom:28px;">
+    <div style="width:100%;">
       <div class="destino-header" style="position:relative;top:0;margin-bottom:12px;">
         <div style="display:flex;align-items:center;gap:10px;">
           <span style="font-size:1.3rem;">${esc(cityEmoji)}</span>
           <span class="destino-title">${esc(cityName)}</span>
-          <span class="trip-badge accent">${cityHosps.length} opción(es) · Ordenado por Precio/Calidad 📊</span>
+          <span class="trip-badge accent">${cityHosps.length} opción(es) · Ranking Precio/Calidad 📊</span>
         </div>
       </div>
-      <div class="compare-compact-grid">
-        ${colsHtml}
+      <div class="table-wrap">
+        <div class="compare-compact-grid">
+          ${colsHtml}
+        </div>
       </div>
     </div>`;
   }
