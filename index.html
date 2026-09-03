@@ -1114,14 +1114,12 @@ async function syncNow() {
     const localTripCount = (state.viajes || []).length;
     const remoteTripCount = remoteOk ? (remote.viajes || []).length : 0;
 
-    // Preferir SIEMPRE la nube cuando es una fuente válida y está más completa
-    // o más reciente que el estado local. Esto evita que un dispositivo con
-    // localStorage vacío/viejo borre los datos para todos.
+    // Si la nube tiene datos y el almacenamiento local está vacío o tiene menos viajes, o es más reciente
     const remoteWins =
-      remoteOk && (
-        (localTripCount === 0 && remoteTripCount > 0) ||
-        (remoteTripCount > localTripCount) ||
-        (remoteTripCount === localTripCount && remoteTs > localTs())
+      remoteOk && remoteTripCount > 0 && (
+        localTripCount === 0 ||
+        remoteTripCount > localTripCount ||
+        remoteTs >= localTs()
       );
 
     if (remoteWins) {
@@ -1133,16 +1131,9 @@ async function syncNow() {
       syncingRemote = false;
       lastUploadedTs = localTs();
       setSyncStatus('ok', '✅ Datos restaurados');
-      // Solo re-renderiza el contenido de la vista actual, sin cambiar de pantalla
       renderAfterSync();
     }
 
-    // 2) SUBIR cambios de este dispositivo SOLO si:
-    //    - tiene token,
-    //    - no perdió contra la nube en el paso anterior, y
-    //    - este dispositivo tiene datos propios (nunca subir un estado vacío
-    //      que pisaría la nube). "Datos propios" = tiene viajes, o localTs más
-    //      nuevo que la nube con al menos tantos viajes.
     const localHasData =
       localTripCount > 0 &&
       (remoteTripCount === 0 || localTripCount >= remoteTripCount);
