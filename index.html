@@ -2590,7 +2590,7 @@ ${mailText}
 JSON:`;
 }
 
-const GEMINI_MODELS = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-2.0-flash-lite', 'gemini-1.5-pro'];
+const GEMINI_MODELS = ['gemini-2.0-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-1.5-pro'];
 const OPENROUTER_MODELS = ['meta-llama/llama-3.3-70b-instruct:free', 'meta-llama/llama-3.1-8b-instruct:free', 'qwen/qwen-2.5-coder-32b-instruct:free', 'mistralai/mistral-small-24b-instruct-2501:free', 'deepseek/deepseek-chat:free', 'deepseek/deepseek-r1:free', 'google/gemini-2.0-flash-exp:free', 'mistralai/mistral-7b-instruct:free'];
 const GROQ_MODELS = ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant'];
 
@@ -2660,9 +2660,33 @@ const KEY_SKIP_RE = /api key|invalid|permission|blocked|forbidden|unauthorized|4
 // Errores de cuota: solo descartan ESE modelo, hay que seguir probando otros con la misma key
 const QUOTA_SKIP_RE = /quota|rate limit|429|resource_exhausted|exhausted/i;
 
+async function listGeminiModels(key) {
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1/models?key=${key}`);
+  if (!res.ok) return [];
+  const data = await res.json();
+  return (data.models || [])
+    .filter(m => m.supportedMethods?.includes('generateContent'))
+    .map(m => m.name.replace('models/', ''));
+}
+
 async function probeGeminiKey(key, prompt) {
   let lastErr = null;
-  for (const m of GEMINI_MODEL_PREF) {
+
+  // 1. Intentar obtener modelos disponibles desde la API
+  let availableModels = [];
+  try {
+    availableModels = await listGeminiModels(key);
+  } catch(e) {
+    // fallback a lista hardcodeada
+  }
+
+  // 2. Priorizar preferidos sobre el resto
+  const modelPool = availableModels.length
+    ? [...GEMINI_MODEL_PREF.filter(m => availableModels.includes(m)),
+       ...availableModels.filter(m => !GEMINI_MODEL_PREF.includes(m) && !m.includes('vision') && !m.includes('embedding'))]
+    : GEMINI_MODEL_PREF;
+
+  for (const m of modelPool) {
     try {
       return await callGeminiModel(key, m, prompt);
     } catch(e) {
@@ -2673,7 +2697,11 @@ async function probeGeminiKey(key, prompt) {
       }
     }
   }
-  throw lastErr || new Error('Ningún modelo de Gemini respondió');
+
+  const hint = availableModels.length
+    ? `Modelos disponibles en tu cuenta: ${availableModels.slice(0,5).join(', ')}...`
+    : 'Asegurate de tener habilitada la Generative Language API en https://console.cloud.google.com/apis/library/generativelanguage.googleapis.com';
+  throw lastErr || new Error(`Ningún modelo de Gemini respondió. ${hint}`);
 }
 
 async function callGemini(prompt) {
@@ -2682,14 +2710,27 @@ async function callGemini(prompt) {
   const exhausted = new Set();
   let lastError;
 
-  // Si ya tenemos un modelo funcional recordado, probarlo primero directamente
-  const savedModel = state.config.working_model && GEMINI_MODEL_PREF.includes(state.config.working_model)
+  // Descubrir modelos disponibles dinámicamente
+  let availableModels = [];
+  try {
+    for (const key of keys) {
+      availableModels = await listGeminiModels(key);
+      if (availableModels.length) break;
+    }
+  } catch(e) {}
+
+  const pref = availableModels.length
+    ? [...GEMINI_MODEL_PREF.filter(m => availableModels.includes(m)),
+       ...availableModels.filter(m => !GEMINI_MODEL_PREF.includes(m) && !m.includes('vision') && !m.includes('embedding'))]
+    : GEMINI_MODEL_PREF;
+
+  const savedModel = state.config.working_model && pref.includes(state.config.working_model)
     ? state.config.working_model
     : null;
 
   const modelsToTry = savedModel
-    ? [savedModel, ...GEMINI_MODEL_PREF.filter(m => m !== savedModel)]
-    : GEMINI_MODEL_PREF;
+    ? [savedModel, ...pref.filter(m => m !== savedModel)]
+    : pref;
 
   for (const key of keys) {
     if (exhausted.has(key)) continue;
