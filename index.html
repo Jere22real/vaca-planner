@@ -2590,7 +2590,7 @@ ${mailText}
 JSON:`;
 }
 
-const GEMINI_MODELS = ['gemini-2.0-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-flash', 'gemini-1.5-flash-8b', 'gemini-1.5-pro'];
+const GEMINI_MODELS = ['gemini-2.0-flash', 'gemini-2.0-flash-lite', 'gemini-2.0-pro-exp', 'gemini-1.5-pro'];
 const OPENROUTER_MODELS = ['meta-llama/llama-3.3-70b-instruct:free', 'meta-llama/llama-3.1-8b-instruct:free', 'qwen/qwen-2.5-coder-32b-instruct:free', 'mistralai/mistral-small-24b-instruct-2501:free', 'deepseek/deepseek-chat:free', 'deepseek/deepseek-r1:free', 'google/gemini-2.0-flash-exp:free', 'mistralai/mistral-7b-instruct:free'];
 const GROQ_MODELS = ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant'];
 
@@ -2621,7 +2621,7 @@ function getOpenRouterKeys() {
 }
 
 // Lista de modelos preferidos ordenados por velocidad y calidad
-const GEMINI_MODEL_PREF = ['gemini-2.0-flash', 'gemini-2.0-flash-lite', 'gemini-1.5-flash'];
+const GEMINI_MODEL_PREF = ['gemini-2.0-flash', 'gemini-2.0-flash-lite', 'gemini-2.0-pro-exp'];
 
 async function callGeminiModel(key, model, prompt) {
   const url = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${key}`;
@@ -2669,7 +2669,7 @@ async function listGeminiModels(key) {
   }
   const data = await res.json();
   return (data.models || [])
-    .filter(m => m.supportedMethods?.includes('generateContent'))
+    .filter(m => (m.supportedMethods || []).includes('generateContent') || m.name?.startsWith('models/gemini'))
     .map(m => m.name.replace('models/', ''));
 }
 
