@@ -2716,11 +2716,7 @@ async function callGemini(prompt) {
   throw lastError || new Error('Sin créditos en todas las keys de Gemini.');
 }
 
-// Modelos de Groq (100% gratis en console.groq.com)
-const GROQ_MODELS = [
-  'llama-3.3-70b-versatile',
-  'llama-3.1-8b-instant'
-];
+
 
 async function fetchGroqModels(key) {
   try {
