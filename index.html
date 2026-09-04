@@ -1112,12 +1112,20 @@ async function syncNow() {
     const remoteOk = remote && isValidCloudData(remote);
     const remoteTs = remoteOk ? ((remote.meta && remote.meta.updated_at) || 0) : 0;
     const localTripCount = (state.viajes || []).length;
-    const remoteTripCount = remoteOk ? (remote.viajes || []).length : 0;
+    const countTotalHosps = (viajesList) => (viajesList || []).reduce((acc, trip) => {
+      return acc + (trip.destinos || []).reduce((dAcc, d) => dAcc + (d.hospedajes || []).length, 0)
+                 + (trip.hospedajes || []).length;
+    }, 0);
 
-    // Si la nube tiene datos y el almacenamiento local está vacío o tiene menos viajes, o es más reciente
+    const localHospCount = countTotalHosps(state.viajes);
+    const remoteHospCount = remoteOk ? countTotalHosps(remote.viajes) : 0;
+
+    // Si la nube tiene datos válidos, y el local está vacío, tiene menos viajes/hospedajes, o la nube es igual o más reciente
     const remoteWins =
       remoteOk && remoteTripCount > 0 && (
         localTripCount === 0 ||
+        localHospCount === 0 ||
+        remoteHospCount > localHospCount ||
         remoteTripCount > localTripCount ||
         remoteTs >= localTs()
       );
@@ -1130,7 +1138,7 @@ async function syncNow() {
       saveState();
       syncingRemote = false;
       lastUploadedTs = localTs();
-      setSyncStatus('ok', '✅ Datos restaurados');
+      setSyncStatus('ok', '✅ Datos sincronizados');
       renderAfterSync();
     }
 
