@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VacaPlanner — Comparador de Hospedajes</title>
   <meta name="description" content="Compará hospedajes para tus vacaciones pegando los mails de los alojamientos. La IA los analiza y arma un comparador visual.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 140'%3E%3Cdefs%3E%3CclipPath id='pin'%3E%3Cpath d='M60 0C27 0 0 27 0 60c0 45 60 80 60 80s60-35 60-80C120 27 93 0 60 0z'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg clip-path='url(%23pin)'%3E%3Crect width='120' height='140' fill='%231a2744'/%3E%3Ccircle cx='82' cy='28' r='18' fill='%23f06520'/%3E%3Crect x='32' y='38' width='56' height='44' rx='8' fill='%23f5f0e8'/%3E%3Crect x='40' y='30' width='40' height='14' rx='7' fill='none' stroke='%23f5f0e8' stroke-width='5'/%3E%3Crect x='26' y='48' width='10' height='28' rx='4' fill='%23f5f0e8'/%3E%3Crect x='84' y='48' width='10' height='28' rx='4' fill='%23f5f0e8'/%3E%3Cpath d='M60 82 Q50 95 55 110 Q60 120 65 110 Q70 95 60 82' fill='none' stroke='%23f5f0e8' stroke-width='4' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -75,7 +76,7 @@
       display: flex; align-items: center; gap: 10px; cursor: pointer;
       text-decoration: none; color: var(--text);
     }
-    .brand-icon { font-size: 1.6rem; }
+    .brand-icon { display: inline-flex; align-items: center; }
     .brand-name { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.02em; }
     .brand-name span { background: var(--grad1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .navbar-actions { display: flex; gap: 10px; align-items: center; }
@@ -577,7 +578,7 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <a class="navbar-brand" onclick="goHome()" id="brand-link">
-      <span class="brand-icon">🏖️</span>
+      <span class="brand-icon"><svg viewBox="0 0 120 140" width="28" height="32" style="vertical-align:middle;"><defs><clipPath id="pin"><path d="M60 0C27 0 0 27 0 60c0 45 60 80 60 80s60-35 60-80C120 27 93 0 60 0z"/></clipPath></defs><g clip-path="url(#pin)"><rect width="120" height="140" fill="#1a2744"/><circle cx="82" cy="28" r="18" fill="#f06520"/><rect x="32" y="38" width="56" height="44" rx="8" fill="#f5f0e8"/><rect x="40" y="30" width="40" height="14" rx="7" fill="none" stroke="#f5f0e8" stroke-width="5"/><rect x="26" y="48" width="10" height="28" rx="4" fill="#f5f0e8"/><rect x="84" y="48" width="10" height="28" rx="4" fill="#f5f0e8"/><path d="M60 82Q50 95 55 110Q60 120 65 110Q70 95 60 82" fill="none" stroke="#f5f0e8" stroke-width="4" stroke-linecap="round"/></g></svg></span>
       <span class="brand-name">Vaca<span>Planner</span></span>
     </a>
     <div class="navbar-actions">
