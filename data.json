@@ -810,7 +810,8 @@
                 "instagram": null,
                 "fotos_urls": [
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/239188259.jpg?k=e8a461c16c9a76509267d200110ffba09d6695803ab85d7f55a82af3e119ad81&o=",
-                  "https://www.lafontainehotel.com/alojamiento-en-san-martin-de-los-andes"
+                  "https://www.lafontainehotel.com/alojamiento-en-san-martin-de-los-andes",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/677400003.jpg?k=5facd99a129b5bb4d9ba219a2573d0f07d63f277b0c9b560a164448ecba7de62&o="
                 ],
                 "notas_adicionales": "Check-in: 15:00hs, Check-out: 10:30hs. Atención personal las 24 hs.",
                 "calificacion_ia": 9,
@@ -1788,6 +1789,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788818497087
+    "updated_at": 1788818505239
   }
 }
