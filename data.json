@@ -608,7 +608,8 @@
                 "instagram": null,
                 "fotos_urls": [
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/624113807.jpg?k=a85990e089023a06b14e628988edeb7a8846119147fd932199571683892b3153&o=",
-                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/624114878.jpg?k=a5fd66eefaf201fb384a6ac07aef36a9abed89bdf8b2684f4d40015dfbb491f5&o="
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/624114878.jpg?k=a5fd66eefaf201fb384a6ac07aef36a9abed89bdf8b2684f4d40015dfbb491f5&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/624114682.jpg?k=7d52547bed131b237f6b9fc076046105e6808470f29884d0424e57e4b5b60de8&o="
                 ],
                 "notas_adicionales": "Puntaje de 9.2/10 en Booking. Aeropuerto Aviador Carlos Campos a 27 km.",
                 "calificacion_ia": 9.2,
@@ -1771,6 +1772,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788816424263
+    "updated_at": 1788816536720
   }
 }
