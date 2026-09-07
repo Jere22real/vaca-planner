@@ -621,7 +621,8 @@
                   "política de cancelación",
                   "formas de pago aceptadas"
                 ],
-                "texto_original_resumido": "Federico ofrece Cabaña Las Aljabas 1 (Cabaña 4) a $80.000 por día en San Martín de los Andes."
+                "texto_original_resumido": "Federico ofrece Cabaña Las Aljabas 1 (Cabaña 4) a $80.000 por día en San Martín de los Andes.",
+                "web_link": "https://www.booking.com/hotel/ar/cabana-las-aljabas.es-ar.html?aid=356980&label=gog235jc-10CAsoDEISY2FiYW5hLWxhcy1hbGphYmFzSCxYA2gMiAEBmAEzuAEXyAEM2AED6AEB-AEBiAIBqAIBuALN0vzUBsACAdICJGE4MjY3ZGM4LThkZTgtNGNmNi05N2YxLWZjMWViNjVlMTgxONgCAeACAQ&sid=1e03b616a8a1452c578d8d79bba5aa74&all_sr_blocks=957765601_368384260_2_0_0&checkin=2026-09-07&checkout=2026-09-10&dest_id=-1013487&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=957765601_368384260_2_0_0&hpos=1&matching_block_id=957765601_368384260_2_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=957765601_368384260_2_0_0__24057&srepoch=1788815696&srpvid=bab09567e82d077a&type=total&ucfs=1&activeTab=photosGallery"
               },
               "editado_manualmente": false
             },
@@ -1776,6 +1777,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788816745340
+    "updated_at": 1788816767701
   }
 }
