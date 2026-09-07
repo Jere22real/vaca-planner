@@ -1088,6 +1088,7 @@ function isValidCloudData(data) {
 }
 
 let syncingRemote = false;
+let syncingNow = false;
 let lastUploadedTs = 0;
 
 const DEFAULT_GH_TOKEN = ['ghp_ltSPWEdi4DznOtTi', 'Spa5BIdFA3rX2D3KDW0g'].join('');
@@ -1112,6 +1113,8 @@ function localTs() {
 }
 
 async function syncNow() {
+  if (syncingNow) return;
+  syncingNow = true;
   try {
     setSyncStatus('syncing', '🔄 Sync...');
     // 1) BAJAR lo publicado (cache-bust) — sin auth, todos lo ven
@@ -1149,32 +1152,39 @@ async function syncNow() {
     const remoteHasSameOrMore = remoteOk && remoteTripCount >= localTripCount && remoteHospCount >= localHospCount;
     if (localHasData && !remoteHasSameOrMore && localTs() > lastUploadedTs && getToken()) {
       setSyncStatus('syncing', '☁️ Guardando...');
-      await pushCurrentState();
+      const ok = await pushCurrentState();
+      setSyncStatus(ok ? 'ok' : 'warn', ok ? '✅ Guardado' : '⚠️ Error al subir');
     } else if (localHasData && remoteOk && localTs() > lastUploadedTs && getToken()) {
       setSyncStatus('syncing', '☁️ Guardando...');
-      await pushCurrentState();
+      const ok = await pushCurrentState();
+      setSyncStatus(ok ? 'ok' : 'warn', ok ? '✅ Guardado' : '⚠️ Error al subir');
     } else {
       setSyncStatus('ok', '✅ Nube lista');
     }
   } catch(e) {
     setSyncStatus('warn', '⚠️ Sin conexión');
   }
+  syncingNow = false;
 }
 
+let uploading = false;
 async function pushCurrentState() {
+  if (uploading) return false;
+  uploading = true;
   const token = getToken();
-  if (!token) return;
-  // Protección anti-clobbering: nunca publicar un estado sin viajes. SIEMPRE
-  // debe haber contenido, o no subimos (evita borrar la nube para todos).
-  if (!Array.isArray(state.viajes) || state.viajes.length === 0) return;
+  if (!token) { uploading = false; return false; }
+  if (!Array.isArray(state.viajes) || state.viajes.length === 0) { uploading = false; return false; }
   const api = apiDataUrl();
   const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' };
 
   try {
     let sha = null;
-    const getRes = await fetch(api, { headers });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    const getRes = await fetch(api, { headers, signal: controller.signal });
+    clearTimeout(timeout);
     if (getRes.ok) { const info = await getRes.json(); sha = info.sha; }
-    else if (getRes.status !== 404) return;
+    else if (getRes.status !== 404) { uploading = false; return false; }
 
     const payload = JSON.stringify({ version: 1, viajes: state.viajes, meta: { updated_at: localTs() } }, null, 2);
     const body = {
@@ -1184,13 +1194,22 @@ async function pushCurrentState() {
     };
     if (sha) body.sha = sha;
 
+    const putController = new AbortController();
+    const putTimeout = setTimeout(() => putController.abort(), 20000);
     const putRes = await fetch(api, {
       method: 'PUT',
       headers: { ...headers, 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
+      signal: putController.signal
     });
-    if (putRes.ok) lastUploadedTs = localTs();
-  } catch(e) {}
+    clearTimeout(putTimeout);
+    if (putRes.ok) { lastUploadedTs = localTs(); uploading = false; return true; }
+    uploading = false;
+    return false;
+  } catch(e) {
+    uploading = false;
+    return false;
+  }
 }
 
 async function startAutoSync() {
