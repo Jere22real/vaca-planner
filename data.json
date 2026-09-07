@@ -657,6 +657,7 @@
                 "fotos_urls": [
                   "https://www.interpatagonia.com/plantillas/grandes/36273-13Gr.jpg",
                   "https://www.interpatagonia.com/plantillas/grandes/36273-07Gr.jpg",
+                  "https://www.interpatagonia.com/plantillas/grandes/36273-00Gr.jpg",
                   "https://wa.me/p/7372294022787955/137610886381815"
                 ],
                 "notas_adicionales": "Ubicación estratégica cerca de supermercado La Anónima.",
@@ -1774,6 +1775,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788816687961
+    "updated_at": 1788816703360
   }
 }
