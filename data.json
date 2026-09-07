@@ -1562,7 +1562,8 @@
                 "contacto": "Hugo Vázquez y María / Email: cabanasalihuen14@gmail.com",
                 "instagram": null,
                 "fotos_urls": [
-                  "https://www.interpatagonia.com/plantillas/grandes/35802-00Gr.jpg"
+                  "https://www.interpatagonia.com/plantillas/grandes/35802-00Gr.jpg",
+                  "https://www.interpatagonia.com/plantillas/grandes/35802-04Gr.jpg"
                 ],
                 "notas_adicionales": "Atendida por sus dueños. Ofrece servicio de transfers pago.",
                 "calificacion_ia": 8,
@@ -1802,6 +1803,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788819441171
+    "updated_at": 1788819449239
   }
 }
