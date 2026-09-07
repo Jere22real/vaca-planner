@@ -1614,7 +1614,9 @@
                 "instagram": null,
                 "fotos_urls": [
                   "https://www.interpatagonia.com/plantillas/grandes/37567-01Gr.jpg",
-                  "https://www.interpatagonia.com/plantillas/grandes/37567-04Gr.jpg"
+                  "https://www.interpatagonia.com/plantillas/grandes/37567-04Gr.jpg",
+                  "https://www.interpatagonia.com/plantillas/grandes/37567-10Gr.jpg",
+                  "https://www.interpatagonia.com/plantillas/grandes/37567-15Gr.jpg"
                 ],
                 "notas_adicionales": "Distancia al aeropuerto: 100 km. Check-in: 14:00 h, Check-out: 10:00 h.",
                 "calificacion_ia": 8,
@@ -1810,6 +1812,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788820049773
+    "updated_at": 1788820056994
   }
 }
