@@ -712,7 +712,9 @@
                 "contacto": "Instagram: @cabanas_arique / Web: www.arique.com",
                 "instagram": "@cabanas_arique",
                 "fotos_urls": [
-                  "https://www.arique.com/s/s292/fotos/foto-7-0.webp?date=2026.05.13.12.51.57"
+                  "https://www.arique.com/s/s292/fotos/foto-7-0.webp?date=2026.05.13.12.51.57",
+                  "https://www.arique.com/s/s292/fotos/foto-7-8.webp?date=2026.05.13.12.51.57",
+                  "https://www.arique.com/s/s292/fotos/foto-7-3.webp?date=2026.05.13.12.51.57"
                 ],
                 "notas_adicionales": "Tarifas no incluyen IVA. Descuentos por estadía semanal o clientes frecuentes.",
                 "calificacion_ia": 9,
@@ -1780,6 +1782,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788817079786
+    "updated_at": 1788817087839
   }
 }
