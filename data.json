@@ -719,7 +719,8 @@
                   "precio total",
                   "horario check-in/out"
                 ],
-                "texto_original_resumido": "Cabaña con un dormitorio para 2 pasajeros a $110.000 ARS por noche."
+                "texto_original_resumido": "Cabaña con un dormitorio para 2 pasajeros a $110.000 ARS por noche.",
+                "web_link": "https://www.arique.com/es/"
               },
               "editado_manualmente": false
             },
@@ -1777,6 +1778,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788816767701
+    "updated_at": 1788816999684
   }
 }
