@@ -9,6 +9,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-sltqjB4U0KkZF7GzQ1yt1Pj7EhfE4P+P+NigKwR4C=" crossorigin=""/>
+  <style>
+    /* Leaflet container will be sized by app CSS later */
+  </style>
   <style>
     /* ===== RESET & BASE ===== */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -3408,6 +3413,16 @@ function showInitLoading() {
     }, 1500);
   }
 })();
+</script>
+<!-- Leaflet -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-o6ZqFgFMmQmR7XZ6K6pF+6VmVfLmOtmJcQJRiKuDpNUI=" crossorigin="anonymous"></script>
+<script>L = L noConflict;
+window.vacaMap = null;
+</script>
+<!-- Leaflet -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-o6ZqFgFMmQmR7XZ6K6pF0c29emKwYv2jNF7k7aMmTY=" crossorigin="anonymous"></script>
+<script>L = L noConflict;
+window.vacaMap = null;
 </script>
 </body>
 </html>
