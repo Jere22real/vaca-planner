@@ -1386,7 +1386,10 @@
                 "forma_pago": "Depósito de reserva",
                 "contacto": "Miriam / www.rucaauca.com",
                 "instagram": null,
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://www.interpatagonia.com/plantillas/grandes/33925-00Gr.jpg",
+                  "https://www.interpatagonia.com/plantillas/grandes/33925-05Gr.jpg"
+                ],
                 "notas_adicionales": "Se admite una mascota por alojamiento (con condiciones). Servicios adicionales disponibles: desayuno, lavandería, limpieza diaria, personal trainer, cabalgatas, caminatas guiadas y traslados.",
                 "calificacion_ia": 8.8,
                 "razon_calificacion": "Excelente equipamiento y ubicación privilegiada cerca del lago.",
@@ -1790,6 +1793,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788818553098
+    "updated_at": 1788818705274
   }
 }
