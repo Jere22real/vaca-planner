@@ -1561,7 +1561,9 @@
                 "forma_pago": "MercadoPago, Tarjetas de crédito",
                 "contacto": "Hugo Vázquez y María / Email: cabanasalihuen14@gmail.com",
                 "instagram": null,
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://www.interpatagonia.com/plantillas/grandes/35802-00Gr.jpg"
+                ],
                 "notas_adicionales": "Atendida por sus dueños. Ofrece servicio de transfers pago.",
                 "calificacion_ia": 8,
                 "razon_calificacion": "Excelente ubicación céntrica y cercana al lago, con parque, arroyo y equipamiento completo.",
@@ -1800,6 +1802,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788818920919
+    "updated_at": 1788819441171
   }
 }
