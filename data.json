@@ -655,10 +655,9 @@
                 "contacto": "Tel: +54 9 3364 18-6694",
                 "instagram": null,
                 "fotos_urls": [
-                  "https://wa.me/p/7372294022787955/137610886381815",
                   "https://www.interpatagonia.com/plantillas/grandes/36273-13Gr.jpg",
-                  "https://www.interpatagonia.com/sanmartindelosandes/departamento-1-habitacion.html",
-                  "https://www.interpatagonia.com/plantillas/grandes/36273-07Gr.jpg"
+                  "https://www.interpatagonia.com/plantillas/grandes/36273-07Gr.jpg",
+                  "https://wa.me/p/7372294022787955/137610886381815"
                 ],
                 "notas_adicionales": "Ubicación estratégica cerca de supermercado La Anónima.",
                 "calificacion_ia": 8,
@@ -1775,6 +1774,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788816679785
+    "updated_at": 1788816687961
   }
 }
