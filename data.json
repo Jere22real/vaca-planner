@@ -1576,7 +1576,8 @@
                   "política de cancelación",
                   "teléfono de contacto / WhatsApp"
                 ],
-                "texto_original_resumido": "Cabaña totalmente equipada para dos personas a $90.000 por día para el período septiembre-noviembre 2026."
+                "texto_original_resumido": "Cabaña totalmente equipada para dos personas a $90.000 por día para el período septiembre-noviembre 2026.",
+                "web_link": "https://www.interpatagonia.com/villatraful/cabanas-alihuen.html"
               },
               "editado_manualmente": false
             },
@@ -1805,6 +1806,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788819465355
+    "updated_at": 1788819913589
   }
 }
