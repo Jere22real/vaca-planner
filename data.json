@@ -819,7 +819,8 @@
                   "politica_cancelacion",
                   "forma_pago"
                 ],
-                "texto_original_resumido": "Habitación doble a $89.980 con desayuno por noche."
+                "texto_original_resumido": "Habitación doble a $89.980 con desayuno por noche.",
+                "web_link": "https://www.lafontainehotel.com/reservas-y-consultas"
               },
               "editado_manualmente": false
             }
@@ -1786,6 +1787,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788818328937
+    "updated_at": 1788818377912
   }
 }
