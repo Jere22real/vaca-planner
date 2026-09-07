@@ -711,7 +711,9 @@
                 "forma_pago": "Transferencia, Efectivo",
                 "contacto": "Instagram: @cabanas_arique / Web: www.arique.com",
                 "instagram": "@cabanas_arique",
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://www.arique.com/s/s292/fotos/foto-7-0.webp?date=2026.05.13.12.51.57"
+                ],
                 "notas_adicionales": "Tarifas no incluyen IVA. Descuentos por estadía semanal o clientes frecuentes.",
                 "calificacion_ia": 9,
                 "razon_calificacion": "Excelente ubicación residencial cerca del centro y lago, con servicios completos como piscina climatizada.",
@@ -1778,6 +1780,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788816999684
+    "updated_at": 1788817079786
   }
 }
