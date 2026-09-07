@@ -1504,7 +1504,9 @@
                 "forma_pago": "Efectivo, transferencia bancaria, Mercado Pago (tarjetas de crédito con 9 % de recargo)",
                 "contacto": "Mariana Ferranti / Tel: +54 9 2944 39-2884",
                 "instagram": null,
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://lafortalezadeptos.com/uploads/1766228044659-wpn394agw.webp"
+                ],
                 "notas_adicionales": "Sitio web: https://lafortalezadeptos.com/ ; mapa: https://maps.app.goo.gl/UUFHH69xaXqQnJKv9 ; catálogo WhatsApp: https://wa.me/c/5492944392884",
                 "calificacion_ia": 8,
                 "razon_calificacion": "Buen equipamiento y ubicación frente al lago con vista panorámica.",
@@ -1795,6 +1797,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788818720876
+    "updated_at": 1788818897389
   }
 }
