@@ -759,6 +759,7 @@
                 "contacto": "WhatsApp: +54 9 2972 406433",
                 "instagram": null,
                 "fotos_urls": [
+                  "https://www.interpatagonia.com/plantillas/grandes/28-00Gr.jpg",
                   "https://wa.me/c/5492972406433"
                 ],
                 "notas_adicionales": "Descuentos exclusivos en restaurantes, chocolaterías, alquiler de auto y equipos de ski. Parking cubierto con costo adicional.",
@@ -1782,6 +1783,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788817116474
+    "updated_at": 1788818262395
   }
 }
