@@ -760,8 +760,9 @@
                 "instagram": null,
                 "fotos_urls": [
                   "https://www.interpatagonia.com/plantillas/grandes/28-00Gr.jpg",
-                  "https://wa.me/c/5492972406433",
-                  "https://www.interpatagonia.com/plantillas/grandes/28-05Gr.jpg"
+                  "https://www.interpatagonia.com/plantillas/grandes/28-05Gr.jpg",
+                  "https://www.interpatagonia.com/plantillas/grandes/28-01Gr.jpg",
+                  "https://wa.me/c/5492972406433"
                 ],
                 "notas_adicionales": "Descuentos exclusivos en restaurantes, chocolaterías, alquiler de auto y equipos de ski. Parking cubierto con costo adicional.",
                 "calificacion_ia": 9,
@@ -1784,6 +1785,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788818271124
+    "updated_at": 1788818305502
   }
 }
