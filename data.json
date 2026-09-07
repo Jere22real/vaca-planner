@@ -1612,7 +1612,10 @@
                 "forma_pago": null,
                 "contacto": "+54 9 2944 20-0807",
                 "instagram": null,
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://www.interpatagonia.com/plantillas/grandes/37567-01Gr.jpg",
+                  "https://www.interpatagonia.com/plantillas/grandes/37567-04Gr.jpg"
+                ],
                 "notas_adicionales": "Distancia al aeropuerto: 100 km. Check-in: 14:00 h, Check-out: 10:00 h.",
                 "calificacion_ia": 8,
                 "razon_calificacion": "Buen precio accesible por noche para capacidad de hasta 8 personas en un entorno natural con parrilla y servicios básicos completos.",
@@ -1807,6 +1810,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788819969033
+    "updated_at": 1788820049773
   }
 }
