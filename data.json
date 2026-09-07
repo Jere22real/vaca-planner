@@ -606,7 +606,9 @@
                 "forma_pago": null,
                 "contacto": "Federico Sandobal / Email: fefesandobal@gmail.com",
                 "instagram": null,
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/624113807.jpg?k=a85990e089023a06b14e628988edeb7a8846119147fd932199571683892b3153&o="
+                ],
                 "notas_adicionales": "Puntaje de 9.2/10 en Booking. Aeropuerto Aviador Carlos Campos a 27 km.",
                 "calificacion_ia": 9.2,
                 "razon_calificacion": "Puntaje alto de usuarios (9.2), excelente ubicación, atención destacada por parte del anfitrión y buenos servicios.",
@@ -1768,6 +1770,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788815629412
+    "updated_at": 1788816416677
   }
 }
