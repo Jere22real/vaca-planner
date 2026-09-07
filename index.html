@@ -673,6 +673,16 @@
         <button class="btn btn-primary btn-sm" onclick="testApiKey()" title="Probar en vivo todas las keys agregadas">🔍 Probar todas en vivo</button>
       </div>
       <div class="divider"></div>
+      <div class="form-group">
+        <label>☁️ Token de GitHub (para sincronizar entre dispositivos)</label>
+        <input type="password" id="cfg-gh-token" placeholder="ghp_... tu token de GitHub Personal Access Token">
+        <p class="form-hint">
+          Necesario para guardar los datos en la nube. Si no lo tenés, crealo acá:
+          <a href="https://github.com/settings/tokens/new?scopes=repo&description=VacaPlanner" target="_blank" style="color:var(--accent)">🔑 Crear token</a>
+          (tildá "repo" y copialo una sola vez).
+        </p>
+        <div id="cfg-gh-token-status"></div>
+      </div>
       <div class="config-row">
         <span class="api-status">
           <span class="status-dot ok" id="sync-status-dot"></span>
@@ -1097,7 +1107,7 @@ function getRepoName() {
   return 'Jere22real/vaca-planner';
 }
 function getToken() {
-  return DEFAULT_GH_TOKEN;
+  return (state.config && state.config.gh_token) || DEFAULT_GH_TOKEN;
 }
 function getApiKeys() {
   return (state.config.api_keys || []).map(k => (k || '').trim()).filter(Boolean);
@@ -1152,12 +1162,24 @@ async function syncNow() {
     const remoteHasSameOrMore = remoteOk && remoteTripCount >= localTripCount && remoteHospCount >= localHospCount;
     if (localHasData && !remoteHasSameOrMore && localTs() > lastUploadedTs && getToken()) {
       setSyncStatus('syncing', '☁️ Guardando...');
-      const ok = await pushCurrentState();
-      setSyncStatus(ok ? 'ok' : 'warn', ok ? '✅ Guardado' : '⚠️ Error al subir');
+      const pushResult = await pushCurrentState();
+      if (pushResult === true) {
+        setSyncStatus('ok', '✅ Guardado');
+      } else if (pushResult === 'no-token') {
+        setSyncStatus('warn', '⚠️ Configurá tu token GitHub en Config');
+      } else {
+        setSyncStatus('warn', '⚠️ Token inválido — Configurá uno nuevo en Config');
+      }
     } else if (localHasData && remoteOk && localTs() > lastUploadedTs && getToken()) {
       setSyncStatus('syncing', '☁️ Guardando...');
-      const ok = await pushCurrentState();
-      setSyncStatus(ok ? 'ok' : 'warn', ok ? '✅ Guardado' : '⚠️ Error al subir');
+      const pushResult = await pushCurrentState();
+      if (pushResult === true) {
+        setSyncStatus('ok', '✅ Guardado');
+      } else if (pushResult === 'no-token') {
+        setSyncStatus('warn', '⚠️ Configurá tu token GitHub en Config');
+      } else {
+        setSyncStatus('warn', '⚠️ Token inválido — Configurá uno nuevo en Config');
+      }
     } else {
       setSyncStatus('ok', '✅ Nube lista');
     }
@@ -1172,7 +1194,7 @@ async function pushCurrentState() {
   if (uploading) return false;
   uploading = true;
   const token = getToken();
-  if (!token) { uploading = false; return false; }
+  if (!token) { uploading = false; return 'no-token'; }
   if (!Array.isArray(state.viajes) || state.viajes.length === 0) { uploading = false; return false; }
   const api = apiDataUrl();
   const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' };
@@ -1184,6 +1206,7 @@ async function pushCurrentState() {
     const getRes = await fetch(api, { headers, signal: controller.signal });
     clearTimeout(timeout);
     if (getRes.ok) { const info = await getRes.json(); sha = info.sha; }
+    else if (getRes.status === 401 || getRes.status === 403) { uploading = false; return false; }
     else if (getRes.status !== 404) { uploading = false; return false; }
 
     const payload = JSON.stringify({ version: 1, viajes: state.viajes, meta: { updated_at: localTs() } }, null, 2);
@@ -3169,6 +3192,14 @@ function openConfig() {
   pendingKeys = getApiKeys();
   renderConfigKeys();
   updateApiStatus();
+  document.getElementById('cfg-gh-token').value = (state.config && state.config.gh_token) || '';
+  const ghStatus = document.getElementById('cfg-gh-token-status');
+  if (ghStatus) {
+    const hasToken = !!(state.config && state.config.gh_token);
+    ghStatus.innerHTML = hasToken
+      ? '<span style="font-size:0.75rem;color:var(--green);">✅ Token configurado</span>'
+      : '<span style="font-size:0.75rem;color:var(--text3);">Usando token por defecto (si no funciona, creá uno propio)</span>';
+  }
   openModal('modal-config');
   const input = document.getElementById('cfg-new-key');
   if (input) setTimeout(() => input.focus(), 50);
@@ -3307,6 +3338,12 @@ async function testApiKey() {
 
 function saveConfigQuiet() {
   state.config.api_keys = pendingKeys.filter(k => k && k.trim());
+  const ghInput = document.getElementById('cfg-gh-token');
+  if (ghInput) {
+    const val = ghInput.value.trim();
+    if (val) state.config.gh_token = val;
+    else delete state.config.gh_token;
+  }
   saveState();
   updateApiStatus();
 }
@@ -3384,20 +3421,23 @@ function showInitLoading() {
   showView('view-home');
   showInitLoading();
 
-  // Primera sincronización bloqueante: trae los datos de GitHub antes de mostrar nada
   await syncNow();
 
-  // Ahora sí renderizamos con los datos correctos
   renderHome();
 
-  // Luego seguimos con la sincronización automática periódica
   setInterval(syncNow, 10000);
 
-  // Show setup prompt if no API key
   if (!getApiKeys().length) {
     setTimeout(() => {
       toast('👋 Bienvenido! Configurá tu API Key en ⚙️ Config para empezar.', 'info', 6000);
     }, 600);
+  }
+
+  const syncBadge = document.getElementById('nav-sync-txt');
+  if (syncBadge && (syncBadge.textContent.includes('Token') || syncBadge.textContent.includes('Error') || syncBadge.textContent.includes('inválido'))) {
+    setTimeout(() => {
+      toast('⚠️ Para sincronizar entre dispositivos, abrí ⚙️ Config y pegá tu token de GitHub (ghp_...). Crealo gratis en github.com/settings/tokens', 'info', 8000);
+    }, 1500);
   }
 })();
 </script>
