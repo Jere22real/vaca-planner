@@ -809,6 +809,7 @@
                 "contacto": "Tel: (02972) 42-7736 / Whatsapp: +54 9 2972 538679",
                 "instagram": null,
                 "fotos_urls": [
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/239188259.jpg?k=e8a461c16c9a76509267d200110ffba09d6695803ab85d7f55a82af3e119ad81&o=",
                   "https://www.lafontainehotel.com/alojamiento-en-san-martin-de-los-andes"
                 ],
                 "notas_adicionales": "Check-in: 15:00hs, Check-out: 10:30hs. Atención personal las 24 hs.",
@@ -1787,6 +1788,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788818377912
+    "updated_at": 1788818497087
   }
 }
