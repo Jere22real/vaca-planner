@@ -771,7 +771,8 @@
                   "ubicación exacta",
                   "política de cancelación"
                 ],
-                "texto_original_resumido": "Habitación doble con desayuno a $79.980 ARS/noche."
+                "texto_original_resumido": "Habitación doble con desayuno a $79.980 ARS/noche.",
+                "web_link": "https://www.interpatagonia.com/sanmartindelosandes/hotel-del-viejo-esquiador.html"
               },
               "editado_manualmente": false
             },
@@ -1785,6 +1786,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788818305502
+    "updated_at": 1788818328937
   }
 }
