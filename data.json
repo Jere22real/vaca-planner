@@ -669,7 +669,8 @@
                   "forma_pago",
                   "fechas_disponibles"
                 ],
-                "texto_original_resumido": "Departamento R.Roca en zona centro, capacidad 4 personas, $100.000 la noche."
+                "texto_original_resumido": "Departamento R.Roca en zona centro, capacidad 4 personas, $100.000 la noche.",
+                "web_link": "https://wa.me/p/7372294022787955/137610886381815"
               },
               "editado_manualmente": false
             },
@@ -1775,6 +1776,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788816703360
+    "updated_at": 1788816745340
   }
 }
