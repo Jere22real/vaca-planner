@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VacaPlanner — Comparador de Hospedajes</title>
-  <meta name="description" content="Compará hospedajes para tus vacaciones pegando los mails de los alojamientos. La IA los analiza y arma un comparador visual.">
+  <title>VacaPlanner â€” Comparador de Hospedajes</title>
+  <meta name="description" content="ComparÃ¡ hospedajes para tus vacaciones pegando los mails de los alojamientos. La IA los analiza y arma un comparador visual.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -556,7 +556,8 @@
     /* ===== RESPONSIVE ===== */
     @media (max-width: 640px) {
       .view { padding: 16px; }
-      .navbar { padding: 12px 16px; }
+      .navbar { padding: 10px 12px; }
+      .navbar-actions { gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
       .form-row { grid-template-columns: 1fr; }
       .home-top { flex-direction: column; gap: 12px; align-items: flex-start; }
       .trip-header { flex-direction: column; }
@@ -576,15 +577,16 @@
   <!-- NAVBAR -->
   <nav class="navbar">
     <a class="navbar-brand" onclick="goHome()" id="brand-link">
-      <span class="brand-icon">🏖️</span>
+      <span class="brand-icon">ðŸ–ï¸</span>
       <span class="brand-name">Vaca<span>Planner</span></span>
     </a>
     <div class="navbar-actions">
-      <span class="nav-sync-badge" id="nav-sync-badge">
+      <span class="nav-sync-badge" id="nav-sync-badge" onclick="syncNow()" style="cursor:pointer;" title="HacÃ© clic para sincronizar ahora">
         <span class="sync-dot" id="nav-sync-dot"></span>
         <span class="sync-txt" id="nav-sync-txt">Nube lista</span>
       </span>
-      <button class="btn btn-ghost btn-sm" onclick="openConfig()">⚙️ Config</button>
+      <button class="btn btn-ghost btn-sm" onclick="syncNow()">ðŸ”„ Sinc</button>
+      <button class="btn btn-ghost btn-sm" onclick="openConfig()">âš™ï¸ Config</button>
     </div>
   </nav>
 
@@ -592,11 +594,11 @@
   <div class="view active" id="view-home">
     <div class="home-header">
       <h1 class="home-title">Mis <span>Viajes</span></h1>
-      <p class="home-sub">Compará hospedajes pegando los mails que recibís. La IA hace el resto.</p>
+      <p class="home-sub">ComparÃ¡ hospedajes pegando los mails que recibÃ­s. La IA hace el resto.</p>
     </div>
     <div class="home-top">
       <span id="trips-count" style="color:var(--text2);font-size:0.88rem;"></span>
-      <button class="btn btn-primary" onclick="openNewTrip()">✈️ Nuevo Viaje</button>
+      <button class="btn btn-primary" onclick="openNewTrip()">âœˆï¸ Nuevo Viaje</button>
     </div>
     <div id="trips-grid" class="trips-grid"></div>
   </div>
@@ -605,7 +607,7 @@
   <div class="view" id="view-trip">
     <div class="trip-header">
       <div class="trip-header-left">
-        <button class="back-btn" onclick="goHome()">← </button>
+        <button class="back-btn" onclick="goHome()">â† </button>
         <div>
           <div class="trip-view-title" id="trip-view-title">Viaje</div>
           <div class="trip-view-sub" id="trip-view-sub"></div>
@@ -613,11 +615,11 @@
       </div>
       <div class="trip-header-right">
         <div class="view-toggle">
-          <button class="view-toggle-btn active" id="btn-grid" onclick="setHospView('grid')">⊞ Grilla</button>
-          <button class="view-toggle-btn" id="btn-table" onclick="setHospView('table')">≡ Tabla</button>
+          <button class="view-toggle-btn active" id="btn-grid" onclick="setHospView('grid')">âŠž Grilla</button>
+          <button class="view-toggle-btn" id="btn-table" onclick="setHospView('table')">â‰¡ Tabla</button>
         </div>
-        <button class="btn btn-ghost" onclick="openNewDestino()">🗺️ Ciudad</button>
-        <button class="btn btn-primary" onclick="openAddHosp()">➕ Hospedaje</button>
+        <button class="btn btn-ghost" onclick="openNewDestino()">ðŸ—ºï¸ Ciudad</button>
+        <button class="btn btn-primary" onclick="openAddHosp()">âž• Hospedaje</button>
       </div>
     </div>
 
@@ -643,24 +645,24 @@
 <div class="modal-overlay hidden" id="modal-config">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title">⚙️ Configuración</span>
-      <button class="modal-close" onclick="closeModal('modal-config')">✕</button>
+      <span class="modal-title">âš™ï¸ ConfiguraciÃ³n</span>
+      <button class="modal-close" onclick="closeModal('modal-config')">âœ•</button>
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label>🔑 API Keys (Gemini, Groq, OpenRouter)</label>
+        <label>ðŸ”‘ API Keys (Gemini, Groq, OpenRouter)</label>
         <div class="key-add-row">
-          <input type="password" id="cfg-new-key" placeholder="Pegá tu API Key de Gemini (AIza...), Groq o OpenRouter...">
-          <button class="btn btn-ghost btn-sm" onclick="addPendingKey()">➕ Agregar</button>
+          <input type="password" id="cfg-new-key" placeholder="PegÃ¡ tu API Key de Gemini (AIza...), Groq o OpenRouter...">
+          <button class="btn btn-ghost btn-sm" onclick="addPendingKey()">âž• Agregar</button>
         </div>
         <div id="cfg-keys-list"></div>
         <p class="form-hint">
           Se prueban en orden: <strong>Gemini</strong> &rarr; <strong>Groq (100% gratis)</strong> &rarr; <strong>OpenRouter</strong>.<br>
-          Las keys válidas se guardan automáticamente y no se vuelven a testear en cada prueba.<br>
+          Las keys vÃ¡lidas se guardan automÃ¡ticamente y no se vuelven a testear en cada prueba.<br>
           Keys gratuitas sin tarjeta:
-          <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent)">🔑 Gemini (Google)</a> &middot;
-          <a href="https://console.groq.com/keys" target="_blank" style="color:var(--green)">⚡ Groq (Rápido y gratis)</a> &middot;
-          <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--cyan)">🌐 OpenRouter</a>
+          <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent)">ðŸ”‘ Gemini (Google)</a> &middot;
+          <a href="https://console.groq.com/keys" target="_blank" style="color:var(--green)">âš¡ Groq (RÃ¡pido y gratis)</a> &middot;
+          <a href="https://openrouter.ai/keys" target="_blank" style="color:var(--cyan)">ðŸŒ OpenRouter</a>
         </p>
       </div>
       <div class="config-row">
@@ -668,19 +670,19 @@
           <span class="status-dot warn" id="api-dot"></span>
           <span id="api-status-text">Sin configurar</span>
         </span>
-        <button class="btn btn-primary btn-sm" onclick="testApiKey()" title="Probar en vivo todas las keys agregadas">🔍 Probar todas en vivo</button>
+        <button class="btn btn-primary btn-sm" onclick="testApiKey()" title="Probar en vivo todas las keys agregadas">ðŸ” Probar todas en vivo</button>
       </div>
       <div class="divider"></div>
       <div class="config-row">
         <span class="api-status">
           <span class="status-dot ok" id="sync-status-dot"></span>
-          <span id="sync-status-text">🔄 Sincronización automática activada</span>
+          <span id="sync-status-text">ðŸ”„ SincronizaciÃ³n automÃ¡tica activada</span>
         </span>
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-config')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveConfig()">💾 Guardar</button>
+      <button class="btn btn-primary" onclick="saveConfig()">ðŸ’¾ Guardar</button>
     </div>
   </div>
 </div>
@@ -689,8 +691,8 @@
 <div class="modal-overlay hidden" id="modal-new-trip">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title">✈️ Nuevo Viaje</span>
-      <button class="modal-close" onclick="closeModal('modal-new-trip')">✕</button>
+      <span class="modal-title">âœˆï¸ Nuevo Viaje</span>
+      <button class="modal-close" onclick="closeModal('modal-new-trip')">âœ•</button>
     </div>
     <div class="modal-body">
       <div class="form-group">
@@ -699,7 +701,7 @@
       </div>
       <div class="form-group">
         <label>Destino</label>
-        <input type="text" id="trip-dest" placeholder="Ej: Bariloche, Río Negro">
+        <input type="text" id="trip-dest" placeholder="Ej: Bariloche, RÃ­o Negro">
       </div>
       <div class="form-row">
         <div class="form-group">
@@ -713,12 +715,12 @@
       </div>
       <div class="form-group">
         <label>Emoji del viaje</label>
-        <input type="text" id="trip-emoji" placeholder="🏔️" maxlength="4" style="font-size:1.5rem; width:80px; text-align:center;">
+        <input type="text" id="trip-emoji" placeholder="ðŸ”ï¸" maxlength="4" style="font-size:1.5rem; width:80px; text-align:center;">
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-new-trip')">Cancelar</button>
-      <button class="btn btn-primary" onclick="createTrip()">Crear Viaje ✓</button>
+      <button class="btn btn-primary" onclick="createTrip()">Crear Viaje âœ“</button>
     </div>
   </div>
 </div>
@@ -727,12 +729,12 @@
 <div class="modal-overlay hidden" id="modal-new-destino">
   <div class="modal" style="max-width:420px;">
     <div class="modal-header">
-      <span class="modal-title" id="destino-modal-title">🗺️ Nueva Ciudad / Destino</span>
-      <button class="modal-close" onclick="closeModal('modal-new-destino')">✕</button>
+      <span class="modal-title" id="destino-modal-title">ðŸ—ºï¸ Nueva Ciudad / Destino</span>
+      <button class="modal-close" onclick="closeModal('modal-new-destino')">âœ•</button>
     </div>
     <div class="modal-body">
       <p style="font-size:0.82rem;color:var(--text2);margin-bottom:14px;">
-        Agrupá los hospedajes por ciudad o lugar donde vas a parar (ej: Bariloche, San Martín de los Andes).
+        AgrupÃ¡ los hospedajes por ciudad o lugar donde vas a parar (ej: Bariloche, San MartÃ­n de los Andes).
       </p>
       <div class="form-group">
         <label>Nombre de la ciudad / destino</label>
@@ -740,12 +742,12 @@
       </div>
       <div class="form-group">
         <label>Emoji</label>
-        <input type="text" id="destino-emoji" placeholder="🏔️" maxlength="4" style="font-size:1.5rem; width:80px; text-align:center;">
+        <input type="text" id="destino-emoji" placeholder="ðŸ”ï¸" maxlength="4" style="font-size:1.5rem; width:80px; text-align:center;">
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-new-destino')">Cancelar</button>
-      <button class="btn btn-primary" id="btn-save-destino" onclick="saveDestino()">Crear Ciudad ✓</button>
+      <button class="btn btn-primary" id="btn-save-destino" onclick="saveDestino()">Crear Ciudad âœ“</button>
     </div>
   </div>
 </div>
@@ -754,28 +756,28 @@
 <div class="modal-overlay hidden" id="modal-add-hosp">
   <div class="modal wide">
     <div class="modal-header">
-      <span class="modal-title">✨ Agregar Alojamiento (Mail y/o Link Web)</span>
-      <button class="modal-close" onclick="closeModal('modal-add-hosp')">✕</button>
+      <span class="modal-title">âœ¨ Agregar Alojamiento (Mail y/o Link Web)</span>
+      <button class="modal-close" onclick="closeModal('modal-add-hosp')">âœ•</button>
     </div>
     <div class="modal-body" id="add-hosp-body">
       <div id="step-paste">
         <p style="color:var(--text2);font-size:0.88rem;margin-bottom:16px;">
-          Pegá el <strong>Mail/WhatsApp</strong> que recibiste del alojamiento. Podés <strong>sumar opcionalmente el Link Web</strong> como complemento para que la IA tenga más contexto.
+          PegÃ¡ el <strong>Mail/WhatsApp</strong> que recibiste del alojamiento. PodÃ©s <strong>sumar opcionalmente el Link Web</strong> como complemento para que la IA tenga mÃ¡s contexto.
         </p>
 
         <div class="form-group">
-          <label>🗺️ Ciudad / Destino</label>
+          <label>ðŸ—ºï¸ Ciudad / Destino</label>
           <select id="addhosp-destino" onchange="currentDestinoId=this.value"></select>
         </div>
 
         <div class="form-group">
-          <label>🌐 Link Web de la Cabaña (Opcional - complemento de información)</label>
+          <label>ðŸŒ Link Web de la CabaÃ±a (Opcional - complemento de informaciÃ³n)</label>
           <input type="text" id="hosp-web-link" placeholder="Ej: https://www.interpatagonia.com/bariloche/bungalows-nahuel-malal.html">
         </div>
 
         <div class="form-group">
-          <label>📧 Mail / Mensaje de respuesta del propietario (Opcional si pusiste Link Web)</label>
-          <textarea class="textarea-mail" id="hosp-mail-text" placeholder="Pegá el mail o mensaje completo acá...
+          <label>ðŸ“§ Mail / Mensaje de respuesta del propietario (Opcional si pusiste Link Web)</label>
+          <textarea class="textarea-mail" id="hosp-mail-text" placeholder="PegÃ¡ el mail o mensaje completo acÃ¡...
 
 Ejemplo:
 Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
@@ -783,12 +785,12 @@ Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
 
         <div id="loading-ai" class="loading-block" style="display:none;">
           <div class="spinner"></div>
-          <p>Analizando con IA... esto tarda unos segundos ✨</p>
+          <p>Analizando con IA... esto tarda unos segundos âœ¨</p>
         </div>
       </div>
       <div id="step-preview" style="display:none;">
         <p style="color:var(--text2);font-size:0.88rem;margin-bottom:12px;">
-          ✅ La IA extrajo la siguiente información. Revisá y confirmá.
+          âœ… La IA extrajo la siguiente informaciÃ³n. RevisÃ¡ y confirmÃ¡.
         </p>
         <div id="preview-card"></div>
         <div class="divider"></div>
@@ -800,7 +802,7 @@ Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
     </div>
     <div class="modal-footer" id="add-hosp-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-add-hosp')">Cancelar</button>
-      <button class="btn btn-primary" id="btn-analyze" onclick="analyzeWithAI()">🤖 Analizar con IA</button>
+      <button class="btn btn-primary" id="btn-analyze" onclick="analyzeWithAI()">ðŸ¤– Analizar con IA</button>
     </div>
   </div>
 </div>
@@ -809,8 +811,8 @@ Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
 <div class="modal-overlay hidden" id="modal-view-mail">
   <div class="modal wide">
     <div class="modal-header">
-      <span class="modal-title">📧 Mail Original</span>
-      <button class="modal-close" onclick="closeModal('modal-view-mail')">✕</button>
+      <span class="modal-title">ðŸ“§ Mail Original</span>
+      <button class="modal-close" onclick="closeModal('modal-view-mail')">âœ•</button>
     </div>
     <div class="modal-body">
       <pre id="view-mail-content" style="white-space:pre-wrap;word-break:break-word;font-size:0.82rem;color:var(--text2);line-height:1.6;"></pre>
@@ -818,15 +820,15 @@ Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
   </div>
 </div>
 
-<!-- Modal: Confirmar eliminación -->
+<!-- Modal: Confirmar eliminaciÃ³n -->
 <div class="modal-overlay hidden" id="modal-confirm-del">
   <div class="modal" style="max-width:400px;">
     <div class="modal-header">
-      <span class="modal-title">⚠️ Confirmar eliminación</span>
-      <button class="modal-close" onclick="closeModal('modal-confirm-del')">✕</button>
+      <span class="modal-title">âš ï¸ Confirmar eliminaciÃ³n</span>
+      <button class="modal-close" onclick="closeModal('modal-confirm-del')">âœ•</button>
     </div>
     <div class="modal-body">
-      <p style="color:var(--text2);" id="confirm-del-msg">¿Eliminás esto?</p>
+      <p style="color:var(--text2);" id="confirm-del-msg">Â¿EliminÃ¡s esto?</p>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-confirm-del')">Cancelar</button>
@@ -839,12 +841,12 @@ Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
 <div class="modal-overlay hidden" id="modal-photos">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title">📷 Fotos del Alojamiento</span>
-      <button class="modal-close" onclick="closeModal('modal-photos')">✕</button>
+      <span class="modal-title">ðŸ“· Fotos del Alojamiento</span>
+      <button class="modal-close" onclick="closeModal('modal-photos')">âœ•</button>
     </div>
     <div class="modal-body">
       <p style="font-size:0.85rem;color:var(--text2);margin-bottom:14px;">
-        Las fotos se cargan <strong>manualmente</strong>: pegá el link directo de una imagen o subila desde tu dispositivo.
+        Las fotos se cargan <strong>manualmente</strong>: pegÃ¡ el link directo de una imagen o subila desde tu dispositivo.
       </p>
 
       <div class="form-group">
@@ -868,7 +870,7 @@ Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
       <div id="photos-gallery-preview" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(100px,1fr));gap:10px;margin-top:10px;max-height:220px;overflow-y:auto;"></div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeModal('modal-photos')">Listo ✓</button>
+      <button class="btn btn-ghost" onclick="closeModal('modal-photos')">Listo âœ“</button>
     </div>
   </div>
 </div>
@@ -877,17 +879,17 @@ Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
 <div class="modal-overlay hidden" id="modal-edit-hosp">
   <div class="modal" style="max-width:560px;">
     <div class="modal-header">
-      <span class="modal-title">✏️ Editar Hospedaje y Datos</span>
-      <button class="modal-close" onclick="closeModal('modal-edit-hosp')">✕</button>
+      <span class="modal-title">âœï¸ Editar Hospedaje y Datos</span>
+      <button class="modal-close" onclick="closeModal('modal-edit-hosp')">âœ•</button>
     </div>
     <div class="modal-body" style="display:flex;flex-direction:column;gap:12px;">
       <div class="form-group">
-        <label>🗺️ Ciudad / Destino (Transferir)</label>
+        <label>ðŸ—ºï¸ Ciudad / Destino (Transferir)</label>
         <select id="edithosp-destino"></select>
       </div>
       <div class="form-group">
         <label>Nombre del Hospedaje</label>
-        <input type="text" id="edithosp-nombre" placeholder="Ej: Bungalows Nahuel Malal — Bungalow B">
+        <input type="text" id="edithosp-nombre" placeholder="Ej: Bungalows Nahuel Malal â€” Bungalow B">
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
         <div class="form-group">
@@ -909,7 +911,7 @@ Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
           <input type="number" id="edithosp-habitaciones" placeholder="Ej: 2">
         </div>
         <div class="form-group">
-          <label>Baños</label>
+          <label>BaÃ±os</label>
           <input type="number" id="edithosp-banos" placeholder="Ej: 1">
         </div>
       </div>
@@ -924,37 +926,37 @@ Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
         </div>
       </div>
       <div class="form-group">
-        <label>📍 Ubicación</label>
+        <label>ðŸ“ UbicaciÃ³n</label>
         <input type="text" id="edithosp-ubicacion" placeholder="Ej: Av. Bustillo km 12.4, Bariloche">
       </div>
       <div class="form-group">
-        <label>✨ Características (separadas por comas)</label>
+        <label>âœ¨ CaracterÃ­sticas (separadas por comas)</label>
         <input type="text" id="edithosp-caracteristicas" placeholder="Ej: Vista al lago, WiFi, Parrilla, Cochera">
       </div>
       <div class="form-group">
-        <label>📋 Política de Cancelación</label>
-        <input type="text" id="edithosp-cancelacion" placeholder="Ej: Reserva 30%, reintegro hasta 10 días antes">
+        <label>ðŸ“‹ PolÃ­tica de CancelaciÃ³n</label>
+        <input type="text" id="edithosp-cancelacion" placeholder="Ej: Reserva 30%, reintegro hasta 10 dÃ­as antes">
       </div>
       <div class="form-group">
-        <label>💳 Forma de Pago</label>
+        <label>ðŸ’³ Forma de Pago</label>
         <input type="text" id="edithosp-pago" placeholder="Ej: Efectivo, Transferencia, MP">
       </div>
       <div class="form-group">
-        <label>📞 Contacto / Teléfono / WhatsApp</label>
+        <label>ðŸ“ž Contacto / TelÃ©fono / WhatsApp</label>
         <input type="text" id="edithosp-contacto" placeholder="Ej: +54 9 2944 123456">
       </div>
       <div class="form-group">
-        <label>⚠️ Datos Faltantes (separados por comas)</label>
-        <input type="text" id="edithosp-faltantes" placeholder="Ej: Horario check-in, Depósito de garantía">
+        <label>âš ï¸ Datos Faltantes (separados por comas)</label>
+        <input type="text" id="edithosp-faltantes" placeholder="Ej: Horario check-in, DepÃ³sito de garantÃ­a">
       </div>
       <div class="form-group">
-        <label>🗒️ Notas Adicionales</label>
+        <label>ðŸ—’ï¸ Notas Adicionales</label>
         <textarea id="edithosp-notas" style="height:65px;"></textarea>
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-edit-hosp')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveEditHosp()">💾 Guardar Cambios</button>
+      <button class="btn btn-primary" onclick="saveEditHosp()">ðŸ’¾ Guardar Cambios</button>
     </div>
   </div>
 </div>
@@ -963,25 +965,25 @@ Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
 <div class="modal-overlay hidden" id="modal-edit-score">
   <div class="modal" style="max-width:400px;">
     <div class="modal-header">
-      <span class="modal-title">⭐ Editar Puntaje</span>
-      <button class="modal-close" onclick="closeModal('modal-edit-score')">✕</button>
+      <span class="modal-title">â­ Editar Puntaje</span>
+      <button class="modal-close" onclick="closeModal('modal-edit-score')">âœ•</button>
     </div>
     <div class="modal-body">
       <p style="font-size:0.82rem;color:var(--text2);margin-bottom:14px;">
-        Ajustá la calificación del alojamiento (la IA la estimó, pero vos sabés mejor 😉).
+        AjustÃ¡ la calificaciÃ³n del alojamiento (la IA la estimÃ³, pero vos sabÃ©s mejor ðŸ˜‰).
       </p>
       <div class="form-group">
         <label>Puntaje (0 a 10)</label>
         <input type="number" id="edit-score-input" min="0" max="10" step="0.1" placeholder="Ej: 8.5">
       </div>
       <div class="form-group">
-        <label>Razón del puntaje</label>
-        <input type="text" id="edit-score-reason" placeholder="Ej: Mejor relación precio-calidad">
+        <label>RazÃ³n del puntaje</label>
+        <input type="text" id="edit-score-reason" placeholder="Ej: Mejor relaciÃ³n precio-calidad">
       </div>
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-edit-score')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveScore()">💾 Guardar</button>
+      <button class="btn btn-primary" onclick="saveScore()">ðŸ’¾ Guardar</button>
     </div>
   </div>
 </div>
@@ -990,37 +992,37 @@ Hola! Te ofrecemos el Bungalow B a $107.000 la noche..."></textarea>
 <div class="modal-overlay hidden" id="modal-add-link">
   <div class="modal">
     <div class="modal-header">
-      <span class="modal-title">🔗 Link Web</span>
-      <button class="modal-close" onclick="closeModal('modal-add-link')">✕</button>
+      <span class="modal-title">ðŸ”— Link Web</span>
+      <button class="modal-close" onclick="closeModal('modal-add-link')">âœ•</button>
     </div>
     <div class="modal-body">
       <p style="font-size:0.85rem;color:var(--text2);margin-bottom:14px;">
-        Guardá el link web del alojamiento para acceder al sitio desde la tarjeta.
+        GuardÃ¡ el link web del alojamiento para acceder al sitio desde la tarjeta.
       </p>
       <div class="form-group">
-        <label>🌐 Link Web</label>
+        <label>ðŸŒ Link Web</label>
         <input type="text" id="addlink-url" placeholder="https://www.interpatagonia.com/...">
         <p class="form-hint">Booking, InterPatagonia, sitio propio, etc.</p>
       </div>
     </div>
     <div class="modal-footer" id="addlink-footer">
       <button class="btn btn-ghost" onclick="closeModal('modal-add-link')">Cancelar</button>
-      <button class="btn btn-ghost" onclick="saveLinkOnly()">💾 Solo guardar</button>
-      <button class="btn btn-primary" onclick="saveAndOpenLink()">🌐 Guardar y abrir</button>
+      <button class="btn btn-ghost" onclick="saveLinkOnly()">ðŸ’¾ Solo guardar</button>
+      <button class="btn btn-primary" onclick="saveAndOpenLink()">ðŸŒ Guardar y abrir</button>
     </div>
   </div>
 </div>
 
-<!-- Modal: Lightbox / Galería -->
+<!-- Modal: Lightbox / GalerÃ­a -->
 <div class="modal-overlay hidden" id="modal-lightbox" style="background:rgba(0,0,0,0.92);backdrop-filter:none;">
   <div class="lightbox">
-    <button class="lightbox-close" onclick="closeModal('modal-lightbox')" title="Cerrar">✕</button>
-    <button class="lightbox-nav prev" onclick="lightboxNav(-1)" title="Anterior">‹</button>
+    <button class="lightbox-close" onclick="closeModal('modal-lightbox')" title="Cerrar">âœ•</button>
+    <button class="lightbox-nav prev" onclick="lightboxNav(-1)" title="Anterior">â€¹</button>
     <img id="lightbox-img" src="" alt="Foto del alojamiento">
-    <button class="lightbox-nav next" onclick="lightboxNav(1)" title="Siguiente">›</button>
+    <button class="lightbox-nav next" onclick="lightboxNav(1)" title="Siguiente">â€º</button>
     <div class="lightbox-bottom">
       <span class="lightbox-count" id="lightbox-count"></span>
-      <button class="btn btn-ghost btn-sm" onclick="setFavFromLightbox()">⭐ Portada</button>
+      <button class="btn btn-ghost btn-sm" onclick="setFavFromLightbox()">â­ Portada</button>
     </div>
   </div>
 </div>
@@ -1049,6 +1051,13 @@ function saveState() {
     state.meta.updated_at = Date.now();
   }
   localStorage.setItem('vacaplanner_v1', JSON.stringify(state));
+  // Disparar sincronizaciÃ³n inmediata (debounced)
+  if (!syncingRemote) debouncedSync();
+}
+let syncTimeout = null;
+function debouncedSync() {
+  if (syncTimeout) clearTimeout(syncTimeout);
+  syncTimeout = setTimeout(() => { syncNow(); syncTimeout = null; }, 2000);
 }
 function loadState() {
   const raw = localStorage.getItem('vacaplanner_v1');
@@ -1065,15 +1074,15 @@ function loadState() {
   }
   if (!state.viajes) state.viajes = [];
   if (!state.meta) state.meta = { updated_at: 0 };
-  // Datos locales ya existentes (sin subir nunca) → se marcan como cambios a publicar
+  // Datos locales ya existentes (sin subir nunca) â†’ se marcan como cambios a publicar
   if (state.viajes.length && !state.meta.updated_at) state.meta.updated_at = Date.now();
   migrateState();
 }
 
 // ============================================================
-// SINCRONIZACIÓN AUTOMÁTICA ENTRE DISPOSITIVOS (GitHub)
+// SINCRONIZACIÃ“N AUTOMÃTICA ENTRE DISPOSITIVOS (GitHub)
 // Sin botones: cada ~10s baja lo publicado y, si este dispositivo
-// cambió datos (y tiene token), los sube. Todos ven los cambios.
+// cambiÃ³ datos (y tiene token), los sube. Todos ven los cambios.
 // ============================================================
 function isValidCloudData(data) {
   return data && typeof data === 'object' && Array.isArray(data.viajes);
@@ -1105,8 +1114,8 @@ function localTs() {
 
 async function syncNow() {
   try {
-    setSyncStatus('syncing', '🔄 Sync...');
-    // 1) BAJAR lo publicado (cache-bust) — sin auth, todos lo ven
+    setSyncStatus('syncing', 'ðŸ”„ Sync...');
+    // 1) BAJAR lo publicado (cache-bust) â€” sin auth, todos lo ven
     const res = await fetch(rawDataUrl() + '?_t=' + Date.now());
     const remote = res.ok ? await res.json().catch(() => null) : null;
     const remoteOk = remote && isValidCloudData(remote);
@@ -1119,48 +1128,48 @@ async function syncNow() {
 
     const localHospCount = countTotalHosps(state.viajes);
     const remoteHospCount = remoteOk ? countTotalHosps(remote.viajes) : 0;
+    const remoteTripCount = remoteOk ? (remote.viajes || []).length : 0;
 
-    // Si la nube tiene datos válidos, y el local está vacío, tiene menos viajes/hospedajes, o la nube es igual o más reciente
-    const remoteWins =
-      remoteOk && remoteTripCount > 0 && (
-        localTripCount === 0 ||
-        localHospCount === 0 ||
-        remoteHospCount > localHospCount ||
-        remoteTripCount > localTripCount ||
-        remoteTs >= localTs()
-      );
-
-    if (remoteWins) {
-      syncingRemote = true;
-      state.viajes = remote.viajes || [];
-      state.meta = remote.meta ? { ...remote.meta } : { updated_at: remoteTs };
-      migrateState();
-      saveState();
-      syncingRemote = false;
-      lastUploadedTs = localTs();
-      setSyncStatus('ok', '✅ Datos sincronizados');
-      renderAfterSync();
+    // ESTRATEGIA NUEVA: merge inteligente â€” nunca perder datos
+    if (remoteOk && remoteTripCount > 0) {
+      // Merge remoto â†’ local: conserva todo lo de ambos lados
+      const merged = mergeCloudData(remote, state);
+      const hasChanges = JSON.stringify(merged.viajes) !== JSON.stringify(state.viajes);
+      if (hasChanges || remoteTs > localTs()) {
+        syncingRemote = true;
+        state.viajes = merged.viajes;
+        state.meta = { updated_at: Math.max(remoteTs, localTs()) };
+        migrateState();
+        saveState();
+        syncingRemote = false;
+        lastUploadedTs = localTs();
+        setSyncStatus('ok', 'âœ… Datos sincronizados (merge)');
+        renderAfterSync();
+      }
     }
 
-    const localHasData =
-      localTripCount > 0 &&
-      (remoteTripCount === 0 || localTripCount >= remoteTripCount);
-
-    if (!remoteWins && localHasData && localTs() > lastUploadedTs && getToken()) {
-      setSyncStatus('syncing', '☁️ Guardando...');
+    // Subir si el local tiene cambios que la nube no tiene
+    const localHasData = localTripCount > 0;
+    const remoteHasSameOrMore = remoteOk && remoteTripCount >= localTripCount && remoteHospCount >= localHospCount;
+    if (localHasData && !remoteHasSameOrMore && localTs() > lastUploadedTs && getToken()) {
+      setSyncStatus('syncing', 'â˜ï¸ Guardando...');
       await pushCurrentState();
-    } else if (!remoteWins) {
-      setSyncStatus('ok', '✅ Nube lista');
+    } else if (localHasData && remoteOk && localTs() > lastUploadedTs && getToken()) {
+      // TambiÃ©n subir si el timestamp local es mÃ¡s nuevo (ej: editaste algo)
+      setSyncStatus('syncing', 'â˜ï¸ Guardando...');
+      await pushCurrentState();
+    } else {
+      setSyncStatus('ok', 'âœ… Nube lista');
     }
   } catch(e) {
-    setSyncStatus('warn', '⚠️ Sin conexión');
+    setSyncStatus('warn', 'âš ï¸ Sin conexiÃ³n');
   }
 }
 
 async function pushCurrentState() {
   const token = getToken();
   if (!token) return;
-  // Protección anti-clobbering: nunca publicar un estado sin viajes. SIEMPRE
+  // ProtecciÃ³n anti-clobbering: nunca publicar un estado sin viajes. SIEMPRE
   // debe haber contenido, o no subimos (evita borrar la nube para todos).
   if (!Array.isArray(state.viajes) || state.viajes.length === 0) return;
   const api = apiDataUrl();
@@ -1174,7 +1183,7 @@ async function pushCurrentState() {
 
     const payload = JSON.stringify({ version: 1, viajes: state.viajes, meta: { updated_at: localTs() } }, null, 2);
     const body = {
-      message: 'Sincronización VacaPlanner 🏖️',
+      message: 'SincronizaciÃ³n VacaPlanner ðŸ–ï¸',
       content: btoa(unescape(encodeURIComponent(payload))),
       branch: 'main'
     };
@@ -1192,6 +1201,113 @@ async function pushCurrentState() {
 async function startAutoSync() {
   await syncNow();
   setInterval(syncNow, 10000);
+}
+
+// Merge inteligente: combina datos locales y remotos sin perder nada
+// Para cada viaje â†’ destino â†’ hospedaje, une por ID y fusiona campos
+function mergeCloudData(remote, local) {
+  const merged = { version: 1, meta: { updated_at: 0 }, viajes: [] };
+  const localTrips = (local.viajes || []).slice();
+  const remoteTrips = (remote.viajes || []).slice();
+
+  // Mapa de viajes locales por id
+  const tripMap = {};
+  localTrips.forEach(t => { tripMap[t.id] = t; });
+
+  remoteTrips.forEach(rt => {
+    if (tripMap[rt.id]) {
+      // El viaje existe en ambos â†’ mergear destinos
+      const lt = tripMap[rt.id];
+      rt.destinos = mergeDestinos(lt.destinos || [], rt.destinos || []);
+      // Conservar metadatos del viaje (nombre, fechas, etc) â€” prefiere el mÃ¡s completo
+      rt = mergeTripFields(lt, rt);
+      tripMap[rt.id] = rt;
+    } else {
+      // Viaje solo en remoto â†’ agregarlo
+      tripMap[rt.id] = rt;
+    }
+  });
+
+  merged.viajes = Object.values(tripMap);
+  merged.meta.updated_at = Math.max(
+    (local.meta && local.meta.updated_at) || 0,
+    (remote.meta && remote.meta.updated_at) || 0
+  );
+  return merged;
+}
+
+function mergeTripFields(local, remote) {
+  const r = { ...remote };
+  ['nombre', 'destino', 'fecha_desde', 'fecha_hasta', 'emoji'].forEach(k => {
+    if (!r[k] && local[k]) r[k] = local[k];
+    if (!local[k] && remote[k]) r[k] = remote[k];
+  });
+  return r;
+}
+
+function mergeDestinos(localDestinos, remoteDestinos) {
+  const map = {};
+  localDestinos.forEach(d => { map[d.id] = d; });
+  remoteDestinos.forEach(rd => {
+    if (map[rd.id]) {
+      // Merge hospedajes dentro del destino
+      const ld = map[rd.id];
+      rd.hospedajes = mergeHospedajes(ld.hospedajes || [], rd.hospedajes || []);
+      // Conservar nombre/emoji del destino
+      if (!rd.nombre && ld.nombre) rd.nombre = ld.nombre;
+      if (!rd.emoji && ld.emoji) rd.emoji = ld.emoji;
+      map[rd.id] = rd;
+    } else {
+      map[rd.id] = rd;
+    }
+  });
+  return Object.values(map);
+}
+
+function mergeHospedajes(localHosps, remoteHosps) {
+  const map = {};
+  localHosps.forEach(h => { map[h.id] = h; });
+  remoteHosps.forEach(rh => {
+    if (map[rh.id]) {
+      const lh = map[rh.id];
+      // Merge campo por campo: nunca perder datos. Prefiere el valor no-null/no-vacÃ­o
+      const merged = { ...lh };
+      Object.keys(rh).forEach(k => {
+        if (k === 'id' || k === 'fecha_agregado') return;
+        if (k === 'datos' && rh.datos && lh.datos) {
+          merged.datos = mergeDatos(lh.datos, rh.datos);
+        } else if (rh[k] != null && rh[k] !== '' && rh[k] !== undefined) {
+          // Si local tiene valor y remoto tambiÃ©n, conservar ambos si difieren â†’ preferir local (edit manual)
+          if (lh[k] != null && lh[k] !== '' && lh[k] !== undefined && JSON.stringify(lh[k]) !== JSON.stringify(rh[k])) {
+            // local tiene ediciÃ³n manual â†’ conservar local
+          } else {
+            merged[k] = rh[k];
+          }
+        }
+      });
+      map[rh.id] = merged;
+    } else {
+      map[rh.id] = rh;
+    }
+  });
+  return Object.values(map);
+}
+
+function mergeDatos(local, remote) {
+  const merged = { ...local };
+  Object.keys(remote).forEach(k => {
+    if (remote[k] != null && remote[k] !== '' && remote[k] !== undefined) {
+      // Si local ya tiene valor no-nulo, conservarlo (ediciÃ³n manual, IA previa)
+      if (local[k] == null || local[k] === '' || local[k] === undefined) {
+        merged[k] = remote[k];
+      } else if (Array.isArray(remote[k]) && Array.isArray(local[k])) {
+        // Arrays: unir sin duplicados
+        const set = new Set([...local[k], ...remote[k]]);
+        merged[k] = Array.from(set);
+      }
+    }
+  });
+  return merged;
 }
 
 // Actualiza SOLO el contenido de la vista activa, sin cambiar de pantalla
@@ -1218,7 +1334,7 @@ function setSyncStatus(type, msg) {
   if (txt) txt.textContent = msg;
 }
 
-// Migración: hospedajes sueltos → agrupados por ciudad/destino
+// MigraciÃ³n: hospedajes sueltos â†’ agrupados por ciudad/destino
 function migrateState() {
   state.viajes.forEach(trip => {
     if (!trip.destinos) {
@@ -1227,7 +1343,7 @@ function migrateState() {
       if (legacy.length) {
         const ctx = (trip.nombre || '') + ' ' + (trip.destino || '');
         const name = /patagonia/i.test(ctx) ? 'Bariloche' : 'Ciudad Principal';
-        trip.destinos.push({ id: uid(), nombre: name, emoji: '🏠', hospedajes: legacy });
+        trip.destinos.push({ id: uid(), nombre: name, emoji: 'ðŸ ', hospedajes: legacy });
       }
       delete trip.hospedajes;
     }
@@ -1254,7 +1370,7 @@ function getFullTitle(d) {
   const gen = d.alojamiento_general || d.complejo_nombre;
   const nom = d.nombre || 'Alojamiento';
   if (gen && !nom.toLowerCase().includes(gen.toLowerCase())) {
-    return `${gen} — ${nom}`;
+    return `${gen} â€” ${nom}`;
   }
   return nom;
 }
@@ -1305,7 +1421,7 @@ function buildContactLinks(contacto, instagram) {
   if (phoneRaw) {
     links.push({
       type: 'tel',
-      label: '📞 Tel',
+      label: 'ðŸ“ž Tel',
       href: `tel:${digitsOnly(phoneRaw)}`,
       title: phoneRaw
     });
@@ -1313,7 +1429,7 @@ function buildContactLinks(contacto, instagram) {
   if (phoneRaw) {
     links.push({
       type: 'wa',
-      label: '📲 WhatsApp',
+      label: 'ðŸ“² WhatsApp',
       href: `https://wa.me/${waNumber(phoneRaw)}`,
       title: phoneRaw
     });
@@ -1321,7 +1437,7 @@ function buildContactLinks(contacto, instagram) {
   if (email) {
     links.push({
       type: 'mail',
-      label: `📧 ${email}`,
+      label: `ðŸ“§ ${email}`,
       href: `mailto:${email}`,
       title: email
     });
@@ -1329,7 +1445,7 @@ function buildContactLinks(contacto, instagram) {
   if (ig) {
     links.push({
       type: 'ig',
-      label: `📸 @${ig}`,
+      label: `ðŸ“¸ @${ig}`,
       href: `https://instagram.com/${ig}`,
       title: `@${ig}`
     });
@@ -1345,7 +1461,7 @@ function formatContactHtml(contacto, instagram) {
     <a class="contact-btn ${l.type}" href="${l.href}" target="_blank" rel="noopener" title="${esc(l.title)}">${l.label}</a>
   `).join('');
 
-  return `<div><strong>📞 Contacto:</strong><div class="contact-btns" style="margin-top:6px;">${btnHtml}</div></div>`;
+  return `<div><strong>ðŸ“ž Contacto:</strong><div class="contact-btns" style="margin-top:6px;">${btnHtml}</div></div>`;
 }
 
 function openPhotoModal(hospId) {
@@ -1364,7 +1480,7 @@ function renderPhotoGalleryModal() {
 
   const container = document.getElementById('photos-gallery-preview');
   if (!urls.length) {
-    container.innerHTML = `<p style="grid-column:1/-1;color:var(--text3);font-size:0.8rem;">Sin fotos agregadas aún.</p>`;
+    container.innerHTML = `<p style="grid-column:1/-1;color:var(--text3);font-size:0.8rem;">Sin fotos agregadas aÃºn.</p>`;
     return;
   }
   container.innerHTML = urls.map((url, i) => {
@@ -1372,8 +1488,8 @@ function renderPhotoGalleryModal() {
     return `
     <div style="position:relative;border-radius:8px;overflow:hidden;border:1px solid ${isFav?'var(--yellow)':'var(--border)'};aspect-ratio:1;">
       <img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover;cursor:zoom-in;" onclick="openLightbox('${hosp.id}', ${i})" onerror="this.src='https://via.placeholder.com/150?text=Error+Img'">
-      <button onclick="setFavPhoto('${hosp.id}', ${i})" title="${isFav?'Quitar portada':'Fijar como portada'}" style="position:absolute;top:4px;left:4px;background:rgba(0,0,0,0.7);color:${isFav?'var(--yellow)':'#fff'};border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:0.8rem;">${isFav?'★':'☆'}</button>
-      <button onclick="deletePhoto(${i})" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.7);color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;">✕</button>
+      <button onclick="setFavPhoto('${hosp.id}', ${i})" title="${isFav?'Quitar portada':'Fijar como portada'}" style="position:absolute;top:4px;left:4px;background:rgba(0,0,0,0.7);color:${isFav?'var(--yellow)':'#fff'};border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:0.8rem;">${isFav?'â˜…':'â˜†'}</button>
+      <button onclick="deletePhoto(${i})" style="position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.7);color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:0.75rem;display:flex;align-items:center;justify-content:center;">âœ•</button>
     </div>`;
   }).join('');
 }
@@ -1389,7 +1505,7 @@ function addPhotoByUrl() {
   document.getElementById('photo-url-input').value = '';
   renderPhotoGalleryModal();
   renderHospedajes();
-  toast('Foto agregada 📷', 'success');
+  toast('Foto agregada ðŸ“·', 'success');
 }
 
 function addPhotoFromFile(e) {
@@ -1405,7 +1521,7 @@ function addPhotoFromFile(e) {
     saveState();
     renderPhotoGalleryModal();
     renderHospedajes();
-    toast('Foto subida 📷', 'success');
+    toast('Foto subida ðŸ“·', 'success');
   };
   reader.readAsDataURL(file);
 }
@@ -1423,7 +1539,7 @@ function deletePhoto(idx) {
 }
 
 // ============================================================
-// LIGHTBOX (GALERÍA)
+// LIGHTBOX (GALERÃA)
 // ============================================================
 let lightboxHospId = null;
 let lightboxIndex = 0;
@@ -1464,7 +1580,7 @@ function setFavFromLightbox() {
   hosp.datos.foto_portada = urls[lightboxIndex];
   saveState();
   renderHospedajes();
-  toast('Foto fijada como portada ⭐', 'success');
+  toast('Foto fijada como portada â­', 'success');
 }
 
 function setFavPhoto(hospId, idx) {
@@ -1482,11 +1598,11 @@ function setFavPhoto(hospId, idx) {
   if (!document.getElementById('modal-photos').classList.contains('hidden')) {
     renderPhotoGalleryModal();
   }
-  toast('Portada actualizada ⭐', 'success');
+  toast('Portada actualizada â­', 'success');
 }
 
 function toast(msg, type='info', duration) {
-  const icons = { success:'✅', error:'❌', info:'ℹ️' };
+  const icons = { success:'âœ…', error:'âŒ', info:'â„¹ï¸' };
   const defaultDuration = type === 'error' ? 30000 : 15000;
   const dur = duration || defaultDuration;
 
@@ -1497,7 +1613,7 @@ function toast(msg, type='info', duration) {
   el.style.gap = '8px';
 
   const iconSpan = document.createElement('span');
-  iconSpan.textContent = icons[type] || '•';
+  iconSpan.textContent = icons[type] || 'â€¢';
 
   const msgSpan = document.createElement('span');
   msgSpan.style.flex = '1';
@@ -1509,12 +1625,12 @@ function toast(msg, type='info', duration) {
   copyBtn.style.padding = '3px 8px';
   copyBtn.style.fontSize = '0.75rem';
   copyBtn.style.whiteSpace = 'nowrap';
-  copyBtn.innerHTML = '📋 Copiar';
+  copyBtn.innerHTML = 'ðŸ“‹ Copiar';
   copyBtn.onclick = (e) => {
     e.stopPropagation();
     navigator.clipboard.writeText(msg);
-    copyBtn.innerHTML = '✓ Copiado';
-    setTimeout(() => { copyBtn.innerHTML = '📋 Copiar'; }, 2500);
+    copyBtn.innerHTML = 'âœ“ Copiado';
+    setTimeout(() => { copyBtn.innerHTML = 'ðŸ“‹ Copiar'; }, 2500);
   };
 
   const closeBtn = document.createElement('button');
@@ -1524,7 +1640,7 @@ function toast(msg, type='info', duration) {
   closeBtn.style.cursor = 'pointer';
   closeBtn.style.padding = '2px 6px';
   closeBtn.style.fontSize = '1rem';
-  closeBtn.textContent = '✕';
+  closeBtn.textContent = 'âœ•';
   closeBtn.onclick = () => el.remove();
 
   el.appendChild(iconSpan);
@@ -1573,10 +1689,10 @@ function renderHome() {
     count.textContent = '';
     grid.innerHTML = `
       <div class="empty-state" style="grid-column:1/-1;">
-        <div class="empty-icon">✈️</div>
-        <div class="empty-title">No hay viajes todavía</div>
-        <p class="empty-sub">Creá tu primer viaje y empezá a comparar hospedajes.</p>
-        <button class="btn btn-primary" onclick="openNewTrip()">✈️ Crear primer viaje</button>
+        <div class="empty-icon">âœˆï¸</div>
+        <div class="empty-title">No hay viajes todavÃ­a</div>
+        <p class="empty-sub">CreÃ¡ tu primer viaje y empezÃ¡ a comparar hospedajes.</p>
+        <button class="btn btn-primary" onclick="openNewTrip()">âœˆï¸ Crear primer viaje</button>
       </div>`;
     return;
   }
@@ -1588,9 +1704,9 @@ function renderHome() {
     return `
     <div class="trip-card" onclick="openTrip('${trip.id}')">
       <div class="trip-card-actions" onclick="event.stopPropagation()">
-        <button class="btn btn-ghost btn-sm btn-icon" onclick="confirmDeleteTrip('${trip.id}')" title="Eliminar viaje">🗑️</button>
+        <button class="btn btn-ghost btn-sm btn-icon" onclick="confirmDeleteTrip('${trip.id}')" title="Eliminar viaje">ðŸ—‘ï¸</button>
       </div>
-      <div class="trip-card-emoji">${trip.emoji||'✈️'}</div>
+      <div class="trip-card-emoji">${trip.emoji||'âœˆï¸'}</div>
       <div class="trip-card-name">${esc(trip.nombre)}</div>
       <div class="trip-card-dest">${esc(trip.destino||'')}</div>
       <div class="trip-card-meta">
@@ -1609,11 +1725,11 @@ function openTrip(id) {
   currentTripId = id;
   const trip = state.viajes.find(t => t.id === id);
   if (!trip) return;
-  document.getElementById('trip-view-title').textContent = `${trip.emoji||'✈️'} ${trip.nombre}`;
+  document.getElementById('trip-view-title').textContent = `${trip.emoji||'âœˆï¸'} ${trip.nombre}`;
   const nights = nightsBetween(trip.fecha_desde, trip.fecha_hasta);
   let sub = trip.destino || '';
-  if (trip.fecha_desde) sub += (sub?' · ':'') + `${fmtDate(trip.fecha_desde)}`;
-  if (nights) sub += ` · ${nights} noches`;
+  if (trip.fecha_desde) sub += (sub?' Â· ':'') + `${fmtDate(trip.fecha_desde)}`;
+  if (nights) sub += ` Â· ${nights} noches`;
   document.getElementById('trip-view-sub').textContent = sub;
   showView('view-trip');
   renderHospedajes();
@@ -1660,10 +1776,10 @@ function renderGrid(trip) {
   if (!destinos.length) {
     grid.innerHTML = `
       <div class="empty-state" style="grid-column:1/-1;">
-        <div class="empty-icon">🗺️</div>
-        <div class="empty-title">Sin ciudades todavía</div>
-        <p class="empty-sub">Creá una ciudad (ej: Bariloche) y empezá a agregar hospedajes dentro de ella.</p>
-        <button class="btn btn-primary" onclick="openNewDestino()">🗺️ Crear primera ciudad</button>
+        <div class="empty-icon">ðŸ—ºï¸</div>
+        <div class="empty-title">Sin ciudades todavÃ­a</div>
+        <p class="empty-sub">CreÃ¡ una ciudad (ej: Bariloche) y empezÃ¡ a agregar hospedajes dentro de ella.</p>
+        <button class="btn btn-primary" onclick="openNewDestino()">ðŸ—ºï¸ Crear primera ciudad</button>
       </div>`;
     return;
   }
@@ -1674,24 +1790,24 @@ function renderGrid(trip) {
       ? `<div class="hospedajes-grid" id="destino-grid-${d.id}">${hosps.map(h => hospCard(h, d)).join('')}</div>`
       : `
         <div class="empty-state" id="destino-grid-${d.id}">
-          <div class="empty-icon">🏨</div>
+          <div class="empty-icon">ðŸ¨</div>
           <div class="empty-title">Sin hospedajes en ${esc(d.nombre)}</div>
-          <p class="empty-sub">Agregá el primer hospedaje de esta ciudad.</p>
-          <button class="btn btn-primary" onclick="openAddHosp('${d.id}')">➕ Agregar hospedaje</button>
+          <p class="empty-sub">AgregÃ¡ el primer hospedaje de esta ciudad.</p>
+          <button class="btn btn-primary" onclick="openAddHosp('${d.id}')">âž• Agregar hospedaje</button>
         </div>`;
     return `
     <div class="destino-section" id="destino-sec-${d.id}">
       <div class="destino-header" onclick="toggleDestinoSection('${d.id}')">
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          <button class="destino-collapse-btn" id="dest-btn-${d.id}" title="Plegar / Desplegar ciudad">▾</button>
-          <span style="font-size:1.3rem;">${esc(d.emoji||'🗺️')}</span>
+          <button class="destino-collapse-btn" id="dest-btn-${d.id}" title="Plegar / Desplegar ciudad">â–¾</button>
+          <span style="font-size:1.3rem;">${esc(d.emoji||'ðŸ—ºï¸')}</span>
           <span class="destino-title">${esc(d.nombre)}</span>
           <span class="trip-badge accent">${hosps.length} hospedaje${hosps.length!==1?'s':''}</span>
         </div>
         <div class="destino-actions" onclick="event.stopPropagation()">
-          <button class="btn btn-ghost btn-sm" onclick="openAddHosp('${d.id}')">➕ Hospedaje</button>
-          <button class="btn btn-ghost btn-sm btn-icon" onclick="openEditDestino('${d.id}')" title="Renombrar ciudad">✏️</button>
-          <button class="btn btn-danger btn-sm btn-icon" onclick="confirmDeleteDestino('${d.id}')" title="Eliminar ciudad">🗑️</button>
+          <button class="btn btn-ghost btn-sm" onclick="openAddHosp('${d.id}')">âž• Hospedaje</button>
+          <button class="btn btn-ghost btn-sm btn-icon" onclick="openEditDestino('${d.id}')" title="Renombrar ciudad">âœï¸</button>
+          <button class="btn btn-danger btn-sm btn-icon" onclick="confirmDeleteDestino('${d.id}')" title="Eliminar ciudad">ðŸ—‘ï¸</button>
         </div>
       </div>
       ${cardsHtml}
@@ -1707,10 +1823,10 @@ function toggleDestinoSection(destinoId) {
   const isHidden = container.style.display === 'none';
   if (isHidden) {
     container.style.display = '';
-    btn.textContent = '▾';
+    btn.textContent = 'â–¾';
   } else {
     container.style.display = 'none';
-    btn.textContent = '▸';
+    btn.textContent = 'â–¸';
   }
 }
 
@@ -1727,13 +1843,13 @@ function hospCard(h, destObj) {
 
   const title = getFullTitle(d);
   const cityName = destObj ? destObj.nombre : (h._destino || '');
-  const cityEmoji = destObj ? (destObj.emoji || '🗺️') : '🗺️';
+  const cityEmoji = destObj ? (destObj.emoji || 'ðŸ—ºï¸') : 'ðŸ—ºï¸';
 
   let priceHtml = '';
   if (d.precio_por_noche) {
     const priceFormatted = fmtPrice(d.precio_por_noche, d.moneda);
     const usdText = d.precio_noche_usd ? `<span style="font-size:0.82rem;color:var(--cyan);margin-left:6px;">(~${fmtPrice(d.precio_noche_usd, 'USD')})</span>` : '';
-    const refDollarText = d.referencia_dolar ? `<div style="font-size:0.74rem;color:var(--text3);margin-top:2px;">💵 Dólar ref: ${fmtPrice(d.referencia_dolar, 'ARS')}</div>` : '';
+    const refDollarText = d.referencia_dolar ? `<div style="font-size:0.74rem;color:var(--text3);margin-top:2px;">ðŸ’µ DÃ³lar ref: ${fmtPrice(d.referencia_dolar, 'ARS')}</div>` : '';
     priceHtml = `
       <div>
         <div class="hosp-price-row">
@@ -1745,7 +1861,7 @@ function hospCard(h, destObj) {
         ${refDollarText}
       </div>`;
   } else {
-    priceHtml = `<p style="color:var(--text3);font-size:0.82rem;">💰 Precio no especificado</p>`;
+    priceHtml = `<p style="color:var(--text3);font-size:0.82rem;">ðŸ’° Precio no especificado</p>`;
   }
 
   // Portada grande (favorita / primera foto)
@@ -1754,12 +1870,12 @@ function hospCard(h, destObj) {
   let portadaHtml = '';
   if (portadaUrl && portadaIdx >= 0) {
     portadaHtml = `
-      <div class="hosp-portada" onclick="openLightbox('${h.id}', ${portadaIdx})" title="Ver galería">
+      <div class="hosp-portada" onclick="openLightbox('${h.id}', ${portadaIdx})" title="Ver galerÃ­a">
         <img src="${esc(portadaUrl)}" alt="" onerror="this.parentElement.style.display='none'">
-        <span class="portada-badge">📷 ${photos.length} foto${photos.length>1?'s':''}</span>
+        <span class="portada-badge">ðŸ“· ${photos.length} foto${photos.length>1?'s':''}</span>
       </div>`;
   } else {
-    portadaHtml = `<div class="hosp-portada empty"><span>📷 Sin fotos cargadas</span></div>`;
+    portadaHtml = `<div class="hosp-portada empty"><span>ðŸ“· Sin fotos cargadas</span></div>`;
   }
 
   // Fotos preview en la tarjeta (miniaturas clicables)
@@ -1772,7 +1888,7 @@ function hospCard(h, destObj) {
           return `
           <div class="thumb-wrap">
             <img src="${esc(p)}" style="width:70px;height:55px;object-fit:cover;border-radius:6px;border:1px solid ${isFav?'var(--yellow)':'var(--border)'};cursor:zoom-in;" onclick="openLightbox('${h.id}', ${i})" onerror="this.style.display='none'">
-            <button class="thumb-fav" onclick="event.stopPropagation();setFavPhoto('${h.id}', ${i})" title="Fijar como portada">${isFav?'★':'☆'}</button>
+            <button class="thumb-fav" onclick="event.stopPropagation();setFavPhoto('${h.id}', ${i})" title="Fijar como portada">${isFav?'â˜…':'â˜†'}</button>
           </div>`;
         }).join('')}
       </div>`;
@@ -1786,63 +1902,63 @@ function hospCard(h, destObj) {
         <div class="hosp-name" style="font-size:1.1rem;font-weight:700;">${esc(title)}</div>
         ${d.tipo ? `<span class="hosp-tipo">${esc(d.tipo)}</span>` : ''}
       </div>
-      ${score != null ? `<div class="score-badge ${scoreClass}" onclick="openEditScore('${h.id}')" title="Clic para editar puntaje">${score}<span class="score-edit-hint">/10 ✎</span></div>` : ''}
+      ${score != null ? `<div class="score-badge ${scoreClass}" onclick="openEditScore('${h.id}')" title="Clic para editar puntaje">${score}<span class="score-edit-hint">/10 âœŽ</span></div>` : ''}
     </div>
     ${portadaHtml}
     <div class="hosp-card-body">
       ${priceHtml}
 
       <div class="hosp-info-row">
-        ${d.habitaciones ? `<span class="info-chip">🛏️ ${d.habitaciones} hab.</span>` : ''}
-        ${d.banos ? `<span class="info-chip">🚿 ${d.banos} baño${d.banos>1?'s':''}</span>` : ''}
-        ${d.capacidad ? `<span class="info-chip">👥 ${esc(d.capacidad)}</span>` : ''}
-        ${d.fechas_disponibles ? `<span class="info-chip">📅 ${esc(d.fechas_disponibles)}</span>` : ''}
+        ${d.habitaciones ? `<span class="info-chip">ðŸ›ï¸ ${d.habitaciones} hab.</span>` : ''}
+        ${d.banos ? `<span class="info-chip">ðŸš¿ ${d.banos} baÃ±o${d.banos>1?'s':''}</span>` : ''}
+        ${d.capacidad ? `<span class="info-chip">ðŸ‘¥ ${esc(d.capacidad)}</span>` : ''}
+        ${d.fechas_disponibles ? `<span class="info-chip">ðŸ“… ${esc(d.fechas_disponibles)}</span>` : ''}
       </div>
 
       ${d.ubicacion ? `
       <div class="hosp-location">
-        <span>📍</span><span>${esc(d.ubicacion)}</span>
+        <span>ðŸ“</span><span>${esc(d.ubicacion)}</span>
       </div>` : ''}
 
       ${feats.length ? `
       <div>
-        <div class="section-label">Características</div>
+        <div class="section-label">CaracterÃ­sticas</div>
         <div class="features-list" id="feats-list-${h.id}">
           ${shownFeats.map(f=>`<span class="feat-tag">${esc(f)}</span>`).join('')}
-          ${extraFeats > 0 ? `<span class="feat-tag more" onclick="toggleAllFeats('${h.id}')" id="feats-btn-${h.id}">+${extraFeats} más</span>` : ''}
+          ${extraFeats > 0 ? `<span class="feat-tag more" onclick="toggleAllFeats('${h.id}')" id="feats-btn-${h.id}">+${extraFeats} mÃ¡s</span>` : ''}
         </div>
       </div>` : ''}
 
       ${d.politica_cancelacion ? `
-      <div class="hosp-extra"><strong>📋 Cancelación:</strong> ${esc(d.politica_cancelacion)}</div>` : ''}
+      <div class="hosp-extra"><strong>ðŸ“‹ CancelaciÃ³n:</strong> ${esc(d.politica_cancelacion)}</div>` : ''}
 
       ${d.forma_pago ? `
-      <div class="hosp-extra"><strong>💳 Pago:</strong> ${esc(d.forma_pago)}</div>` : ''}
+      <div class="hosp-extra"><strong>ðŸ’³ Pago:</strong> ${esc(d.forma_pago)}</div>` : ''}
 
       ${formatContactHtml(d.contacto, d.instagram)}
 
       ${photosHtml}
 
       ${d.notas_adicionales ? `
-      <div class="hosp-extra"><strong>🗒️ Notas:</strong> ${esc(d.notas_adicionales)}</div>` : ''}
+      <div class="hosp-extra"><strong>ðŸ—’ï¸ Notas:</strong> ${esc(d.notas_adicionales)}</div>` : ''}
 
       ${d.razon_calificacion ? `
-      <div class="hosp-extra" style="color:var(--text3);">🤖 <em>${esc(d.razon_calificacion)}</em></div>` : ''}
+      <div class="hosp-extra" style="color:var(--text3);">ðŸ¤– <em>${esc(d.razon_calificacion)}</em></div>` : ''}
 
       ${missing.length ? `
       <div>
-        <div class="section-label" style="color:var(--red);">⚠️ Datos faltantes (clic para completar)</div>
+        <div class="section-label" style="color:var(--red);">âš ï¸ Datos faltantes (clic para completar)</div>
         <div class="missing-tags">
           ${missing.map(m=>`<span class="missing-tag" onclick="openEditHosp('${h.id}')" title="Clic para agregar o editar este dato">${esc(m)}</span>`).join('')}
         </div>
       </div>` : ''}
     </div>
     <div class="hosp-card-footer">
-      <button class="btn btn-ghost btn-sm" onclick="openEditHosp('${h.id}')" title="Editar datos o cambiar ciudad">✏️ Editar</button>
-      <button class="btn btn-ghost btn-sm" onclick="openPhotoModal('${h.id}')">📷 Fotos (${photos.length})</button>
-      <button class="btn btn-ghost btn-sm" onclick="openWebLink('${h.id}')">🔗 Link</button>
-      <button class="btn btn-ghost btn-sm" onclick="viewMail('${h.id}')">📧 Mail</button>
-      <button class="btn btn-danger btn-sm" onclick="confirmDeleteHosp('${h.id}')">🗑️</button>
+      <button class="btn btn-ghost btn-sm" onclick="openEditHosp('${h.id}')" title="Editar datos o cambiar ciudad">âœï¸ Editar</button>
+      <button class="btn btn-ghost btn-sm" onclick="openPhotoModal('${h.id}')">ðŸ“· Fotos (${photos.length})</button>
+      <button class="btn btn-ghost btn-sm" onclick="openWebLink('${h.id}')">ðŸ”— Link</button>
+      <button class="btn btn-ghost btn-sm" onclick="viewMail('${h.id}')">ðŸ“§ Mail</button>
+      <button class="btn btn-danger btn-sm" onclick="confirmDeleteHosp('${h.id}')">ðŸ—‘ï¸</button>
     </div>
   </div>`;
 }
@@ -1850,16 +1966,16 @@ function hospCard(h, destObj) {
 // ============================================================
 // TABLE VIEW
 // ============================================================
-// Servicios estándar comparables
+// Servicios estÃ¡ndar comparables
 const STANDARD_SERVICES = [
-  { id: 'wifi',       label: 'WiFi',        icon: '📶', keywords: ['wifi', 'wi-fi', 'internet'] },
-  { id: 'kitchen',    label: 'Cocina',      icon: '🍳', keywords: ['cocina', 'kitch', 'anaf', 'horno', 'microondas', 'vajilla', 'compartida'] },
-  { id: 'pool',       label: 'Pileta',      icon: '🏊', keywords: ['pileta', 'piscina', 'pool'] },
-  { id: 'parking',    label: 'Cochera',     icon: '🚗', keywords: ['cochera', 'estacionamiento', 'garage', 'parqueo'] },
-  { id: 'grill',      label: 'Parrilla',    icon: '🍖', keywords: ['parrilla', 'asador', 'bbq', 'churrasquera'] },
-  { id: 'breakfast',  label: 'Desayuno',   icon: '☕', keywords: ['desayuno', 'breakfast'] },
-  { id: 'ac',         label: 'Aire acond.', icon: '❄️', keywords: ['aire', 'ac', 'climatizado', 'aire acondicionado'] },
-  { id: 'heating',    label: 'Calefacción', icon: '🔥', keywords: ['calefaccion', 'calefacción', 'hogar', 'estufa', 'losa'] }
+  { id: 'wifi',       label: 'WiFi',        icon: 'ðŸ“¶', keywords: ['wifi', 'wi-fi', 'internet'] },
+  { id: 'kitchen',    label: 'Cocina',      icon: 'ðŸ³', keywords: ['cocina', 'kitch', 'anaf', 'horno', 'microondas', 'vajilla', 'compartida'] },
+  { id: 'pool',       label: 'Pileta',      icon: 'ðŸŠ', keywords: ['pileta', 'piscina', 'pool'] },
+  { id: 'parking',    label: 'Cochera',     icon: 'ðŸš—', keywords: ['cochera', 'estacionamiento', 'garage', 'parqueo'] },
+  { id: 'grill',      label: 'Parrilla',    icon: 'ðŸ–', keywords: ['parrilla', 'asador', 'bbq', 'churrasquera'] },
+  { id: 'breakfast',  label: 'Desayuno',   icon: 'â˜•', keywords: ['desayuno', 'breakfast'] },
+  { id: 'ac',         label: 'Aire acond.', icon: 'â„ï¸', keywords: ['aire', 'ac', 'climatizado', 'aire acondicionado'] },
+  { id: 'heating',    label: 'CalefacciÃ³n', icon: 'ðŸ”¥', keywords: ['calefaccion', 'calefacciÃ³n', 'hogar', 'estufa', 'losa'] }
 ];
 
 function normalizeStr(str) {
@@ -1869,16 +1985,16 @@ function normalizeStr(str) {
 function toggleInlineNote(el, fullText) {
   const isExpanded = el.getAttribute('data-expanded') === 'true';
   if (isExpanded) {
-    const truncated = fullText.length > 90 ? fullText.slice(0, 87) + '…' : fullText;
-    el.textContent = '🗒️ ' + truncated;
+    const truncated = fullText.length > 90 ? fullText.slice(0, 87) + 'â€¦' : fullText;
+    el.textContent = 'ðŸ—’ï¸ ' + truncated;
     el.setAttribute('data-expanded', 'false');
   } else {
-    el.textContent = '🗒️ ' + fullText;
+    el.textContent = 'ðŸ—’ï¸ ' + fullText;
     el.setAttribute('data-expanded', 'true');
   }
 }
 
-// Algoritmo de Ranking Inteligente de Relación Calidad-Precio (Value Score)
+// Algoritmo de Ranking Inteligente de RelaciÃ³n Calidad-Precio (Value Score)
 function computeValueScore(h, avgPriceInGroup) {
   const d = h.datos || {};
   const scoreIA = d.calificacion_ia != null ? Number(d.calificacion_ia) : 6.0;
@@ -1941,7 +2057,7 @@ function renderTable(hosps) {
       if (s > maxScore) { maxScore = s; maxScoreId = h.id; }
     });
 
-    const cityEmoji = cityHosps[0]?._destinoEmoji || '🗺️';
+    const cityEmoji = cityHosps[0]?._destinoEmoji || 'ðŸ—ºï¸';
 
     const colsHtml = rankedHosps.map(({ hosp: h, valueScore }, rankIdx) => {
       const d = h.datos || {};
@@ -1960,7 +2076,7 @@ function renderTable(hosps) {
         </div>` : '';
 
       // 1. Header & Price
-      const priceText = d.precio_por_noche ? fmtPrice(d.precio_por_noche, d.moneda) : '—';
+      const priceText = d.precio_por_noche ? fmtPrice(d.precio_por_noche, d.moneda) : 'â€”';
       const totalText = d.precio_total ? `Total: ${fmtPrice(d.precio_total, d.moneda)}` : (d.precio_por_noche ? '/ noche' : 'Sin precio');
 
       // 2. Matching de servicios + Inferencia de Cocina
@@ -1975,8 +2091,8 @@ function renderTable(hosps) {
 
         // Inferencia especial para Cocina si no venia explicito en el JSON
         if (srv.id === 'kitchen' && !hasSrv) {
-          const esTipoConCocina = /cabaña|cabana|departamento|depto|aparthotel|apart|casa|duplex|bungalow|estudio/i.test(tipoNorm) ||
-                                  /cabaña|cabana|depto|departamento|apart|duplex|bungalow/i.test(nombreNorm);
+          const esTipoConCocina = /cabaÃ±a|cabana|departamento|depto|aparthotel|apart|casa|duplex|bungalow|estudio/i.test(tipoNorm) ||
+                                  /cabaÃ±a|cabana|depto|departamento|apart|duplex|bungalow/i.test(nombreNorm);
           const esHostel = /hostel|hostal|albergue/i.test(tipoNorm) || /hostel|hostal/i.test(nombreNorm);
           if (esTipoConCocina || esHostel) {
             hasSrv = true;
@@ -2007,7 +2123,7 @@ function renderTable(hosps) {
         <div class="comp-score-box ${isBestScore ? 'best' : ''}">
           <div class="comp-score-row">
             <span>Puntaje IA</span>
-            <span style="color:${isBestScore ? 'var(--yellow)' : 'var(--text)'};">${scoreVal.toFixed(1)} ⭐</span>
+            <span style="color:${isBestScore ? 'var(--yellow)' : 'var(--text)'};">${scoreVal.toFixed(1)} â­</span>
           </div>
           <div class="comp-score-bar-bg">
             <div class="comp-score-bar-fill" style="width:${scorePercent}%;"></div>
@@ -2017,15 +2133,15 @@ function renderTable(hosps) {
       // 4. Notas recortadas
       const notesText = d.notas_adicionales || d.razon_calificacion || '';
       const hasLongNotes = notesText.length > 90;
-      const truncatedNotes = hasLongNotes ? notesText.slice(0, 87) + '…' : notesText;
+      const truncatedNotes = hasLongNotes ? notesText.slice(0, 87) + 'â€¦' : notesText;
       const notesHtml = notesText ? `
         <div class="comp-notes-box" onclick="toggleInlineNote(this, '${esc(notesText.replace(/'/g, "\\'"))}')" title="Clic para expandir/contraer nota" data-expanded="false">
-          🗒️ ${esc(truncatedNotes)}
-        </div>` : `<div class="comp-notes-box" style="opacity:0.5;cursor:default;">🗒️ Sin notas adicionales</div>`;
+          ðŸ—’ï¸ ${esc(truncatedNotes)}
+        </div>` : `<div class="comp-notes-box" style="opacity:0.5;cursor:default;">ðŸ—’ï¸ Sin notas adicionales</div>`;
 
-      const rankLabel = `${rankIdx + 1}°`;
+      const rankLabel = `${rankIdx + 1}Â°`;
       const rankBadge = isTopRanked
-        ? `<span style="background:var(--grad1);color:#fff;font-size:0.75rem;font-weight:800;padding:2px 8px;border-radius:6px;margin-bottom:6px;display:inline-block;" title="Mejor relación precio/calidad">🥇 1°</span>`
+        ? `<span style="background:var(--grad1);color:#fff;font-size:0.75rem;font-weight:800;padding:2px 8px;border-radius:6px;margin-bottom:6px;display:inline-block;" title="Mejor relaciÃ³n precio/calidad">ðŸ¥‡ 1Â°</span>`
         : `<span style="color:var(--text2);background:var(--bg3);border:1px solid var(--border);font-size:0.75rem;font-weight:700;padding:2px 8px;border-radius:6px;margin-bottom:6px;display:inline-block;">${rankLabel}</span>`;
 
       return `
@@ -2054,7 +2170,7 @@ function renderTable(hosps) {
           ${scoreHtml}
           ${notesHtml}
           <button class="btn btn-ghost btn-sm" style="width:100%;font-size:0.78rem;" onclick="openEditHosp('${h.id}')" title="Ver todos los datos y detalles completos">
-            📋 Ver ficha completa
+            ðŸ“‹ Ver ficha completa
           </button>
         </div>
       </div>`;
@@ -2066,7 +2182,7 @@ function renderTable(hosps) {
         <div style="display:flex;align-items:center;gap:10px;">
           <span style="font-size:1.3rem;">${esc(cityEmoji)}</span>
           <span class="destino-title">${esc(cityName)}</span>
-          <span class="trip-badge accent">${cityHosps.length} opción(es) · Ranking Precio/Calidad 📊</span>
+          <span class="trip-badge accent">${cityHosps.length} opciÃ³n(es) Â· Ranking Precio/Calidad ðŸ“Š</span>
         </div>
       </div>
       <div class="table-wrap">
@@ -2088,7 +2204,7 @@ function openNewTrip() {
   document.getElementById('trip-dest').value = '';
   document.getElementById('trip-from').value = '';
   document.getElementById('trip-to').value = '';
-  document.getElementById('trip-emoji').value = '✈️';
+  document.getElementById('trip-emoji').value = 'âœˆï¸';
   openModal('modal-new-trip');
   setTimeout(()=>document.getElementById('trip-name').focus(), 100);
 }
@@ -2102,14 +2218,14 @@ function createTrip() {
     destino: document.getElementById('trip-dest').value.trim(),
     fecha_desde: document.getElementById('trip-from').value,
     fecha_hasta: document.getElementById('trip-to').value,
-    emoji: document.getElementById('trip-emoji').value || '✈️',
+    emoji: document.getElementById('trip-emoji').value || 'âœˆï¸',
     creado: new Date().toISOString(),
     destinos: []
   };
   state.viajes.unshift(trip);
   saveState();
   closeModal('modal-new-trip');
-  toast('Viaje creado 🎉', 'success');
+  toast('Viaje creado ðŸŽ‰', 'success');
   openTrip(trip.id);
 }
 
@@ -2120,10 +2236,10 @@ let editingDestinoId = null;
 
 function openNewDestino() {
   editingDestinoId = null;
-  document.getElementById('destino-modal-title').textContent = '🗺️ Nueva Ciudad / Destino';
+  document.getElementById('destino-modal-title').textContent = 'ðŸ—ºï¸ Nueva Ciudad / Destino';
   document.getElementById('destino-name').value = '';
-  document.getElementById('destino-emoji').value = '🏔️';
-  document.getElementById('btn-save-destino').textContent = 'Crear Ciudad ✓';
+  document.getElementById('destino-emoji').value = 'ðŸ”ï¸';
+  document.getElementById('btn-save-destino').textContent = 'Crear Ciudad âœ“';
   openModal('modal-new-destino');
   setTimeout(() => document.getElementById('destino-name').focus(), 100);
 }
@@ -2133,10 +2249,10 @@ function openEditDestino(id) {
   const d = (trip?.destinos || []).find(x => x.id === id);
   if (!d) return;
   editingDestinoId = id;
-  document.getElementById('destino-modal-title').textContent = '✏️ Renombrar Ciudad';
+  document.getElementById('destino-modal-title').textContent = 'âœï¸ Renombrar Ciudad';
   document.getElementById('destino-name').value = d.nombre;
-  document.getElementById('destino-emoji').value = d.emoji || '🏔️';
-  document.getElementById('btn-save-destino').textContent = 'Guardar ✓';
+  document.getElementById('destino-emoji').value = d.emoji || 'ðŸ”ï¸';
+  document.getElementById('btn-save-destino').textContent = 'Guardar âœ“';
   openModal('modal-new-destino');
   setTimeout(() => document.getElementById('destino-name').focus(), 100);
 }
@@ -2146,7 +2262,7 @@ function saveDestino() {
   if (!trip) return;
   const name = document.getElementById('destino-name').value.trim();
   if (!name) { toast('Ponele un nombre a la ciudad', 'error'); return; }
-  const emoji = document.getElementById('destino-emoji').value.trim() || '🏔️';
+  const emoji = document.getElementById('destino-emoji').value.trim() || 'ðŸ”ï¸';
 
   if (editingDestinoId) {
     const d = (trip.destinos || []).find(x => x.id === editingDestinoId);
@@ -2158,7 +2274,7 @@ function saveDestino() {
   saveState();
   closeModal('modal-new-destino');
   renderHospedajes();
-  toast('Ciudad guardada 🗺️', 'success');
+  toast('Ciudad guardada ðŸ—ºï¸', 'success');
 }
 
 function confirmDeleteDestino(id) {
@@ -2166,7 +2282,7 @@ function confirmDeleteDestino(id) {
   const d = (trip?.destinos || []).find(x => x.id === id);
   const n = (d?.hospedajes || []).length;
   document.getElementById('confirm-del-msg').textContent =
-    `¿Eliminás la ciudad "${d?.nombre}"?${n ? ` Se eliminarán también los ${n} hospedaje(s) que contiene.` : ''}`;
+    `Â¿EliminÃ¡s la ciudad "${d?.nombre}"?${n ? ` Se eliminarÃ¡n tambiÃ©n los ${n} hospedaje(s) que contiene.` : ''}`;
   deleteCallback = () => {
     if (trip) {
       trip.destinos = (trip.destinos || []).filter(x => x.id !== id);
@@ -2186,7 +2302,7 @@ function confirmDeleteDestino(id) {
 function confirmDeleteTrip(id) {
   const trip = state.viajes.find(t=>t.id===id);
   document.getElementById('confirm-del-msg').textContent =
-    `¿Eliminás el viaje "${trip?.nombre}"? Se perderán todos los hospedajes guardados.`;
+    `Â¿EliminÃ¡s el viaje "${trip?.nombre}"? Se perderÃ¡n todos los hospedajes guardados.`;
   deleteCallback = () => {
     state.viajes = state.viajes.filter(t=>t.id!==id);
     saveState();
@@ -2199,7 +2315,7 @@ function confirmDeleteTrip(id) {
 }
 
 function confirmDeleteHosp(id) {
-  document.getElementById('confirm-del-msg').textContent = '¿Eliminás este hospedaje?';
+  document.getElementById('confirm-del-msg').textContent = 'Â¿EliminÃ¡s este hospedaje?';
   deleteCallback = () => {
     const trip = getCurrentTrip();
     if (trip) {
@@ -2244,12 +2360,12 @@ function toggleAllFeats(hospId) {
     const extra = feats.length - 5;
     container.innerHTML = `
       ${shown.map(f => `<span class="feat-tag">${esc(f)}</span>`).join('')}
-      ${extra > 0 ? `<span class="feat-tag more" onclick="toggleAllFeats('${hospId}')" id="feats-btn-${hospId}">+${extra} más</span>` : ''}
+      ${extra > 0 ? `<span class="feat-tag more" onclick="toggleAllFeats('${hospId}')" id="feats-btn-${hospId}">+${extra} mÃ¡s</span>` : ''}
     `;
     container.setAttribute('data-expanded', 'false');
   } else {
     container.innerHTML = feats.map(f => `<span class="feat-tag">${esc(f)}</span>`).join('') +
-      `<span class="feat-tag more" onclick="toggleAllFeats('${hospId}')" id="feats-btn-${hospId}">Ver menos ▴</span>`;
+      `<span class="feat-tag more" onclick="toggleAllFeats('${hospId}')" id="feats-btn-${hospId}">Ver menos â–´</span>`;
     container.setAttribute('data-expanded', 'true');
   }
 }
@@ -2267,10 +2383,10 @@ function openEditHosp(hospId) {
   // Cargar selector de destino / ciudad para transferir
   const destSelect = document.getElementById('edithosp-destino');
   destSelect.innerHTML = (trip.destinos || []).map(dest =>
-    `<option value="${dest.id}">${esc(dest.emoji || '🗺️')} ${esc(dest.nombre)}</option>`
+    `<option value="${dest.id}">${esc(dest.emoji || 'ðŸ—ºï¸')} ${esc(dest.nombre)}</option>`
   ).join('');
 
-  // Encontrar en qué destino se encuentra actualmente
+  // Encontrar en quÃ© destino se encuentra actualmente
   const currentDest = (trip.destinos || []).find(dest =>
     (dest.hospedajes || []).some(h => h.id === hospId)
   );
@@ -2329,7 +2445,7 @@ function saveEditHosp() {
   d.notas_adicionales = document.getElementById('edithosp-notas').value.trim() || null;
   hosp.editado_manualmente = true;
 
-  // Lógica de transferencia entre destinos/ciudades
+  // LÃ³gica de transferencia entre destinos/ciudades
   let currentDest = (trip.destinos || []).find(dest =>
     (dest.hospedajes || []).some(h => h.id === editingFullHospId)
   );
@@ -2348,7 +2464,7 @@ function saveEditHosp() {
   saveState();
   closeModal('modal-edit-hosp');
   renderHospedajes();
-  toast('Hospedaje actualizado correctamente ✨', 'success');
+  toast('Hospedaje actualizado correctamente âœ¨', 'success');
 }
 
 function openEditScore(hospId) {
@@ -2375,7 +2491,7 @@ function saveScore() {
   saveState();
   closeModal('modal-edit-score');
   renderHospedajes();
-  toast('Puntaje actualizado ⭐', 'success');
+  toast('Puntaje actualizado â­', 'success');
 }
 
 // ============================================================
@@ -2405,7 +2521,7 @@ function openAddLinkModal(hospId) {
 
 function saveAddLink() {
   const url = document.getElementById('addlink-url').value.trim();
-  if (!url) { toast('Ingresá un link primero', 'error'); return null; }
+  if (!url) { toast('IngresÃ¡ un link primero', 'error'); return null; }
   if (!/^https?:\/\//i.test(url)) { toast('El link debe comenzar con http(s)', 'error'); return null; }
   const hosp = getHospById(addLinkHospId);
   if (!hosp) return null;
@@ -2418,7 +2534,7 @@ function saveAddLink() {
 
 function saveLinkOnly() {
   const url = saveAddLink();
-  if (url) { closeModal('modal-add-link'); toast('Link guardado 🔗', 'success'); }
+  if (url) { closeModal('modal-add-link'); toast('Link guardado ðŸ”—', 'success'); }
 }
 
 function saveAndOpenLink() {
@@ -2441,7 +2557,7 @@ function viewMail(hospId) {
 // ============================================================
 function openAddHosp(destinoId) {
   if (!getApiKeys().length) {
-    toast('Primero configurá tu API Key en ⚙️ Config', 'error', 4500);
+    toast('Primero configurÃ¡ tu API Key en âš™ï¸ Config', 'error', 4500);
     openConfig();
     return;
   }
@@ -2449,7 +2565,7 @@ function openAddHosp(destinoId) {
   if (!trip) return;
   const destinos = trip.destinos || [];
   if (!destinos.length) {
-    toast('Creá primero una ciudad/destino (🗺️ Ciudad)', 'error');
+    toast('CreÃ¡ primero una ciudad/destino (ðŸ—ºï¸ Ciudad)', 'error');
     openNewDestino();
     return;
   }
@@ -2457,7 +2573,7 @@ function openAddHosp(destinoId) {
 
   const sel = document.getElementById('addhosp-destino');
   sel.innerHTML = destinos.map(d =>
-    `<option value="${d.id}">${esc(d.emoji||'🗺️')} ${esc(d.nombre)}</option>`).join('');
+    `<option value="${d.id}">${esc(d.emoji||'ðŸ—ºï¸')} ${esc(d.nombre)}</option>`).join('');
   sel.value = currentDestinoId;
 
   pendingExtracted = null;
@@ -2471,7 +2587,7 @@ function openAddHosp(destinoId) {
   document.getElementById('loading-ai').style.display = 'none';
   document.getElementById('add-hosp-footer').innerHTML = `
     <button class="btn btn-ghost" onclick="closeModal('modal-add-hosp')">Cancelar</button>
-    <button class="btn btn-primary" id="btn-analyze" onclick="analyzeWithAI()">🤖 Analizar con IA</button>`;
+    <button class="btn btn-primary" id="btn-analyze" onclick="analyzeWithAI()">ðŸ¤– Analizar con IA</button>`;
   openModal('modal-add-hosp');
   setTimeout(()=>document.getElementById('hosp-mail-text').focus(), 120);
 }
@@ -2484,13 +2600,13 @@ async function analyzeWithAI() {
   const webLink = document.getElementById('hosp-web-link').value.trim();
 
   if (!mailText && !webLink) {
-    toast('Pegá el mail o link del hospedaje para analizar', 'error');
+    toast('PegÃ¡ el mail o link del hospedaje para analizar', 'error');
     return;
   }
 
   const loadingEl = document.getElementById('loading-ai');
   loadingEl.style.display = '';
-  loadingEl.querySelector('p').textContent = 'Analizando con IA... esto tarda unos segundos ✨';
+  loadingEl.querySelector('p').textContent = 'Analizando con IA... esto tarda unos segundos âœ¨';
   document.getElementById('hosp-mail-text').style.display = 'none';
   document.getElementById('hosp-web-link').style.display = 'none';
   if (document.getElementById('btn-analyze')) document.getElementById('btn-analyze').disabled = true;
@@ -2515,19 +2631,19 @@ async function analyzeWithAI() {
     if (!extracted) {
       try {
         extracted = await callGroq(prompt);
-        if (extracted) toast('Se usó Groq como respaldo ✅', 'info', 3000);
+        if (extracted) toast('Se usÃ³ Groq como respaldo âœ…', 'info', 3000);
       } catch(groqErr) {}
     }
 
     if (!extracted) {
       try {
         extracted = await callOpenRouter(prompt);
-        if (extracted) toast('Se usó OpenRouter como respaldo ✅', 'info', 3000);
+        if (extracted) toast('Se usÃ³ OpenRouter como respaldo âœ…', 'info', 3000);
       } catch(orErr) {}
     }
 
     if (!extracted) {
-      throw new Error(gemErr ? `Gemini: ${gemErr.message}` : 'Sin créditos en las API keys configuradas.');
+      throw new Error(gemErr ? `Gemini: ${gemErr.message}` : 'Sin crÃ©ditos en las API keys configuradas.');
     }
 
     pendingExtracted = extracted;
@@ -2542,12 +2658,12 @@ async function analyzeWithAI() {
 }
 
 function buildPrompt(mailText) {
-  return `Extractor experto de datos de hospedajes turísticos. Extrae TODAS las opciones de alojamiento del mensaje, siguiendo esta estructura JSON exacta.
+  return `Extractor experto de datos de hospedajes turÃ­sticos. Extrae TODAS las opciones de alojamiento del mensaje, siguiendo esta estructura JSON exacta.
 
 REGLAS:
-1. "nombre" SIEMPRE combina establecimiento + opción específica (ej: "Bungalows Nahuel Malal — Bungalow B"). Nunca solo "Bungalow B" u "Opción A".
-2. "precio_por_noche" y "precio_total": números enteros puros, sin símbolos (107000, no "ARS 107000").
-3. Extraer teléfono, WhatsApp, email e Instagram si aparecen (ej: @bungalows.nahuelmalal).
+1. "nombre" SIEMPRE combina establecimiento + opciÃ³n especÃ­fica (ej: "Bungalows Nahuel Malal â€” Bungalow B"). Nunca solo "Bungalow B" u "OpciÃ³n A".
+2. "precio_por_noche" y "precio_total": nÃºmeros enteros puros, sin sÃ­mbolos (107000, no "ARS 107000").
+3. Extraer telÃ©fono, WhatsApp, email e Instagram si aparecen (ej: @bungalows.nahuelmalal).
 
 ESTRUCTURA:
 
@@ -2556,7 +2672,7 @@ ESTRUCTURA:
   "referencia_dolar": 1520,
   "opciones": [
     {
-      "nombre": "Bungalows Nahuel Malal — Bungalow B (para 2 personas)",
+      "nombre": "Bungalows Nahuel Malal â€” Bungalow B (para 2 personas)",
       "tipo": "bungalow",
       "precio_por_noche": 107000,
       "moneda": "ARS",
@@ -2567,16 +2683,16 @@ ESTRUCTURA:
       "capacidad": "2 a 5 personas",
       "habitaciones": 1,
       "banos": 1,
-      "caracteristicas": ["Costa de lago", "WiFi", "Hogar a leña", "Parrilla exclusiva", "Vista al lago"],
+      "caracteristicas": ["Costa de lago", "WiFi", "Hogar a leÃ±a", "Parrilla exclusiva", "Vista al lago"],
       "ubicacion": "Av. Bustillo km 12.4, Bariloche (a 80m de comercios)",
       "politica_cancelacion": "Reserva 40% por BBVA/MercadoPago, saldo al ingresar",
       "forma_pago": "BBVA, Mercado Pago, Efectivo",
       "contacto": "Juan / Tel: +54 9 2944 56 3033 / Instagram: @bungalows.nahuelmalal",
       "instagram": "@bungalows.nahuelmalal",
       "fotos_urls": [],
-      "notas_adicionales": "Supermercados TODO y La Anónima a 500m. Cerro Catedral a 12km.",
+      "notas_adicionales": "Supermercados TODO y La AnÃ³nima a 500m. Cerro Catedral a 12km.",
       "calificacion_ia": 8.5,
-      "razon_calificacion": "Buena ubicación con costa de lago y comercios muy cerca",
+      "razon_calificacion": "Buena ubicaciÃ³n con costa de lago y comercios muy cerca",
       "datos_faltantes": ["horario check-in/out"],
       "texto_original_resumido": "Bungalow B para 2 personas a $107.000 ARS/noche."
     }
@@ -2650,7 +2766,7 @@ async function callGeminiModel(key, model, prompt) {
     .map(p => p.text)
     .join('\n');
   if (!raw) {
-    throw new Error('La IA no devolvió texto en la respuesta');
+    throw new Error('La IA no devolviÃ³ texto en la respuesta');
   }
   return parseJsonFromAI(raw);
 }
@@ -2680,7 +2796,7 @@ async function probeGeminiKey(key, prompt) {
   try {
     availableModels = await listGeminiModels(key);
   } catch(e) {
-    throw new Error('La API Gemini no está disponible con esta key. ' + e.message + '. Asegurate de tener habilitada la Generative Language API en https://console.cloud.google.com/apis/library/generativelanguage.googleapis.com');
+    throw new Error('La API Gemini no estÃ¡ disponible con esta key. ' + e.message + '. Asegurate de tener habilitada la Generative Language API en https://console.cloud.google.com/apis/library/generativelanguage.googleapis.com');
   }
 
   const modelPool = availableModels.length
@@ -2703,7 +2819,7 @@ async function probeGeminiKey(key, prompt) {
   const hint = availableModels.length
     ? `Modelos disponibles en tu cuenta: ${availableModels.slice(0,5).join(', ')}...`
     : 'Asegurate de tener habilitada la Generative Language API en https://console.cloud.google.com/apis/library/generativelanguage.googleapis.com';
-  throw lastErr || new Error(`Ningún modelo de Gemini respondió. ${hint}`);
+  throw lastErr || new Error(`NingÃºn modelo de Gemini respondiÃ³. ${hint}`);
 }
 
 async function callGemini(prompt) {
@@ -2712,7 +2828,7 @@ async function callGemini(prompt) {
   const exhausted = new Set();
   let lastError;
 
-  // Descubrir modelos disponibles dinámicamente
+  // Descubrir modelos disponibles dinÃ¡micamente
   let availableModels = [];
   let listError = null;
   try {
@@ -2758,12 +2874,12 @@ async function callGemini(prompt) {
         const msg = (e.message || '').toLowerCase();
         // Cuota agotada para ESTE modelo puntual: seguimos probando otros modelos con la misma key
         if (QUOTA_SKIP_RE.test(msg) && !KEY_SKIP_RE.test(msg)) { continue; }
-        // Key inválida/bloqueada: no tiene sentido seguir probando modelos con esta key
+        // Key invÃ¡lida/bloqueada: no tiene sentido seguir probando modelos con esta key
         if (KEY_SKIP_RE.test(msg)) { exhausted.add(key); break; }
       }
     }
   }
-  throw lastError || new Error('Sin créditos en todas las keys de Gemini.');
+  throw lastError || new Error('Sin crÃ©ditos en todas las keys de Gemini.');
 }
 
 
@@ -2808,7 +2924,7 @@ async function callGroqKey(key, prompt) {
         const err = await res.json().catch(() => ({ error: { message: res.statusText } }));
         const msg = err?.error?.message || `HTTP ${res.status}`;
         if (res.status === 401 || msg.toLowerCase().includes('invalid api key') || msg.toLowerCase().includes('unauthorized')) {
-          throw new Error('Groq key inválida: ' + msg);
+          throw new Error('Groq key invÃ¡lida: ' + msg);
         }
         lastErr = new Error(`[${model}] ${msg}`);
         continue;
@@ -2818,11 +2934,11 @@ async function callGroqKey(key, prompt) {
       if (!raw) continue;
       return parseJsonFromAI(raw);
     } catch(e) {
-      if (e.message && e.message.includes('Groq key inválida')) throw e;
+      if (e.message && e.message.includes('Groq key invÃ¡lida')) throw e;
       lastErr = e;
     }
   }
-  throw lastErr || new Error('Groq no respondió');
+  throw lastErr || new Error('Groq no respondiÃ³');
 }
 
 async function callGroq(prompt) {
@@ -2833,7 +2949,7 @@ async function callGroq(prompt) {
       return await callGroqKey(key, prompt);
     } catch(e) {}
   }
-  throw new Error('Groq no respondió');
+  throw new Error('Groq no respondiÃ³');
 }
 
 async function fetchOpenRouterFreeModels() {
@@ -2885,7 +3001,7 @@ async function callOpenRouterKey(key, prompt) {
         const err = await res.json().catch(() => ({ error: { message: res.statusText } }));
         const msg = err?.error?.message || `HTTP ${res.status}`;
         if (res.status === 401 || msg.toLowerCase().includes('invalid api key') || msg.toLowerCase().includes('unauthorized')) {
-          throw new Error('OpenRouter key inválida: ' + msg);
+          throw new Error('OpenRouter key invÃ¡lida: ' + msg);
         }
         lastErr = new Error(`[${model}] ${msg}`);
         continue;
@@ -2895,11 +3011,11 @@ async function callOpenRouterKey(key, prompt) {
       if (!raw) continue;
       return parseJsonFromAI(raw);
     } catch(e) {
-      if (e.message && e.message.includes('key inválida')) throw e;
+      if (e.message && e.message.includes('key invÃ¡lida')) throw e;
       lastErr = e;
     }
   }
-  throw lastErr || new Error('Ningún modelo gratuito de OpenRouter está disponible en este momento.');
+  throw lastErr || new Error('NingÃºn modelo gratuito de OpenRouter estÃ¡ disponible en este momento.');
 }
 
 async function callOpenRouter(prompt) {
@@ -2910,7 +3026,7 @@ async function callOpenRouter(prompt) {
       return await callOpenRouterKey(key, prompt);
     } catch(e) {}
   }
-  throw new Error('OpenRouter no respondió');
+  throw new Error('OpenRouter no respondiÃ³');
 }
 
 function tryRepairTruncatedJson(str) {
@@ -2926,7 +3042,7 @@ function tryRepairTruncatedJson(str) {
 }
 
 function parseJsonFromAI(raw) {
-  if (!raw || !raw.trim()) throw new Error('La IA devolvió una respuesta vacía');
+  if (!raw || !raw.trim()) throw new Error('La IA devolviÃ³ una respuesta vacÃ­a');
   let clean = raw.trim();
 
   const fenceMatch = clean.match(/```(?:json)?\s*([\s\S]*?)```/i);
@@ -2934,7 +3050,7 @@ function parseJsonFromAI(raw) {
 
   const start = clean.indexOf('{');
   if (start === -1) {
-    throw new Error(`La IA no devolvió JSON. Respuesta: "${clean.slice(0, 120)}..."`);
+    throw new Error(`La IA no devolviÃ³ JSON. Respuesta: "${clean.slice(0, 120)}..."`);
   }
 
   let depth = 0, end = -1;
@@ -2984,12 +3100,12 @@ function showPreview(extracted, originalMail) {
       </div>
 
       <div style="display:flex;flex-wrap:wrap;gap:12px;margin:8px 0;font-size:0.85rem;color:var(--text2);">
-        ${opt.precio_por_noche ? `<span>💰 <strong>${opt.precio_por_noche} ${opt.moneda||''}</strong>/noche</span>` : ''}
-        ${opt.precio_total ? `<span>💵 Total: <strong>${opt.precio_total} ${opt.moneda||''}</strong></span>` : ''}
-        ${opt.capacidad ? `<span>👥 ${esc(opt.capacidad)}</span>` : ''}
+        ${opt.precio_por_noche ? `<span>ðŸ’° <strong>${opt.precio_por_noche} ${opt.moneda||''}</strong>/noche</span>` : ''}
+        ${opt.precio_total ? `<span>ðŸ’µ Total: <strong>${opt.precio_total} ${opt.moneda||''}</strong></span>` : ''}
+        ${opt.capacidad ? `<span>ðŸ‘¥ ${esc(opt.capacidad)}</span>` : ''}
       </div>
 
-      ${opt.ubicacion ? `<div style="font-size:0.8rem;color:var(--text2);margin-bottom:6px;">📍 ${esc(opt.ubicacion)}</div>` : ''}
+      ${opt.ubicacion ? `<div style="font-size:0.8rem;color:var(--text2);margin-bottom:6px;">ðŸ“ ${esc(opt.ubicacion)}</div>` : ''}
 
       ${feats.length ? `
       <div class="features-list" style="margin-top:6px;">
@@ -2998,7 +3114,7 @@ function showPreview(extracted, originalMail) {
 
       ${missing.length ? `
       <div style="margin-top:6px;font-size:0.75rem;color:var(--red);">
-        ⚠️ Faltan: ${missing.map(m=>esc(m)).join(', ')}
+        âš ï¸ Faltan: ${missing.map(m=>esc(m)).join(', ')}
       </div>` : ''}
     </div>`;
   }).join('');
@@ -3007,8 +3123,8 @@ function showPreview(extracted, originalMail) {
   document.getElementById('preview-json').textContent = JSON.stringify(extracted, null, 2);
 
   document.getElementById('add-hosp-footer').innerHTML = `
-    <button class="btn btn-ghost" onclick="resetAddHosp()">← Modificar</button>
-    <button class="btn btn-primary" onclick="confirmAddHosp()">✅ Confirmar y Agregar ${options.length} ${options.length === 1 ? 'Opción' : 'Opciones'}</button>`;
+    <button class="btn btn-ghost" onclick="resetAddHosp()">â† Modificar</button>
+    <button class="btn btn-primary" onclick="confirmAddHosp()">âœ… Confirmar y Agregar ${options.length} ${options.length === 1 ? 'OpciÃ³n' : 'Opciones'}</button>`;
 }
 
 function resetAddHosp() {
@@ -3019,7 +3135,7 @@ function resetAddHosp() {
   document.getElementById('step-preview').style.display = 'none';
   document.getElementById('add-hosp-footer').innerHTML = `
     <button class="btn btn-ghost" onclick="closeModal('modal-add-hosp')">Cancelar</button>
-    <button class="btn btn-primary" id="btn-analyze" onclick="analyzeWithAI()">🤖 Analizar con IA</button>`;
+    <button class="btn btn-primary" id="btn-analyze" onclick="analyzeWithAI()">ðŸ¤– Analizar con IA</button>`;
 }
 
 function confirmAddHosp() {
@@ -3046,7 +3162,7 @@ function confirmAddHosp() {
   saveState();
   closeModal('modal-add-hosp');
   renderHospedajes();
-  toast(`Se agregaron ${pendingExtracted.length} opción(es) a ${dest.nombre} ✨`, 'success');
+  toast(`Se agregaron ${pendingExtracted.length} opciÃ³n(es) a ${dest.nombre} âœ¨`, 'success');
 }
 
 // ============================================================
@@ -3067,20 +3183,20 @@ function renderConfigKeys() {
   const list = document.getElementById('cfg-keys-list');
   if (!list) return;
   if (!pendingKeys.length) {
-    list.innerHTML = '<div class="key-empty">Todavía no agregaste ninguna API Key.</div>';
+    list.innerHTML = '<div class="key-empty">TodavÃ­a no agregaste ninguna API Key.</div>';
     return;
   }
   state.config.verified_keys = state.config.verified_keys || {};
   list.innerHTML = pendingKeys.map((k, i) => {
     const info = state.config.verified_keys[k];
-    const badge = info?.ok ? (info.label || '✅ Conectada') : '<span style="color:var(--text3);font-size:0.75rem;">(sin probar)</span>';
+    const badge = info?.ok ? (info.label || 'âœ… Conectada') : '<span style="color:var(--text3);font-size:0.75rem;">(sin probar)</span>';
     return `
     <div class="key-row" id="key-row-${i}">
       <span class="key-mask">${maskKey(k)}</span>
       <span class="key-status" id="key-status-${i}">${badge}</span>
       <span class="key-actions">
-        <button class="key-del" style="color:var(--accent);margin-right:4px;" title="Probar esta key en vivo" onclick="testSingleKey(${i}, true)">🔄</button>
-        <button class="key-del" title="Eliminar key" onclick="removePendingKey(${i})">✕</button>
+        <button class="key-del" style="color:var(--accent);margin-right:4px;" title="Probar esta key en vivo" onclick="testSingleKey(${i}, true)">ðŸ”„</button>
+        <button class="key-del" title="Eliminar key" onclick="removePendingKey(${i})">âœ•</button>
       </span>
     </div>`;
   }).join('');
@@ -3088,15 +3204,15 @@ function renderConfigKeys() {
 
 function maskKey(k) {
   if (!k) return '';
-  if (k.length <= 10) return k.slice(0, 3) + '••••';
-  return k.slice(0, 6) + '••••••••' + k.slice(-4);
+  if (k.length <= 10) return k.slice(0, 3) + 'â€¢â€¢â€¢â€¢';
+  return k.slice(0, 6) + 'â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢' + k.slice(-4);
 }
 
 function addPendingKey() {
   const input = document.getElementById('cfg-new-key');
   const val = input.value.trim();
-  if (!val) { toast('Pegá una API Key primero', 'error'); return; }
-  if (pendingKeys.includes(val)) { toast('Esa key ya está en la lista', 'error'); return; }
+  if (!val) { toast('PegÃ¡ una API Key primero', 'error'); return; }
+  if (pendingKeys.includes(val)) { toast('Esa key ya estÃ¡ en la lista', 'error'); return; }
   pendingKeys.push(val);
   input.value = '';
   saveConfigQuiet();
@@ -3138,8 +3254,8 @@ async function testSingleKey(i, force = false) {
   const key = pendingKeys[i];
   if (!key) return false;
   const statusEl = document.getElementById('key-status-' + i);
-  if (statusEl) statusEl.textContent = '⏳ Probando...';
-  const testPrompt = 'Responde SOLO con este JSON exacto sin nada más: {"ok":true}';
+  if (statusEl) statusEl.textContent = 'â³ Probando...';
+  const testPrompt = 'Responde SOLO con este JSON exacto sin nada mÃ¡s: {"ok":true}';
   const prov = detectKeyProvider(key);
 
   state.config.verified_keys = state.config.verified_keys || {};
@@ -3147,31 +3263,31 @@ async function testSingleKey(i, force = false) {
   try {
     if (prov === 'groq') {
       await callGroqKey(key, testPrompt);
-      const label = '✅ Groq';
+      const label = 'âœ… Groq';
       if (statusEl) statusEl.textContent = label;
       state.config.verified_keys[key] = { provider: 'groq', ok: true, label };
       saveConfigQuiet();
-      toast('Key de Groq conectada y funcionando ✅', 'success', 3500);
+      toast('Key de Groq conectada y funcionando âœ…', 'success', 3500);
       return true;
     } else if (prov === 'openrouter') {
       await callOpenRouterKey(key, testPrompt);
-      const label = '✅ OpenRouter';
+      const label = 'âœ… OpenRouter';
       if (statusEl) statusEl.textContent = label;
       state.config.verified_keys[key] = { provider: 'openrouter', ok: true, label };
       saveConfigQuiet();
-      toast('Key de OpenRouter conectada y funcionando ✅', 'success', 3500);
+      toast('Key de OpenRouter conectada y funcionando âœ…', 'success', 3500);
       return true;
     } else {
       await probeGeminiKey(key, testPrompt);
-      const label = '✅ Gemini';
+      const label = 'âœ… Gemini';
       if (statusEl) statusEl.textContent = label;
       state.config.verified_keys[key] = { provider: 'gemini', ok: true, label };
       saveConfigQuiet();
-      toast('Key de Gemini conectada y funcionando ✅', 'success', 3500);
+      toast('Key de Gemini conectada y funcionando âœ…', 'success', 3500);
       return true;
     }
   } catch(err) {
-    const label = '❌ ' + (err.message || 'Error').slice(0, 35);
+    const label = 'âŒ ' + (err.message || 'Error').slice(0, 35);
     if (statusEl) statusEl.textContent = label;
     if (state.config.verified_keys) delete state.config.verified_keys[key];
     saveConfigQuiet();
@@ -3181,7 +3297,7 @@ async function testSingleKey(i, force = false) {
 }
 
 async function testApiKey() {
-  if (!pendingKeys.length) { toast('No hay keys para probar. Agregá una primero', 'error'); return; }
+  if (!pendingKeys.length) { toast('No hay keys para probar. AgregÃ¡ una primero', 'error'); return; }
 
   toast('Verificando en vivo el estado de todas las API Keys...', 'info', 3000);
   state.config.verified_keys = {};
@@ -3203,7 +3319,7 @@ function saveConfigQuiet() {
 function saveConfig() {
   saveConfigQuiet();
   closeModal('modal-config');
-  toast('Configuración guardada ✅', 'success');
+  toast('ConfiguraciÃ³n guardada âœ…', 'success');
 }
 
 // ============================================================
@@ -3225,7 +3341,7 @@ document.addEventListener('keydown', e => {
     const addHospEl = document.getElementById('modal-add-hosp');
     if (addHospEl && !addHospEl.classList.contains('hidden')) {
       if (pendingExtracted) {
-        toast('⚠️ Ya procesaste con IA. Usá el botón "Cancelar" o confirmá el alojamiento.', 'info', 4000);
+        toast('âš ï¸ Ya procesaste con IA. UsÃ¡ el botÃ³n "Cancelar" o confirmÃ¡ el alojamiento.', 'info', 4000);
       } else {
         closeModal('modal-add-hosp');
       }
@@ -3238,12 +3354,12 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// Close modal clicking overlay — modal-add-hosp protegido si ya se procesó con IA
+// Close modal clicking overlay â€” modal-add-hosp protegido si ya se procesÃ³ con IA
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
   overlay.addEventListener('click', e => {
     if (e.target === overlay) {
       if (overlay.id === 'modal-add-hosp' && pendingExtracted) {
-        toast('⚠️ Ya procesaste con IA. Usá el botón "Cancelar" o confirmá el alojamiento.', 'info', 4000);
+        toast('âš ï¸ Ya procesaste con IA. UsÃ¡ el botÃ³n "Cancelar" o confirmÃ¡ el alojamiento.', 'info', 4000);
         return;
       }
       overlay.classList.add('hidden');
@@ -3268,24 +3384,24 @@ function showInitLoading() {
   if (count) count.textContent = '';
 }
 
-// Arrancar: primero esperar la sincronización inicial ANTES de renderizar
+// Arrancar: primero esperar la sincronizaciÃ³n inicial ANTES de renderizar
 (async () => {
   showView('view-home');
   showInitLoading();
 
-  // Primera sincronización bloqueante: trae los datos de GitHub antes de mostrar nada
+  // Primera sincronizaciÃ³n bloqueante: trae los datos de GitHub antes de mostrar nada
   await syncNow();
 
-  // Ahora sí renderizamos con los datos correctos
+  // Ahora sÃ­ renderizamos con los datos correctos
   renderHome();
 
-  // Luego seguimos con la sincronización automática periódica
+  // Luego seguimos con la sincronizaciÃ³n automÃ¡tica periÃ³dica
   setInterval(syncNow, 10000);
 
   // Show setup prompt if no API key
   if (!getApiKeys().length) {
     setTimeout(() => {
-      toast('👋 Bienvenido! Configurá tu API Key en ⚙️ Config para empezar.', 'info', 6000);
+      toast('ðŸ‘‹ Bienvenido! ConfigurÃ¡ tu API Key en âš™ï¸ Config para empezar.', 'info', 6000);
     }, 600);
   }
 })();
