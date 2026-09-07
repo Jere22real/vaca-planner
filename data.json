@@ -1623,7 +1623,8 @@
                   "política de cancelación",
                   "forma de pago"
                 ],
-                "texto_original_resumido": "Cabañas de Alma $130.000 por dos noches para 4 a 8 personas en Villa Traful."
+                "texto_original_resumido": "Cabañas de Alma $130.000 por dos noches para 4 a 8 personas en Villa Traful.",
+                "web_link": "https://www.interpatagonia.com/villatraful/cabanas-de-alma.html"
               },
               "editado_manualmente": true
             },
@@ -1806,6 +1807,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788819913589
+    "updated_at": 1788819969033
   }
 }
