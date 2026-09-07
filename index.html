@@ -1061,12 +1061,6 @@ function saveState() {
     state.meta.updated_at = Date.now();
   }
   localStorage.setItem('vacaplanner_v1', JSON.stringify(state));
-  if (!syncingRemote) debouncedSync();
-}
-let syncTimeout = null;
-function debouncedSync() {
-  if (syncTimeout) clearTimeout(syncTimeout);
-  syncTimeout = setTimeout(() => { syncNow(); syncTimeout = null; }, 2000);
 }
 function loadState() {
   const raw = localStorage.getItem('vacaplanner_v1');
@@ -1089,9 +1083,9 @@ function loadState() {
 }
 
 // ============================================================
-// SINCRONIZACIÓN AUTOMÁTICA ENTRE DISPOSITIVOS (GitHub)
-// Sin botones: cada ~10s baja lo publicado y, si este dispositivo
-// cambió datos (y tiene token), los sube. Todos ven los cambios.
+// SINCRONIZACIÓN — MODELO "NUBE ÚNICA"
+// Todos los dispositivos ven y editan los mismos datos.
+// Flujo simple: Bajar → Merge → Subir. Siempre.
 // ============================================================
 function isValidCloudData(data) {
   return data && typeof data === 'object' && Array.isArray(data.viajes);
@@ -1099,7 +1093,7 @@ function isValidCloudData(data) {
 
 let syncingRemote = false;
 let syncingNow = false;
-let lastUploadedTs = 0;
+let lastPushedHash = '';
 
 const DEFAULT_GH_TOKEN = ['ghp_G7B9EdJdjP2lGGRD', 'NeATgZQNVOcSTf2pYVhT'].join('');
 
@@ -1113,13 +1107,13 @@ function getApiKeys() {
   return (state.config.api_keys || []).map(k => (k || '').trim()).filter(Boolean);
 }
 function rawDataUrl() {
-  return `https://raw.githubusercontent.com/${getRepoName()}/main/data.json`;
+  return `https://raw.githubusercontent.com/${getRepoName()}/main/data.json?_cb=${Date.now()}`;
 }
 function apiDataUrl() {
   return `https://api.github.com/repos/${getRepoName()}/contents/data.json`;
 }
-function localTs() {
-  return (state.meta && state.meta.updated_at) || 0;
+function stateHash() {
+  try { return JSON.stringify(state.viajes); } catch(e) { return ''; }
 }
 
 async function syncNow() {
@@ -1127,61 +1121,50 @@ async function syncNow() {
   syncingNow = true;
   try {
     setSyncStatus('syncing', '🔄 Sync...');
-    // 1) BAJAR lo publicado (cache-bust) — sin auth, todos lo ven
-    const res = await fetch(rawDataUrl() + '?_t=' + Date.now());
-    const remote = res.ok ? await res.json().catch(() => null) : null;
+
+    // 1) BAJAR datos de la nube
+    let remote = null;
+    try {
+      const res = await fetch(rawDataUrl());
+      if (res.ok) remote = await res.json().catch(() => null);
+    } catch(e) {}
+
     const remoteOk = remote && isValidCloudData(remote);
-    const remoteTs = remoteOk ? ((remote.meta && remote.meta.updated_at) || 0) : 0;
-    const localTripCount = (state.viajes || []).length;
-    const countTotalHosps = (viajesList) => (viajesList || []).reduce((acc, trip) => {
-      return acc + (trip.destinos || []).reduce((dAcc, d) => dAcc + (d.hospedajes || []).length, 0)
-                 + (trip.hospedajes || []).length;
-    }, 0);
 
-    const localHospCount = countTotalHosps(state.viajes);
-    const remoteHospCount = remoteOk ? countTotalHosps(remote.viajes) : 0;
-    const remoteTripCount = remoteOk ? (remote.viajes || []).length : 0;
-
-    if (remoteOk && remoteTripCount > 0) {
+    // 2) MERGE: combinar nube + local, nunca perder nada
+    if (remoteOk && remote.viajes.length > 0) {
+      const before = stateHash();
       const merged = mergeCloudData(remote, state);
-      const hasChanges = JSON.stringify(merged.viajes) !== JSON.stringify(state.viajes);
-      if (hasChanges || remoteTs > localTs()) {
+      state.viajes = merged.viajes;
+      state.meta = { updated_at: Date.now() };
+      migrateState();
+      if (stateHash() !== before) {
         syncingRemote = true;
-        state.viajes = merged.viajes;
-        state.meta = { updated_at: Math.max(remoteTs, localTs()) };
-        migrateState();
         saveState();
         syncingRemote = false;
-        lastUploadedTs = localTs();
-        setSyncStatus('ok', '✅ Datos sincronizados (merge)');
         renderAfterSync();
       }
     }
 
-    const localHasData = localTripCount > 0;
-    const remoteHasSameOrMore = remoteOk && remoteTripCount >= localTripCount && remoteHospCount >= localHospCount;
-    if (localHasData && !remoteHasSameOrMore && localTs() > lastUploadedTs && getToken()) {
-      setSyncStatus('syncing', '☁️ Guardando...');
-      const pushResult = await pushCurrentState();
-      if (pushResult === true) {
-        setSyncStatus('ok', '✅ Guardado');
-      } else if (pushResult === 'no-token') {
-        setSyncStatus('warn', '⚠️ Configurá tu token GitHub en Config');
+    // 3) SUBIR: siempre que haya datos locales
+    if (state.viajes && state.viajes.length > 0 && getToken()) {
+      const currentHash = stateHash();
+      if (currentHash !== lastPushedHash) {
+        setSyncStatus('syncing', '☁️ Guardando...');
+        const ok = await pushCurrentState();
+        if (ok) {
+          lastPushedHash = currentHash;
+          setSyncStatus('ok', '✅ Guardado');
+        } else {
+          setSyncStatus('warn', '⚠️ Error al subir — revisá tu token en Config');
+        }
       } else {
-        setSyncStatus('warn', '⚠️ Token inválido — Configurá uno nuevo en Config');
+        setSyncStatus('ok', '✅ Nube lista');
       }
-    } else if (localHasData && remoteOk && localTs() > lastUploadedTs && getToken()) {
-      setSyncStatus('syncing', '☁️ Guardando...');
-      const pushResult = await pushCurrentState();
-      if (pushResult === true) {
-        setSyncStatus('ok', '✅ Guardado');
-      } else if (pushResult === 'no-token') {
-        setSyncStatus('warn', '⚠️ Configurá tu token GitHub en Config');
-      } else {
-        setSyncStatus('warn', '⚠️ Token inválido — Configurá uno nuevo en Config');
-      }
-    } else {
+    } else if (remoteOk) {
       setSyncStatus('ok', '✅ Nube lista');
+    } else {
+      setSyncStatus('warn', '⚠️ Sin conexión');
     }
   } catch(e) {
     setSyncStatus('warn', '⚠️ Sin conexión');
@@ -1189,55 +1172,46 @@ async function syncNow() {
   syncingNow = false;
 }
 
-let uploading = false;
 async function pushCurrentState() {
-  if (uploading) return false;
-  uploading = true;
   const token = getToken();
-  if (!token) { uploading = false; return 'no-token'; }
-  if (!Array.isArray(state.viajes) || state.viajes.length === 0) { uploading = false; return false; }
+  if (!token) return false;
+  if (!Array.isArray(state.viajes) || state.viajes.length === 0) return false;
   const api = apiDataUrl();
   const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' };
 
   try {
+    // Obtener SHA actual
     let sha = null;
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
-    const getRes = await fetch(api, { headers, signal: controller.signal });
-    clearTimeout(timeout);
-    if (getRes.ok) { const info = await getRes.json(); sha = info.sha; }
-    else if (getRes.status === 401 || getRes.status === 403) { uploading = false; return false; }
-    else if (getRes.status !== 404) { uploading = false; return false; }
+    const ctrl1 = new AbortController();
+    const t1 = setTimeout(() => ctrl1.abort(), 12000);
+    const getRes = await fetch(api, { headers, signal: ctrl1.signal });
+    clearTimeout(t1);
+    if (getRes.ok) { sha = (await getRes.json()).sha; }
+    else if (getRes.status !== 404) return false;
 
-    const payload = JSON.stringify({ version: 1, viajes: state.viajes, meta: { updated_at: localTs() } }, null, 2);
-    const body = {
-      message: 'Sincronización VacaPlanner 🏖️',
-      content: btoa(unescape(encodeURIComponent(payload))),
-      branch: 'main'
-    };
+    // Subir
+    const payload = JSON.stringify({ version: 1, viajes: state.viajes, meta: { updated_at: Date.now() } }, null, 2);
+    const body = { message: 'Sync VacaPlanner', content: btoa(unescape(encodeURIComponent(payload))), branch: 'main' };
     if (sha) body.sha = sha;
 
-    const putController = new AbortController();
-    const putTimeout = setTimeout(() => putController.abort(), 20000);
+    const ctrl2 = new AbortController();
+    const t2 = setTimeout(() => ctrl2.abort(), 20000);
     const putRes = await fetch(api, {
       method: 'PUT',
       headers: { ...headers, 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-      signal: putController.signal
+      signal: ctrl2.signal
     });
-    clearTimeout(putTimeout);
-    if (putRes.ok) { lastUploadedTs = localTs(); uploading = false; return true; }
-    uploading = false;
-    return false;
+    clearTimeout(t2);
+    return putRes.ok;
   } catch(e) {
-    uploading = false;
     return false;
   }
 }
 
 async function startAutoSync() {
   await syncNow();
-  setInterval(syncNow, 10000);
+  setInterval(syncNow, 8000);
 }
 
 function mergeCloudData(remote, local) {
@@ -1257,7 +1231,7 @@ function mergeCloudData(remote, local) {
     }
   });
   merged.viajes = Object.values(tripMap);
-  merged.meta.updated_at = Math.max((local.meta && local.meta.updated_at) || 0, (remote.meta && remote.meta.updated_at) || 0);
+  merged.meta.updated_at = Date.now();
   return merged;
 }
 
@@ -1265,7 +1239,6 @@ function mergeTripFields(local, remote) {
   const r = { ...remote };
   ['nombre', 'destino', 'fecha_desde', 'fecha_hasta', 'emoji'].forEach(k => {
     if (!r[k] && local[k]) r[k] = local[k];
-    if (!local[k] && remote[k]) r[k] = remote[k];
   });
   return r;
 }
@@ -1293,19 +1266,16 @@ function mergeHospedajes(localHosps, remoteHosps) {
   remoteHosps.forEach(rh => {
     if (map[rh.id]) {
       const lh = map[rh.id];
-      const merged = { ...lh };
+      const m = { ...lh };
       Object.keys(rh).forEach(k => {
         if (k === 'id' || k === 'fecha_agregado') return;
         if (k === 'datos' && rh.datos && lh.datos) {
-          merged.datos = mergeDatos(lh.datos, rh.datos);
-        } else if (rh[k] != null && rh[k] !== '' && rh[k] !== undefined) {
-          if (lh[k] != null && lh[k] !== '' && lh[k] !== undefined && JSON.stringify(lh[k]) !== JSON.stringify(rh[k])) {
-          } else {
-            merged[k] = rh[k];
-          }
+          m.datos = mergeDatos(lh.datos, rh.datos);
+        } else if (rh[k] != null && rh[k] !== '') {
+          if (lh[k] == null || lh[k] === '') m[k] = rh[k];
         }
       });
-      map[rh.id] = merged;
+      map[rh.id] = m;
     } else {
       map[rh.id] = rh;
     }
@@ -1314,18 +1284,17 @@ function mergeHospedajes(localHosps, remoteHosps) {
 }
 
 function mergeDatos(local, remote) {
-  const merged = { ...local };
+  const m = { ...local };
   Object.keys(remote).forEach(k => {
-    if (remote[k] != null && remote[k] !== '' && remote[k] !== undefined) {
-      if (local[k] == null || local[k] === '' || local[k] === undefined) {
-        merged[k] = remote[k];
+    if (remote[k] != null && remote[k] !== '') {
+      if (local[k] == null || local[k] === '') {
+        m[k] = remote[k];
       } else if (Array.isArray(remote[k]) && Array.isArray(local[k])) {
-        const set = new Set([...local[k], ...remote[k]]);
-        merged[k] = Array.from(set);
+        m[k] = Array.from(new Set([...local[k], ...remote[k]]));
       }
     }
   });
-  return merged;
+  return m;
 }
 
 // Actualiza SOLO el contenido de la vista activa, sin cambiar de pantalla
@@ -3416,27 +3385,25 @@ function showInitLoading() {
   if (count) count.textContent = '';
 }
 
-// Arrancar: primero esperar la sincronización inicial ANTES de renderizar
+// Arrancar
 (async () => {
   showView('view-home');
   showInitLoading();
 
   await syncNow();
-
   renderHome();
-
-  setInterval(syncNow, 10000);
+  startAutoSync();
 
   if (!getApiKeys().length) {
     setTimeout(() => {
-      toast('👋 Bienvenido! Configurá tu API Key en ⚙️ Config para empezar.', 'info', 6000);
+      toast('👋 Configurá tu API Key en ⚙️ Config para analizar mails con IA.', 'info', 6000);
     }, 600);
   }
 
   const syncBadge = document.getElementById('nav-sync-txt');
   if (syncBadge && (syncBadge.textContent.includes('Token') || syncBadge.textContent.includes('Error') || syncBadge.textContent.includes('inválido'))) {
     setTimeout(() => {
-      toast('⚠️ Para sincronizar entre dispositivos, abrí ⚙️ Config y pegá tu token de GitHub (ghp_...). Crealo gratis en github.com/settings/tokens', 'info', 8000);
+      toast('⚠️ Para sincronizar, abrí ⚙️ Config y verificá tu token de GitHub.', 'info', 8000);
     }, 1500);
   }
 })();
