@@ -655,7 +655,8 @@
                 "contacto": "Tel: +54 9 3364 18-6694",
                 "instagram": null,
                 "fotos_urls": [
-                  "https://wa.me/p/7372294022787955/137610886381815"
+                  "https://wa.me/p/7372294022787955/137610886381815",
+                  "https://www.interpatagonia.com/plantillas/grandes/36273-13Gr.jpg"
                 ],
                 "notas_adicionales": "Ubicación estratégica cerca de supermercado La Anónima.",
                 "calificacion_ia": 8,
@@ -1772,6 +1773,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788816536720
+    "updated_at": 1788816671881
   }
 }
