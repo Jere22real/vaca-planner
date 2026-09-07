@@ -332,7 +332,13 @@
                 "forma_pago": "Contado Efectivo, Transferencia",
                 "contacto": "Tel: 02972 42-7514 / Cel: +54 9 2972 50-7940",
                 "instagram": null,
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/283910671.jpg?k=b247642becc9bf21fe13ce00041526d42a3901f9077851c8b8139cdd3ddf5a90&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/352058596.jpg?k=0b6e7d9c926c26244649867b5b478511fe5620c7e3999fd8c33011605dcd49b2&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/352060953.jpg?k=0c3d9282ed3c23448d82007ccf2e310095dd80743a209c9f84fc8ba5dd6dec42&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/352064148.jpg?k=db7b743af97b6a19d025db3d3d9818a8ad96d81408b179ea7e52ba3363187e24&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/352059137.jpg?k=9be48f9ae4b8c50315aa3d74643f54a899579886140cf7081baf2b7660688c1d&o="
+                ],
                 "notas_adicionales": "No se admiten mascotas. Check-in: 15:00hs / Check-out: 10:00hs. Ubicación excelente (9.8/10). Cerca de Playa San Martín (<1km) y Parque Nacional Lanín (3.7km).",
                 "calificacion_ia": 9,
                 "razon_calificacion": "Altamente valorado por los clientes en ubicación, desayuno y atención del personal.",
@@ -341,7 +347,8 @@
                   "precio total por estadía",
                   "cuenta de instagram"
                 ],
-                "texto_original_resumido": "Habitación DOBLE (twin/matrimonial): Precio promocional CONTADO EFECTIVO $99.900.-"
+                "texto_original_resumido": "Habitación DOBLE (twin/matrimonial): Precio promocional CONTADO EFECTIVO $99.900.-",
+                "web_link": "https://www.booking.com/hotel/ar/latitud-cuarenta.es.html?aid=356980&label=gog235jc-10CAsoDEIQbGF0aXR1ZC1jdWFyZW50YUgsWANoDIgBAZgBM7gBGcgBDNgBA-gBAfgBAYgCAagCAbgCvtr31AbAAgHSAiRhMWVmODUxNS1hMTkzLTRjMmMtYTg2Yy1hZmMwODEzMzIxNWbYAgHgAgE&sid=7bf27458f555aaab0e6be98f00f0d534&dest_id=-1013487&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&hpos=1&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&srepoch=1788734795&srpvid=ff41a020f1640618&type=total&ucfs=1&"
               },
               "editado_manualmente": false
             },
@@ -380,7 +387,11 @@
                 "forma_pago": "Efectivo",
                 "contacto": null,
                 "instagram": null,
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/559302701.jpg?k=eb2012d1c848a3ad47661deebd38900a190a065f62d60e3722e918916ff85477&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/369265182.jpg?k=17c767af247b43b7e89d93ba99962f16d8c42b4e00150e46213a99e598e3855c&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/559302826.jpg?k=48729f5cc6236b456867c0374a817faaa9e66f2b9b36376cc75f1d930e1b96c4&o="
+                ],
                 "notas_adicionales": "Ubicación excelente (9.3/10). A 13 min a pie de Playa de San Martín. El aeropuerto está a 28 km.",
                 "calificacion_ia": 7.7,
                 "razon_calificacion": "Buena ubicación y servicios, aunque con valoraciones mixtas sobre la calefacción y detalles en el baño.",
@@ -392,7 +403,8 @@
                   "precio total para estadías largas",
                   "referencia dólar"
                 ],
-                "texto_original_resumido": "Habitación Doble con desayuno buffet en Hotel Caupolicán por $99.900 ARS (promoción en efectivo)."
+                "texto_original_resumido": "Habitación Doble con desayuno buffet en Hotel Caupolicán por $99.900 ARS (promoción en efectivo).",
+                "web_link": "https://www.booking.com/hotel/ar/caupolican-san-martin-de-los-andes.es.html?aid=1288288&label=metagha-link-LUAR-hotel-8532043_dev-tablet_los-1_bw-1_dow-Monday_defdate-1_room-0_gstadt-2_rateid-public_aud-0_gacid-21415135336_mcid-10_ppa-0_clrid-0_ad-1_gstkid-0_checkin-20260907_ppt-_lp-2032_r-16364524591959443980&sid=7bf27458f555aaab0e6be98f00f0d534&all_sr_blocks=853204301_384975805_2_1_0&checkin=2026-09-07&checkout=2026-09-08&dest_id=8532043&dest_type=hotel&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=853204301_384975805_2_1_0&hpos=1&matching_block_id=853204301_384975805_2_1_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=853204301_384975805_2_1_0__6827&srepoch=1788735086&srpvid=e92aa0b10c891899&type=total&ucfs=1&"
               },
               "editado_manualmente": false
             },
@@ -433,7 +445,10 @@
                 "forma_pago": "No especificada",
                 "contacto": "Mercedes / https://www.pumahostel.com.ar/",
                 "instagram": null,
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/765763161.jpg?k=632ee661f03690d80d56c5e3fa102c6871261b6af404b7ffe3a1fa7c15223deb&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/10332445.jpg?k=c060777a8057cbd86c9230d0fbf9c46ebde407b16f22c7f8596d6fb6dd6404b1&o="
+                ],
                 "notas_adicionales": "Ubicación excelente cerca de Playa San Martín (< 1 km) y Parque Nacional Lanín (4,4 km). Muy valorado por parejas.",
                 "calificacion_ia": 9.3,
                 "razon_calificacion": "Valoración fantástica de los clientes con excelente puntuación en ubicación y atención del personal.",
@@ -445,7 +460,9 @@
                   "Instagram",
                   "referencia de dólar"
                 ],
-                "texto_original_resumido": "Habitación doble privada en Puma Hostel por $245.000 ARS por 3 noches, con desayuno incluido."
+                "texto_original_resumido": "Habitación doble privada en Puma Hostel por $245.000 ARS por 3 noches, con desayuno incluido.",
+                "web_link": "https://www.booking.com/hotel/ar/puma-hostel.es.html?aid=311984&label=puma-hostel-3XAcDqa1Q4TBpg5%2AZVr1kwS354680231949%3Apl%3Ata%3Ap1%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atikwd-722062654947%3Alp9041071%3Ali%3Adec%3Adm%3Appccp%3DUmFuZG9tSVYkc2RlIyh9YV19IumoQ3O51m4Ge68sOW8&sid=7bf27458f555aaab0e6be98f00f0d534&checkin=2026-09-07&checkout=2026-09-08&dest_id=-1013487&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&hpos=1&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&soh=1&sr_order=popularity&srepoch=1788735335&srpvid=27d8a1309a0a2425&type=total&ucfs=1&#no_availability_msg",
+                "foto_portada": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/10332445.jpg?k=c060777a8057cbd86c9230d0fbf9c46ebde407b16f22c7f8596d6fb6dd6404b1&o="
               },
               "editado_manualmente": false
             },
@@ -483,7 +500,13 @@
                 "forma_pago": null,
                 "contacto": "Celeste / Tel: 02972 427283 / Email: hotelcrismalu@gmail.com / Web: www.crismalu.com.ar",
                 "instagram": null,
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/883216742.jpg?k=512249b9ba5cd7c578d97ecaca03ea9758dc276dc440ad6dfdab52d5f948ad0f&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/883219484.jpg?k=b8e55c338c09b94bb757ab532286d86894ca6da7321c9cb7f54ea578babe42b6&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/838133056.jpg?k=ce1460e3003d41fa98c707a5cee825d4d5f26c0a435337c762bb3203a8337947&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/835827087.jpg?k=40520a76054433c8288270250ae8240f62523fc2af56e4fb915c975bccca04c7&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/883218519.jpg?k=b5beec097aea138581e229a725203336e5fe44dd83d2b23a0781ebb0facd9ae7&o="
+                ],
                 "notas_adicionales": "Hotel 2 estrellas de ambiente familiar fundado en 1966. Opción con o sin desayuno (incluye sin TACC a pedido). No apto para cocinar en áreas comunes.",
                 "calificacion_ia": 8,
                 "razon_calificacion": "Excelente ubicación a pocas cuadras del centro, cochera cubierta y buena relación precio/calidad para temporada baja.",
@@ -492,7 +515,9 @@
                   "métodos de pago específicos",
                   "porcentaje o valor de la seña requerida"
                 ],
-                "texto_original_resumido": "Habitación estándar Doble / Matrimonial sin desayuno a $70.000 ARS por noche (Temporada Baja)."
+                "texto_original_resumido": "Habitación estándar Doble / Matrimonial sin desayuno a $70.000 ARS por noche (Temporada Baja).",
+                "foto_portada": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/835827087.jpg?k=40520a76054433c8288270250ae8240f62523fc2af56e4fb915c975bccca04c7&o=",
+                "web_link": "https://www.booking.com/hotel/ar/crismalu-san-martin-de-los-andes.es.html?aid=1288288&label=metagha-link-LUAR-hotel-8714350_dev-tablet_los-1_bw-13_dow-Saturday_defdate-1_room-0_gstadt-2_rateid-m_aud-0_gacid-21415135336_mcid-10_ppa-0_clrid-0_ad-1_gstkid-0_checkin-20260919_ppt-M_lp-2032_r-7446290201896898150&sid=7bf27458f555aaab0e6be98f00f0d534&all_sr_blocks=871435003_438543315_0_2_0&checkin=2026-09-19&checkout=2026-09-20&dest_id=8714350&dest_type=hotel&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=871435003_438543315_0_2_0&hpos=1&matching_block_id=871435003_438543315_0_2_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=871435003_438543315_0_2_0__5000&srepoch=1788735534&srpvid=2d8ca194bd8506e5&type=total&ucfs=1&"
               },
               "editado_manualmente": false
             },
@@ -527,7 +552,15 @@
                 "forma_pago": "Efectivo (precio promocional), Transferencia, Tarjetas (+10% de recargo)",
                 "contacto": "Tel: 02972-420133 / WhatsApp: +54 9 11 5997 8910",
                 "instagram": null,
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://antuken.com.ar/cabanas/17.jpg",
+                  "https://antuken.com.ar/cabanas/18.jpg",
+                  "https://antuken.com.ar/cabanas/19.jpg",
+                  "https://antuken.com.ar/cabanas/12.jpg",
+                  "https://antuken.com.ar/cabanas/13.jpg",
+                  "https://antuken.com.ar/cabanas/15.jpg",
+                  "https://antuken.com.ar/cabanas/16.jpg"
+                ],
                 "notas_adicionales": "Ubicada en 1º piso. Dormitorio triple en planta alta. No incluye desayuno.",
                 "calificacion_ia": 8.8,
                 "razon_calificacion": "Excelente variedad de servicios (piscina, spa, quinchos) y ubicación céntrica privilegiada.",
@@ -535,7 +568,8 @@
                   "horario check-in/out",
                   "Instagram"
                 ],
-                "texto_original_resumido": "Cabaña Cipres para 2 personas a $80.000 ARS/noche en temporada baja."
+                "texto_original_resumido": "Cabaña Cipres para 2 personas a $80.000 ARS/noche en temporada baja.",
+                "web_link": "https://antuken.com.ar/cabana-1-dormitorio.html"
               },
               "editado_manualmente": false
             }
@@ -1108,7 +1142,8 @@
                   "instagram",
                   "horario check-in/out"
                 ],
-                "texto_original_resumido": "Monoambiente para 1 o 2 personas en Villa Traful a $80.000 ARS por noche."
+                "texto_original_resumido": "Monoambiente para 1 o 2 personas en Villa Traful a $80.000 ARS por noche.",
+                "web_link": "https://rucaauca.com/nuestras-cabanas/#casa1"
               },
               "editado_manualmente": false
             },
@@ -1147,7 +1182,12 @@
                 "forma_pago": null,
                 "contacto": "Ema / WhatsApp: +54 9 2944317805 / Instagram: posadaquinen / Web: www.posadaquinen.com.ar",
                 "instagram": "@posadaquinen",
-                "fotos_urls": [],
+                "fotos_urls": [
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/775135988.jpg?k=ec39acc58f789c6233b0d133351f8fbbf46c9d3ca42fb4c48abb8a632cc5307a&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/783545772.jpg?k=3fd748a3d366073d959a4e31309447448bec54136a6a235dc5d04c8b88a5e7e9&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/783545142.jpg?k=928c5e7c65600c0518fbec30f6c7b4a93ced68627344b2280779e0e2f4bf44a0&o=",
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/783542847.jpg?k=08e57f32f03648066b9758483cab42ba386678f40dc1195e715851bc3ac7c5ca&o="
+                ],
                 "notas_adicionales": "Hostería, Apart & Cabañas 3 estrellas.",
                 "calificacion_ia": 8.8,
                 "razon_calificacion": "Cabaña de 45m2 bien equipada con servicios de hostería como piscina y desayuno.",
@@ -1158,7 +1198,8 @@
                   "forma_pago",
                   "referencia_dolar"
                 ],
-                "texto_original_resumido": "Cabaña de 1 dormitorio en Posada Quinen para hasta 4 personas a $110.000 ARS por noche."
+                "texto_original_resumido": "Cabaña de 1 dormitorio en Posada Quinen para hasta 4 personas a $110.000 ARS por noche.",
+                "web_link": "https://www.booking.com/hotel/ar/posada-quinen.es.html?aid=318615&label=Spanish_Argentina_ES_AR_20153587225-6h15TH8LvM25bNckrW9zZwS821375283750%3Apl%3Ata%3Ap1%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atikwl-162435869305%3Alp9041071%3Ali%3Adet%3Adm&sid=7bf27458f555aaab0e6be98f00f0d534&all_sr_blocks=33005512_119193560_4_0_0&checkin=2026-09-07&checkout=2026-09-08&dest_id=-1013487&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=33005512_119193560_4_0_0&hpos=1&matching_block_id=33005512_119193560_4_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=33005512_119193560_4_0_0__7782&srepoch=1788736615&srpvid=02aca3ae226c0592&type=total&ucfs=1&"
               },
               "editado_manualmente": false
             }
@@ -1168,6 +1209,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1788311735792
+    "updated_at": 1788736630271
   }
 }
