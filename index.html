@@ -3507,21 +3507,37 @@ function vacaEnsureMap() {
   const el = document.getElementById('vaca-leafflet') || document.getElementById('hosp-map-view');
   if (!el || typeof L === 'undefined') return;
   vacaMap = L.map(el, { zoomControl: true }).setView([-38.4161, -63.6167], 4);
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>'
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(vacaMap);
 }
 
 async function vacaGeocode(text) {
   if (!text) return null;
-  const url = 'https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(text);
-  try {
-    const res = await fetch(url, { headers: { 'User-Agent': 'VacaPlanner/1.0' } });
-    const data = await res.json();
-    if (data && data.length) return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
-  } catch (e) {}
-  return null;
+  const q = encodeURIComponent(text);
+  const tryPhoton = async () => {
+    try {
+      const res = await fetch('https://photon.komoot.io/api/?q=' + q + '&limit=1&lang=es');
+      if (!res.ok) return null;
+      const j = await res.json();
+      const f = j && j.features && j.features[0];
+      if (f && f.geometry) return { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
+    } catch (e) {}
+    return null;
+  };
+  const tryNominatim = async () => {
+    try {
+      const res = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + q, { headers: { 'User-Agent': 'VacaPlanner/1.0' } });
+      if (!res.ok) return null;
+      const data = await res.json();
+      if (data && data.length) return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
+    } catch (e) {}
+    return null;
+  };
+  const p = await tryPhoton();
+  if (p) return p;
+  return tryNominatim();
 }
 
 function vacaCachedCoords(it) {
@@ -3572,8 +3588,12 @@ async function vacaGeocodePending(list, total) {
   let oks = 0;
   for (let i = 0; i < list.length; i++) {
     const it = list[i];
-    let c = await vacaGeocode(it.ubicacion);
-    if (!c && it.ciudad) c = await vacaGeocode(it.ciudad);
+    const u = (it.ubicacion || '').trim();
+    const cty = (it.ciudad || '').trim();
+    let c = null;
+    if (u && cty) c = await vacaGeocode(u + ', ' + cty);
+    if (!c && u) c = await vacaGeocode(u);
+    if (!c && cty) c = await vacaGeocode(cty);
     if (c) {
       it.datos.lat = c.lat;
       it.datos.lng = c.lng;
