@@ -3542,7 +3542,37 @@ async function vacaGeocode(text) {
 
 function vacaCachedCoords(it) {
   const v = it.lat, w = it.lng;
-  if (!isNaN(v) && !isNaN(w) && v !== 0 && w !== 0) return { lat: v, lng: w };
+  if (!isNaN(v) && !isNaN(w) && v !== 0 && w !== 0) return { lat: v, lng: w, fallback: false };
+  const c = vacaCityCoords(it.ciudad);
+  return c ? { lat: c[0], lng: c[1], fallback: true } : null;
+}
+
+const VACA_CITY_MAP = {
+  'bariloche': [-41.1334, -71.3103],
+  'san carlos de bariloche': [-41.1334, -71.3103],
+  'san martin de los andes': [-40.1556, -71.3530],
+  'villa la angostura': [-40.7626, -71.6475],
+  'villa traful': [-40.6569, -71.3956],
+  'el bolson': [-41.9605, -71.5330],
+  'las grutas': [-40.5750, -65.0910],
+  'viedma': [-40.8134, -63.0050],
+  'neuquen': [-38.9516, -68.0591],
+  'mendoza': [-32.8895, -68.8458],
+  'buenos aires': [-34.6037, -58.3816],
+  'caba': [-34.6037, -58.3816],
+  'mar del plata': [-38.0023, -57.5575],
+  'tandil': [-37.3217, -59.1332],
+  'puerto madryn': [-42.7630, -65.0347],
+  'ushuaia': [-54.8019, -68.3030]
+};
+function vacaCityCoords(ciudad) {
+  if (!ciudad) return null;
+  const key = String(ciudad).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const exact = VACA_CITY_MAP[key];
+  if (exact) return exact;
+  for (const k in VACA_CITY_MAP) {
+    if (key.includes(k) || k.includes(key)) return VACA_CITY_MAP[k];
+  }
   return null;
 }
 
@@ -3553,6 +3583,7 @@ function vacaAddMarker(it, c, col) {
     className: '', iconSize: [34,34], iconAnchor: [17,17], popupAnchor: [0,-22]
   });
   const mk = L.marker([c.lat, c.lng], { icon, title: it.nombre, draggable: true }).addTo(vacaMap);
+  mk._vacaId = it.id;
   mk.bindPopup(buildPopupHtml(it, c));
   mk.on('dragend', function() {
     const ll = mk.getLatLng();
@@ -3584,7 +3615,7 @@ async function vacaGeocodePending(list, total) {
   if (vacaGeocoding) return;
   vacaGeocoding = true;
   const btn = document.getElementById('vaca-geocode-all');
-  if (btn) { btn.textContent = 'Geocodificando...'; btn.disabled = true; }
+  if (btn) { btn.textContent = 'Ubicando...'; btn.disabled = true; }
   let oks = 0;
   for (let i = 0; i < list.length; i++) {
     const it = list[i];
@@ -3597,21 +3628,26 @@ async function vacaGeocodePending(list, total) {
     if (c) {
       it.datos.lat = c.lat;
       it.datos.lng = c.lng;
-      const all = flattenHospsWithCoords();
-      const cs = [...new Set(all.map(x => x.ciudad))];
-      vacaAddMarker(it, c, cityColor(it.ciudad, cs));
+      const mk = (vacaMarkers || []).find(m => m._vacaId === it.id);
+      if (mk) {
+        mk.setLatLng([c.lat, c.lng]);
+      } else {
+        const all = flattenHospsWithCoords();
+        const cs = [...new Set(all.map(x => x.ciudad))];
+        vacaAddMarker(it, c, cityColor(it.ciudad, cs));
+      }
       oks++;
+      vacaRefreshCounter(total);
     }
-    vacaRefreshCounter(total);
-    if (btn) btn.textContent = 'Geocodificando ' + (i + 1) + '/' + list.length + '...';
+    if (btn) btn.textContent = 'Buscando ' + (i + 1) + '/' + list.length + '...';
     await new Promise(r => setTimeout(r, 1100));
   }
   vacaGeocoding = false;
-  if (btn) { btn.textContent = '📍 Geolocalizar faltantes'; btn.disabled = false; }
+  if (btn) { btn.textContent = '📍 Ubicar por dirección'; btn.disabled = false; }
   vacaRefit();
   vacaRefreshCounter(total);
   saveState();
-  toast('✅ ' + oks + '/' + list.length + ' ubicados automáticamente', oks ? 'success' : 'error');
+  toast('✅ ' + oks + '/' + list.length + ' ubicados con precisión', oks ? 'success' : 'error');
 }
 
 function buildPopupHtml(item, c) {
@@ -3640,15 +3676,17 @@ async function renderMap() {
   const cities = [...new Set(items.map(i => i.ciudad))];
 
   // Toolbar
+  const cityCounts = {};
+  items.forEach(i => { cityCounts[i.ciudad] = (cityCounts[i.ciudad] || 0) + 1; });
   let chips = '<div class="map-tools"><span class="map-counter" id="vaca-counter">📍 ' + items.length + ' alojamientos</span>';
   if (cities.length > 1) {
     cities.forEach(cty => {
       const col = cityColor(cty, cities);
-      chips += '<button class="map-city-chip' + (vacaFilter === cty ? ' active' : '') + '" data-city="' + cty + '" style="border-left:3px solid ' + col + ';">' + cty + '</button>';
+      chips += '<button class="map-city-chip' + (vacaFilter === cty ? ' active' : '') + '" data-city="' + cty + '" style="border-left:3px solid ' + col + ';">' + cty + ' (' + (cityCounts[cty] || 0) + ')</button>';
     });
     if (vacaFilter) chips += '<button class="map-btn" id="vaca-clear-filter">✕ Limpiar</button>';
   }
-  chips += '<button class="map-btn" id="vaca-geocode-all">📍 Geolocalizar faltantes</button></div>';
+  chips += '<button class="map-btn" id="vaca-geocode-all">📍 Ubicar por dirección</button></div>';
   el.innerHTML = '<div style="height:100%;display:flex;flex-direction:column;">' + chips + '<div id="vaca-leafflet" style="flex:1;min-height:360px;"></div></div>';
 
   // Crear mapa sobre el contenedor nuevo
@@ -3661,19 +3699,23 @@ async function renderMap() {
   const placeColor = {};
   filtered.forEach(i => { placeColor[i.id] = cityColor(i.ciudad, cities); });
 
-  // Marcadores de los que ya tienen coordenadas, al instante
+  // Marcadores al instante (coords guardadas o centro de ciudad embebido)
   const pending = [];
+  const refine = [];
   filtered.forEach(it => {
     const c = vacaCachedCoords(it);
-    if (c) vacaAddMarker(it, c, placeColor[it.id]);
-    else pending.push(it);
+    if (c) {
+      vacaAddMarker(it, c, placeColor[it.id]);
+      if (c.fallback) refine.push(it);
+    } else pending.push(it);
   });
 
   vacaRefit();
   vacaRefreshCounter(filtered.length);
 
-  // Geocodificar los que faltan en segundo plano (respetando el límite de Nominatim)
+  // Geocodificar por dirección en segundo plano: los que no tienen nada y los que están en centro de ciudad
   if (pending.length) vacaGeocodePending(pending, filtered.length);
+  else if (refine.length) vacaGeocodePending(refine, filtered.length);
 
   const tools = el.querySelector('.map-tools');
   if (tools) tools.onclick = (ev) => {
@@ -3681,10 +3723,12 @@ async function renderMap() {
     if (chip) { vacaFilter = vacaFilter === chip.dataset.city ? null : chip.dataset.city; renderMap(); return; }
     if (ev.target.id === 'vaca-clear-filter') { vacaFilter = null; renderMap(); return; }
     if (ev.target.id === 'vaca-geocode-all') {
-      if (vacaGeocoding) { toast('Geocodificación en curso...', 'info'); return; }
-      const allPending = items.filter(it => !vacaCachedCoords(it));
-      if (allPending.length) vacaGeocodePending(allPending, items.length);
-      else toast('Todos ya tienen coordenadas ✅', 'success');
+      if (vacaGeocoding) { toast('Búsqueda en curso...', 'info'); return; }
+      const toRefine = items.filter(it => { const c = vacaCachedCoords(it); return c && c.fallback; });
+      const missing = items.filter(it => !vacaCachedCoords(it));
+      if (missing.length) vacaGeocodePending(missing, items.length);
+      else if (toRefine.length) vacaGeocodePending(toRefine, items.length);
+      else toast('Todos ya tienen coordenadas precisas ✅', 'success');
     }
   };
 }
