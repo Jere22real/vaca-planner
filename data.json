@@ -116,7 +116,9 @@
                 ],
                 "texto_original_resumido": "Bungalow monoambiente en PB para 2/3 personas con cama matrimonial, sofá cama, cocina y baño a $98.925,62 ARS/noche (antes $141.322,31 ARS).",
                 "alojamiento_general": "Cabañas Don Justo",
-                "web_link": "https://cabaniasdonjusto.com.ar/"
+                "web_link": "https://cabaniasdonjusto.com.ar/",
+                "lat": -41.099418,
+                "lng": -71.446074
               },
               "editado_manualmente": false
             },
@@ -172,7 +174,9 @@
                 "texto_original_resumido": "Cabaña en Lago Gutiérrez por $65.000 ARS/día con vista al lago y cocina equipada.",
                 "alojamiento_general": "Cabañas Kay Hue",
                 "web_link": "https://www.booking.com/hotel/ar/cabanas-kay-hue.es-ar.html?aid=311839&label=cabanas-kay-hue-HhUA38PsNGUfTfcULvjNcgS626048958377%3Apl%3Ata%3Ap1%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atiaud-2393166470140%3Akwd-1515648817890%3Alp9041071%3Ali%3Adec%3Adm%3Appccp%3DUmFuZG9tSVYkc2RlIyh9YasQqy722txiCD_GKCoqnfQ&sid=30a70855ff0e59ae8a5f8654e5018748&all_sr_blocks=360049602_120127719_4_0_0&checkin=2026-09-07&checkout=2026-09-10&dest_id=-1012061&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=360049602_120127719_4_0_0&hpos=1&matching_block_id=360049602_120127719_4_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=360049602_120127719_4_0_0__15660&srepoch=1786654390&srpvid=dae692b961d901b2&type=total&ucfs=1&",
-                "foto_portada": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/204578570.jpg?k=d4d9ea38d2773e9f562a2a93facfff16d9d18bde72d61446788afb8123aebe29&o="
+                "foto_portada": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/204578570.jpg?k=d4d9ea38d2773e9f562a2a93facfff16d9d18bde72d61446788afb8123aebe29&o=",
+                "lat": -41.152564,
+                "lng": -71.154558
               },
               "editado_manualmente": false
             },
@@ -226,7 +230,9 @@
                 "texto_original_resumido": "Habitación Doble Estándar con vista al lago por $270.000 ARS (promoción efectivo/transferencia por 3 noches) o $300.000 ARS precio estándar.",
                 "alojamiento_general": "Tangoinn Bariloche",
                 "web_link": "https://tangoinn.com/index.php/hostel/",
-                "foto_portada": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/638116387.jpg?k=570ecd77b896dec031c158b99706b0c03870bc38221df2430cb5a0d7b9cc6a2c&o="
+                "foto_portada": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/638116387.jpg?k=570ecd77b896dec031c158b99706b0c03870bc38221df2430cb5a0d7b9cc6a2c&o=",
+                "lat": -41.134071,
+                "lng": -71.316936
               },
               "editado_manualmente": false
             },
@@ -287,7 +293,9 @@
                 ],
                 "texto_original_resumido": "Casa para 2 a 4 personas disponible desde el 11 de septiembre a $100.000 por día, con costa de lago Nahuel Huapi, parque de 1.400m2 y equipamiento completo.",
                 "alojamiento_general": "Despertar en el lago",
-                "web_link": "https://barilocheturismo.gob.ar/es/ver-hotel/despertar-en-el-lago"
+                "web_link": "https://barilocheturismo.gob.ar/es/ver-hotel/despertar-en-el-lago",
+                "lat": -41.132868,
+                "lng": -71.30248
               },
               "editado_manualmente": true
             }
@@ -350,7 +358,9 @@
                   "cuenta de instagram"
                 ],
                 "texto_original_resumido": "Habitación DOBLE (twin/matrimonial): Precio promocional CONTADO EFECTIVO $99.900.-",
-                "web_link": "https://www.booking.com/hotel/ar/latitud-cuarenta.es.html?aid=356980&label=gog235jc-10CAsoDEIQbGF0aXR1ZC1jdWFyZW50YUgsWANoDIgBAZgBM7gBGcgBDNgBA-gBAfgBAYgCAagCAbgCvtr31AbAAgHSAiRhMWVmODUxNS1hMTkzLTRjMmMtYTg2Yy1hZmMwODEzMzIxNWbYAgHgAgE&sid=7bf27458f555aaab0e6be98f00f0d534&dest_id=-1013487&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&hpos=1&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&srepoch=1788734795&srpvid=ff41a020f1640618&type=total&ucfs=1&"
+                "web_link": "https://www.booking.com/hotel/ar/latitud-cuarenta.es.html?aid=356980&label=gog235jc-10CAsoDEIQbGF0aXR1ZC1jdWFyZW50YUgsWANoDIgBAZgBM7gBGcgBDNgBA-gBAfgBAYgCAagCAbgCvtr31AbAAgHSAiRhMWVmODUxNS1hMTkzLTRjMmMtYTg2Yy1hZmMwODEzMzIxNWbYAgHgAgE&sid=7bf27458f555aaab0e6be98f00f0d534&dest_id=-1013487&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&hpos=1&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&srepoch=1788734795&srpvid=ff41a020f1640618&type=total&ucfs=1&",
+                "lat": -40.157346,
+                "lng": -71.350652
               },
               "editado_manualmente": false
             },
@@ -406,7 +416,9 @@
                   "referencia dólar"
                 ],
                 "texto_original_resumido": "Habitación Doble con desayuno buffet en Hotel Caupolicán por $99.900 ARS (promoción en efectivo).",
-                "web_link": "https://www.booking.com/hotel/ar/caupolican-san-martin-de-los-andes.es.html?aid=1288288&label=metagha-link-LUAR-hotel-8532043_dev-tablet_los-1_bw-1_dow-Monday_defdate-1_room-0_gstadt-2_rateid-public_aud-0_gacid-21415135336_mcid-10_ppa-0_clrid-0_ad-1_gstkid-0_checkin-20260907_ppt-_lp-2032_r-16364524591959443980&sid=7bf27458f555aaab0e6be98f00f0d534&all_sr_blocks=853204301_384975805_2_1_0&checkin=2026-09-07&checkout=2026-09-08&dest_id=8532043&dest_type=hotel&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=853204301_384975805_2_1_0&hpos=1&matching_block_id=853204301_384975805_2_1_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=853204301_384975805_2_1_0__6827&srepoch=1788735086&srpvid=e92aa0b10c891899&type=total&ucfs=1&"
+                "web_link": "https://www.booking.com/hotel/ar/caupolican-san-martin-de-los-andes.es.html?aid=1288288&label=metagha-link-LUAR-hotel-8532043_dev-tablet_los-1_bw-1_dow-Monday_defdate-1_room-0_gstadt-2_rateid-public_aud-0_gacid-21415135336_mcid-10_ppa-0_clrid-0_ad-1_gstkid-0_checkin-20260907_ppt-_lp-2032_r-16364524591959443980&sid=7bf27458f555aaab0e6be98f00f0d534&all_sr_blocks=853204301_384975805_2_1_0&checkin=2026-09-07&checkout=2026-09-08&dest_id=8532043&dest_type=hotel&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=853204301_384975805_2_1_0&hpos=1&matching_block_id=853204301_384975805_2_1_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=853204301_384975805_2_1_0__6827&srepoch=1788735086&srpvid=e92aa0b10c891899&type=total&ucfs=1&",
+                "lat": -40.156178,
+                "lng": -71.348822
               },
               "editado_manualmente": false
             },
@@ -464,7 +476,9 @@
                 ],
                 "texto_original_resumido": "Habitación doble privada en Puma Hostel por $245.000 ARS por 3 noches, con desayuno incluido.",
                 "web_link": "https://www.booking.com/hotel/ar/puma-hostel.es.html?aid=311984&label=puma-hostel-3XAcDqa1Q4TBpg5%2AZVr1kwS354680231949%3Apl%3Ata%3Ap1%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atikwd-722062654947%3Alp9041071%3Ali%3Adec%3Adm%3Appccp%3DUmFuZG9tSVYkc2RlIyh9YV19IumoQ3O51m4Ge68sOW8&sid=7bf27458f555aaab0e6be98f00f0d534&checkin=2026-09-07&checkout=2026-09-08&dest_id=-1013487&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&hpos=1&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&soh=1&sr_order=popularity&srepoch=1788735335&srpvid=27d8a1309a0a2425&type=total&ucfs=1&#no_availability_msg",
-                "foto_portada": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/10332445.jpg?k=c060777a8057cbd86c9230d0fbf9c46ebde407b16f22c7f8596d6fb6dd6404b1&o="
+                "foto_portada": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/10332445.jpg?k=c060777a8057cbd86c9230d0fbf9c46ebde407b16f22c7f8596d6fb6dd6404b1&o=",
+                "lat": -40.153051,
+                "lng": -71.357109
               },
               "editado_manualmente": false
             },
@@ -519,7 +533,9 @@
                 ],
                 "texto_original_resumido": "Habitación estándar Doble / Matrimonial sin desayuno a $70.000 ARS por noche (Temporada Baja).",
                 "foto_portada": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/835827087.jpg?k=40520a76054433c8288270250ae8240f62523fc2af56e4fb915c975bccca04c7&o=",
-                "web_link": "https://www.booking.com/hotel/ar/crismalu-san-martin-de-los-andes.es.html?aid=1288288&label=metagha-link-LUAR-hotel-8714350_dev-tablet_los-1_bw-13_dow-Saturday_defdate-1_room-0_gstadt-2_rateid-m_aud-0_gacid-21415135336_mcid-10_ppa-0_clrid-0_ad-1_gstkid-0_checkin-20260919_ppt-M_lp-2032_r-7446290201896898150&sid=7bf27458f555aaab0e6be98f00f0d534&all_sr_blocks=871435003_438543315_0_2_0&checkin=2026-09-19&checkout=2026-09-20&dest_id=8714350&dest_type=hotel&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=871435003_438543315_0_2_0&hpos=1&matching_block_id=871435003_438543315_0_2_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=871435003_438543315_0_2_0__5000&srepoch=1788735534&srpvid=2d8ca194bd8506e5&type=total&ucfs=1&"
+                "web_link": "https://www.booking.com/hotel/ar/crismalu-san-martin-de-los-andes.es.html?aid=1288288&label=metagha-link-LUAR-hotel-8714350_dev-tablet_los-1_bw-13_dow-Saturday_defdate-1_room-0_gstadt-2_rateid-m_aud-0_gacid-21415135336_mcid-10_ppa-0_clrid-0_ad-1_gstkid-0_checkin-20260919_ppt-M_lp-2032_r-7446290201896898150&sid=7bf27458f555aaab0e6be98f00f0d534&all_sr_blocks=871435003_438543315_0_2_0&checkin=2026-09-19&checkout=2026-09-20&dest_id=8714350&dest_type=hotel&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=871435003_438543315_0_2_0&hpos=1&matching_block_id=871435003_438543315_0_2_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=871435003_438543315_0_2_0__5000&srepoch=1788735534&srpvid=2d8ca194bd8506e5&type=total&ucfs=1&",
+                "lat": -40.148629,
+                "lng": -71.330385
               },
               "editado_manualmente": false
             },
@@ -571,7 +587,9 @@
                   "Instagram"
                 ],
                 "texto_original_resumido": "Cabaña Cipres para 2 personas a $80.000 ARS/noche en temporada baja.",
-                "web_link": "https://antuken.com.ar/cabana-1-dormitorio.html"
+                "web_link": "https://antuken.com.ar/cabana-1-dormitorio.html",
+                "lat": -40.148629,
+                "lng": -71.330385
               },
               "editado_manualmente": false
             },
@@ -624,7 +642,9 @@
                   "formas de pago aceptadas"
                 ],
                 "texto_original_resumido": "Federico ofrece Cabaña Las Aljabas 1 (Cabaña 4) a $80.000 por día en San Martín de los Andes.",
-                "web_link": "https://www.booking.com/hotel/ar/cabana-las-aljabas.es-ar.html?aid=356980&label=gog235jc-10CAsoDEISY2FiYW5hLWxhcy1hbGphYmFzSCxYA2gMiAEBmAEzuAEXyAEM2AED6AEB-AEBiAIBqAIBuALN0vzUBsACAdICJGE4MjY3ZGM4LThkZTgtNGNmNi05N2YxLWZjMWViNjVlMTgxONgCAeACAQ&sid=1e03b616a8a1452c578d8d79bba5aa74&all_sr_blocks=957765601_368384260_2_0_0&checkin=2026-09-07&checkout=2026-09-10&dest_id=-1013487&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=957765601_368384260_2_0_0&hpos=1&matching_block_id=957765601_368384260_2_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=957765601_368384260_2_0_0__24057&srepoch=1788815696&srpvid=bab09567e82d077a&type=total&ucfs=1&activeTab=photosGallery"
+                "web_link": "https://www.booking.com/hotel/ar/cabana-las-aljabas.es-ar.html?aid=356980&label=gog235jc-10CAsoDEISY2FiYW5hLWxhcy1hbGphYmFzSCxYA2gMiAEBmAEzuAEXyAEM2AED6AEB-AEBiAIBqAIBuALN0vzUBsACAdICJGE4MjY3ZGM4LThkZTgtNGNmNi05N2YxLWZjMWViNjVlMTgxONgCAeACAQ&sid=1e03b616a8a1452c578d8d79bba5aa74&all_sr_blocks=957765601_368384260_2_0_0&checkin=2026-09-07&checkout=2026-09-10&dest_id=-1013487&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=957765601_368384260_2_0_0&hpos=1&matching_block_id=957765601_368384260_2_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=957765601_368384260_2_0_0__24057&srepoch=1788815696&srpvid=bab09567e82d077a&type=total&ucfs=1&activeTab=photosGallery",
+                "lat": -40.148629,
+                "lng": -71.330385
               },
               "editado_manualmente": false
             },
@@ -673,7 +693,9 @@
                   "fechas_disponibles"
                 ],
                 "texto_original_resumido": "Departamento R.Roca en zona centro, capacidad 4 personas, $100.000 la noche.",
-                "web_link": "https://wa.me/p/7372294022787955/137610886381815"
+                "web_link": "https://wa.me/p/7372294022787955/137610886381815",
+                "lat": -40.148629,
+                "lng": -71.330385
               },
               "editado_manualmente": false
             },
@@ -726,7 +748,9 @@
                   "horario check-in/out"
                 ],
                 "texto_original_resumido": "Cabaña con un dormitorio para 2 pasajeros a $110.000 ARS por noche.",
-                "web_link": "https://www.arique.com/es/"
+                "web_link": "https://www.arique.com/es/",
+                "lat": -40.16326,
+                "lng": -71.35222
               },
               "editado_manualmente": false
             },
@@ -774,7 +798,9 @@
                   "política de cancelación"
                 ],
                 "texto_original_resumido": "Habitación doble con desayuno a $79.980 ARS/noche.",
-                "web_link": "https://www.interpatagonia.com/sanmartindelosandes/hotel-del-viejo-esquiador.html"
+                "web_link": "https://www.interpatagonia.com/sanmartindelosandes/hotel-del-viejo-esquiador.html",
+                "lat": -40.148629,
+                "lng": -71.330385
               },
               "editado_manualmente": false
             },
@@ -825,7 +851,9 @@
                   "forma_pago"
                 ],
                 "texto_original_resumido": "Habitación doble a $89.980 con desayuno por noche.",
-                "web_link": "https://www.lafontainehotel.com/reservas-y-consultas"
+                "web_link": "https://www.lafontainehotel.com/reservas-y-consultas",
+                "lat": -40.152874,
+                "lng": -71.337629
               },
               "editado_manualmente": false
             }
@@ -881,7 +909,9 @@
                 ],
                 "texto_original_resumido": "Habitación Doble Standard a $75.000/noche (PB, sin estacionamiento) o Habitación Doble Confort a $85.000/noche (PA, con estacionamiento y AC). Incluye desayuno buffet. Seña de 1 noche y 10% desc. en efectivo sobre el saldo.",
                 "alojamiento_general": "Hostería Traunco",
-                "web_link": "https://www.booking.com/hotel/ar/hosteria-traunco.es-ar.html"
+                "web_link": "https://www.booking.com/hotel/ar/hosteria-traunco.es-ar.html",
+                "lat": -40.762069,
+                "lng": -71.647231
               },
               "editado_manualmente": true
             },
@@ -938,7 +968,9 @@
                 ],
                 "texto_original_resumido": "Habitación matrimonial a $85.000 ARS la noche. Para más info en WhatsApp +541136692316.",
                 "alojamiento_general": "Hostería Bajo Cero",
-                "web_link": "https://www.booking.com/hotel/ar/hostel-bajo-cero.es-ar.html?aid=356980&label=gog235jc-10CAsoDEIQaG9zdGVsLWJham8tY2Vyb0gsWANoDIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgCqKu41AbAAgHSAiRmMDU3NGVhMS0yYWM2LTRiN2YtYjA5Yi0yZjcyNGIwNTExOGPYAgHgAgE&sid=9ecaf9cfc669bc6aa4f10e292a039aba&all_sr_blocks=43181820_440302316_2_2_0&checkin=2026-09-29&checkout=2026-10-01&dest_id=-1018998&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=43181820_440302316_2_2_0&hpos=1&matching_block_id=43181820_440302316_2_2_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=43181820_440302316_2_2_0__8280&srepoch=1787696568&srpvid=c6509d54e69e005f&type=total&ucfs=1&"
+                "web_link": "https://www.booking.com/hotel/ar/hostel-bajo-cero.es-ar.html?aid=356980&label=gog235jc-10CAsoDEIQaG9zdGVsLWJham8tY2Vyb0gsWANoDIgBAZgBM7gBF8gBDNgBA-gBAfgBAYgCAagCAbgCqKu41AbAAgHSAiRmMDU3NGVhMS0yYWM2LTRiN2YtYjA5Yi0yZjcyNGIwNTExOGPYAgHgAgE&sid=9ecaf9cfc669bc6aa4f10e292a039aba&all_sr_blocks=43181820_440302316_2_2_0&checkin=2026-09-29&checkout=2026-10-01&dest_id=-1018998&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=43181820_440302316_2_2_0&hpos=1&matching_block_id=43181820_440302316_2_2_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=43181820_440302316_2_2_0__8280&srepoch=1787696568&srpvid=c6509d54e69e005f&type=total&ucfs=1&",
+                "lat": -40.762069,
+                "lng": -71.647231
               },
               "editado_manualmente": true
             },
@@ -993,7 +1025,9 @@
                 "texto_original_resumido": "Habitación doble privada disponible del 30/09 al 02/10 (2 noches) a $92.000 por noche, con desayuno patagónico, toallas, TV y baño privado incluidos.",
                 "alojamiento_general": "Hostel La Angostura",
                 "web_link": "https://www.hostellaangostura.com.ar/",
-                "foto_portada": "https://images-new.pxsol.com/eJR-QD4uMDxor29zf3InFg37nCWUzfOD1SoG_yB9Lc8/rs:fill:1900:910:1/q:80/plain/https%3A%2F%2Ffiles-p.pxsol.com%2F21912%2Fcompany%2Flibrary%2Fuser%2F52808309251129c481a4340d53ec69cc799d47a57a.jpg@jpg"
+                "foto_portada": "https://images-new.pxsol.com/eJR-QD4uMDxor29zf3InFg37nCWUzfOD1SoG_yB9Lc8/rs:fill:1900:910:1/q:80/plain/https%3A%2F%2Ffiles-p.pxsol.com%2F21912%2Fcompany%2Flibrary%2Fuser%2F52808309251129c481a4340d53ec69cc799d47a57a.jpg@jpg",
+                "lat": -40.762355,
+                "lng": -71.651799
               },
               "editado_manualmente": true
             },
@@ -1046,7 +1080,9 @@
                 ],
                 "texto_original_resumido": "Habitación Doble Estándar a $90.000/noche con vista al Lago Nahuel Huapi y Cordillera. Incluye impuestos, desayuno, wifi y estacionamiento.",
                 "alojamiento_general": "Hostería Puertas del Sol",
-                "web_link": "https://www.hosteriapuertasdelsol.com/es/"
+                "web_link": "https://www.hosteriapuertasdelsol.com/es/",
+                "lat": -40.762069,
+                "lng": -71.647231
               },
               "editado_manualmente": true
             },
@@ -1095,7 +1131,9 @@
                 ],
                 "texto_original_resumido": "Cabaña III para 4 personas. Tarifa 2 pax: 3 noches a $98.000/día o 4 a 7 noches a $89.000/día.",
                 "alojamiento_general": "Cabañas Naxara",
-                "web_link": "https://www.booking.com/hotel/ar/cabanas-naxara.es-ar.html?aid=356980&label=gog235jc-10CAsoDEIOY2FiYW5hcy1uYXhhcmFILFgDaAyIAQGYATO4ARfIAQzYAQPoAQH4AQGIAgGoAgG4Av-8uNQGwAIB0gIkNmFmZjNmYjktYzNjNi00ZThmLWE2YzMtMjYwNGE4YjNiNTM02AIB4AIB&sid=036413d57ed4ab049e4eab42373374f4&all_sr_blocks=241687201_123574909_2_0_0&checkin=2026-09-29&checkout=2026-10-01&dest_id=-1018998&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=241687201_123574909_2_0_0&hpos=1&matching_block_id=241687201_123574909_2_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=241687201_123574909_2_0_0__12240&srepoch=1787698888&srpvid=44c2a1c0627000b7&type=total&ucfs=1&"
+                "web_link": "https://www.booking.com/hotel/ar/cabanas-naxara.es-ar.html?aid=356980&label=gog235jc-10CAsoDEIOY2FiYW5hcy1uYXhhcmFILFgDaAyIAQGYATO4ARfIAQzYAQPoAQH4AQGIAgGoAgG4Av-8uNQGwAIB0gIkNmFmZjNmYjktYzNjNi00ZThmLWE2YzMtMjYwNGE4YjNiNTM02AIB4AIB&sid=036413d57ed4ab049e4eab42373374f4&all_sr_blocks=241687201_123574909_2_0_0&checkin=2026-09-29&checkout=2026-10-01&dest_id=-1018998&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=241687201_123574909_2_0_0&hpos=1&matching_block_id=241687201_123574909_2_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=241687201_123574909_2_0_0__12240&srepoch=1787698888&srpvid=44c2a1c0627000b7&type=total&ucfs=1&",
+                "lat": -40.749408,
+                "lng": -71.661561
               },
               "editado_manualmente": true
             },
@@ -1148,7 +1186,9 @@
                 ],
                 "texto_original_resumido": "Cabaña 40 m2 para 2/3 personas en temporada baja por $180.000 ARS total por 2 noches ($90.000 ARS/noche).",
                 "alojamiento_general": "Paisaje Bandurrias Cabañas",
-                "web_link": "https://www.booking.com/hotel/ar/paisaje-bandurrias.es-ar.html"
+                "web_link": "https://www.booking.com/hotel/ar/paisaje-bandurrias.es-ar.html",
+                "lat": -40.762069,
+                "lng": -71.647231
               },
               "editado_manualmente": false
             },
@@ -1206,7 +1246,9 @@
                   "calificaciones de huéspedes"
                 ],
                 "texto_original_resumido": "Habitación doble con baño privado, desayuno incluido, a $100.000 ARS/noche en La Roca de la Patagonia, Villa la Angostura.",
-                "foto_portada": "https://larocadelapatagonia.com.ar/wp-content/uploads/gal07.jpg"
+                "foto_portada": "https://larocadelapatagonia.com.ar/wp-content/uploads/gal07.jpg",
+                "lat": -40.760983,
+                "lng": -71.641449
               },
               "editado_manualmente": true
             },
@@ -1263,7 +1305,9 @@
                   "calificación de huéspedes previos"
                 ],
                 "texto_original_resumido": "Monoambiente de 24 m² en planta baja para 2 personas (capacidad hasta 4) con cocina integrada, sommier Queen, baño completo, deck con parrilla, TV DIRECTV, Wi-fi y calefacción a gas. Tarifa $90.000 ARS/noche. Apart Hotel Arbolar en Villa La Angostura.",
-                "web_link": "https://arbolarweb.com.ar/web/casas-de-montana/"
+                "web_link": "https://arbolarweb.com.ar/web/casas-de-montana/",
+                "lat": -40.762069,
+                "lng": -71.647231
               },
               "editado_manualmente": true
             },
@@ -1346,7 +1390,9 @@
                   "capacidad máxima por habitación",
                   "precio por semana"
                 ],
-                "texto_original_resumido": "Hostería Cohuel ofrece Habitación Doble a $95.000 ARS/noche en temporada Media/Baja, con desayuno y mucama incluidos. 3 cuotas sin interés con Visa/MC y 10% descuento por transferencia. Ubicada en Puerto Manzano, Villa La Angostura, con servicios de spa, pileta climatizada, restaurante y bar."
+                "texto_original_resumido": "Hostería Cohuel ofrece Habitación Doble a $95.000 ARS/noche en temporada Media/Baja, con desayuno y mucama incluidos. 3 cuotas sin interés con Visa/MC y 10% descuento por transferencia. Ubicada en Puerto Manzano, Villa La Angostura, con servicios de spa, pileta climatizada, restaurante y bar.",
+                "lat": -40.762069,
+                "lng": -71.647231
               },
               "editado_manualmente": false
             }
@@ -1406,7 +1452,9 @@
                   "horario check-in/out"
                 ],
                 "texto_original_resumido": "Monoambiente para 1 o 2 personas en Villa Traful a $80.000 ARS por noche.",
-                "web_link": "https://rucaauca.com/nuestras-cabanas/#casa1"
+                "web_link": "https://rucaauca.com/nuestras-cabanas/#casa1",
+                "lat": -40.65325,
+                "lng": -71.401224
               },
               "editado_manualmente": false
             },
@@ -1462,7 +1510,9 @@
                   "referencia_dolar"
                 ],
                 "texto_original_resumido": "Cabaña de 1 dormitorio en Posada Quinen para hasta 4 personas a $110.000 ARS por noche.",
-                "web_link": "https://www.booking.com/hotel/ar/posada-quinen.es.html?aid=318615&label=Spanish_Argentina_ES_AR_20153587225-6h15TH8LvM25bNckrW9zZwS821375283750%3Apl%3Ata%3Ap1%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atikwl-162435869305%3Alp9041071%3Ali%3Adet%3Adm&sid=7bf27458f555aaab0e6be98f00f0d534&all_sr_blocks=33005512_119193560_4_0_0&checkin=2026-09-07&checkout=2026-09-08&dest_id=-1013487&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=33005512_119193560_4_0_0&hpos=1&matching_block_id=33005512_119193560_4_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=33005512_119193560_4_0_0__7782&srepoch=1788736615&srpvid=02aca3ae226c0592&type=total&ucfs=1&"
+                "web_link": "https://www.booking.com/hotel/ar/posada-quinen.es.html?aid=318615&label=Spanish_Argentina_ES_AR_20153587225-6h15TH8LvM25bNckrW9zZwS821375283750%3Apl%3Ata%3Ap1%3Ap2%3Aac%3Aap%3Aneg%3Afi%3Atikwl-162435869305%3Alp9041071%3Ali%3Adet%3Adm&sid=7bf27458f555aaab0e6be98f00f0d534&all_sr_blocks=33005512_119193560_4_0_0&checkin=2026-09-07&checkout=2026-09-08&dest_id=-1013487&dest_type=city&dist=0&group_adults=2&group_children=0&hapos=1&highlighted_blocks=33005512_119193560_4_0_0&hpos=1&matching_block_id=33005512_119193560_4_0_0&no_rooms=1&req_adults=2&req_children=0&room1=A%2CA&sb_price_type=total&sr_order=popularity&sr_pri_blocks=33005512_119193560_4_0_0__7782&srepoch=1788736615&srpvid=02aca3ae226c0592&type=total&ucfs=1&",
+                "lat": -40.653082,
+                "lng": -71.401788
               },
               "editado_manualmente": false
             },
@@ -1521,7 +1571,9 @@
                   "Horario de check‑in/check‑out"
                 ],
                 "texto_original_resumido": "Departamento mono‑ambiente para 2 personas a $90 000 ARS por noche, con cocina, baño completo, Wi‑Fi y vista al lago.",
-                "web_link": "https://lafortalezadeptos.com/"
+                "web_link": "https://lafortalezadeptos.com/",
+                "lat": -40.653082,
+                "lng": -71.401788
               },
               "editado_manualmente": false
             },
@@ -1579,7 +1631,9 @@
                   "teléfono de contacto / WhatsApp"
                 ],
                 "texto_original_resumido": "Cabaña totalmente equipada para dos personas a $90.000 por día para el período septiembre-noviembre 2026.",
-                "web_link": "https://www.interpatagonia.com/villatraful/cabanas-alihuen.html"
+                "web_link": "https://www.interpatagonia.com/villatraful/cabanas-alihuen.html",
+                "lat": -40.652558,
+                "lng": -71.401659
               },
               "editado_manualmente": false
             },
@@ -1631,7 +1685,9 @@
                   "forma de pago"
                 ],
                 "texto_original_resumido": "Cabañas de Alma $130.000 por dos noches para 4 a 8 personas en Villa Traful.",
-                "web_link": "https://www.interpatagonia.com/villatraful/cabanas-de-alma.html"
+                "web_link": "https://www.interpatagonia.com/villatraful/cabanas-de-alma.html",
+                "lat": -40.6569,
+                "lng": -71.3956
               },
               "editado_manualmente": true
             },
@@ -1677,7 +1733,9 @@
                 "calificacion_ia": 9,
                 "razon_calificacion": "Excelente equipamiento, conectividad Starlink y ubicación privilegiada en Villa Traful.",
                 "datos_faltantes": [],
-                "texto_original_resumido": "Dpto N°1 para 2 personas a $100.000 por noche."
+                "texto_original_resumido": "Dpto N°1 para 2 personas a $100.000 por noche.",
+                "lat": -40.653082,
+                "lng": -71.401788
               },
               "editado_manualmente": false
             },
@@ -1720,7 +1778,9 @@
                 "calificacion_ia": 9,
                 "razon_calificacion": "Opción económica con excelentes servicios y vistas.",
                 "datos_faltantes": [],
-                "texto_original_resumido": "Loft N°2 a $80.000 por noche."
+                "texto_original_resumido": "Loft N°2 a $80.000 por noche.",
+                "lat": -40.653082,
+                "lng": -71.401788
               },
               "editado_manualmente": false
             },
@@ -1763,7 +1823,9 @@
                 "calificacion_ia": 9,
                 "razon_calificacion": "Buena relación calidad-precio con servicios completos.",
                 "datos_faltantes": [],
-                "texto_original_resumido": "Coqueta N°3 para 2 personas a $90.000 por noche."
+                "texto_original_resumido": "Coqueta N°3 para 2 personas a $90.000 por noche.",
+                "lat": -40.653082,
+                "lng": -71.401788
               },
               "editado_manualmente": false
             },
@@ -1807,7 +1869,9 @@
                   "email",
                   "instagram"
                 ],
-                "texto_original_resumido": "Cabañas San Eduardo en Villa Traful, tarifa $105.000 por noche para 2 personas."
+                "texto_original_resumido": "Cabañas San Eduardo en Villa Traful, tarifa $105.000 por noche para 2 personas.",
+                "lat": -40.653082,
+                "lng": -71.401788
               },
               "editado_manualmente": false
             }

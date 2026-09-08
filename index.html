@@ -3516,6 +3516,16 @@ function vacaEnsureMap() {
 async function vacaGeocode(text) {
   if (!text) return null;
   const q = encodeURIComponent(text);
+  const tryPhoton = async () => {
+    try {
+      const res = await fetch('https://photon.komoot.io/api/?q=' + q + '&limit=1');
+      if (!res.ok) return null;
+      const j = await res.json();
+      const f = j && j.features && j.features[0];
+      if (f && f.geometry) return { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
+    } catch (e) {}
+    return null;
+  };
   const tryNominatim = async () => {
     try {
       const res = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + q);
@@ -3525,19 +3535,9 @@ async function vacaGeocode(text) {
     } catch (e) {}
     return null;
   };
-  const tryPhoton = async () => {
-    try {
-      const res = await fetch('https://photon.komoot.io/api/?q=' + q + '&limit=1&lang=es');
-      if (!res.ok) return null;
-      const j = await res.json();
-      const f = j && j.features && j.features[0];
-      if (f && f.geometry) return { lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] };
-    } catch (e) {}
-    return null;
-  };
-  const n = await tryNominatim();
-  if (n) return n;
-  return tryPhoton();
+  const p = await tryPhoton();
+  if (p) return p;
+  return tryNominatim();
 }
 
 function vacaCachedCoords(it) {
