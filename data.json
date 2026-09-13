@@ -1500,7 +1500,7 @@
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/783542847.jpg?k=08e57f32f03648066b9758483cab42ba386678f40dc1195e715851bc3ac7c5ca&o="
                 ],
                 "notas_adicionales": "Hostería, Apart & Cabañas 3 estrellas.",
-                "calificacion_ia": 8.8,
+                "calificacion_ia": 9.3,
                 "razon_calificacion": "Cabaña de 45m2 bien equipada con servicios de hostería como piscina y desayuno.",
                 "datos_faltantes": [
                   "precio_total",
@@ -1514,7 +1514,7 @@
                 "lat": -40.653082,
                 "lng": -71.401788
               },
-              "editado_manualmente": false
+              "editado_manualmente": true
             },
             {
               "id": "mtmapoa5ie1a3",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789311570653
+    "updated_at": 1789311779411
   }
 }
