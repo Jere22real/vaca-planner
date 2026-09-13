@@ -741,7 +741,7 @@
                   "https://www.arique.com/s/s292/fotos/foto-7-3.webp?date=2026.05.13.12.51.57"
                 ],
                 "notas_adicionales": "Tarifas no incluyen IVA. Descuentos por estadía semanal o clientes frecuentes.",
-                "calificacion_ia": 9,
+                "calificacion_ia": 9.5,
                 "razon_calificacion": "Excelente ubicación residencial cerca del centro y lago, con servicios completos como piscina climatizada.",
                 "datos_faltantes": [
                   "precio total",
@@ -752,7 +752,7 @@
                 "lat": -40.16326,
                 "lng": -71.35222
               },
-              "editado_manualmente": false
+              "editado_manualmente": true
             },
             {
               "id": "mtnocr0cvwsib",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789313554924
+    "updated_at": 1789313636701
   }
 }
