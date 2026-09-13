@@ -1675,7 +1675,7 @@
                   "https://www.interpatagonia.com/plantillas/grandes/37567-15Gr.jpg"
                 ],
                 "notas_adicionales": "Distancia al aeropuerto: 100 km. Check-in: 14:00 h, Check-out: 10:00 h.",
-                "calificacion_ia": 8,
+                "calificacion_ia": 9.5,
                 "razon_calificacion": "Buen precio accesible por noche para capacidad de hasta 8 personas en un entorno natural con parrilla y servicios básicos completos.",
                 "datos_faltantes": [
                   "fechas exactas",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789312180711
+    "updated_at": 1789312290304
   }
 }
