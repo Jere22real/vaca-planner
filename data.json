@@ -580,7 +580,7 @@
                   "https://antuken.com.ar/cabanas/16.jpg"
                 ],
                 "notas_adicionales": "Ubicada en 1º piso. Dormitorio triple en planta alta. No incluye desayuno.",
-                "calificacion_ia": 8.8,
+                "calificacion_ia": 9.5,
                 "razon_calificacion": "Excelente variedad de servicios (piscina, spa, quinchos) y ubicación céntrica privilegiada.",
                 "datos_faltantes": [
                   "horario check-in/out",
@@ -591,7 +591,7 @@
                 "lat": -40.148629,
                 "lng": -71.330385
               },
-              "editado_manualmente": false
+              "editado_manualmente": true
             },
             {
               "id": "mtnn6nabwgcsa",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789313258329
+    "updated_at": 1789313410399
   }
 }
