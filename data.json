@@ -791,7 +791,7 @@
                   "https://wa.me/c/5492972406433"
                 ],
                 "notas_adicionales": "Descuentos exclusivos en restaurantes, chocolaterías, alquiler de auto y equipos de ski. Parking cubierto con costo adicional.",
-                "calificacion_ia": 9,
+                "calificacion_ia": 9.4,
                 "razon_calificacion": "Hotel con servicios completos, desayuno incluido y beneficios adicionales para huéspedes.",
                 "datos_faltantes": [
                   "ubicación exacta",
@@ -802,7 +802,7 @@
                 "lat": -40.148629,
                 "lng": -71.330385
               },
-              "editado_manualmente": false
+              "editado_manualmente": true
             },
             {
               "id": "mtnogzyu7jmo7",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789313636701
+    "updated_at": 1789313690372
   }
 }
