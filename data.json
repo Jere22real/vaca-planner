@@ -464,7 +464,7 @@
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/10332445.jpg?k=c060777a8057cbd86c9230d0fbf9c46ebde407b16f22c7f8596d6fb6dd6404b1&o="
                 ],
                 "notas_adicionales": "Ubicación excelente cerca de Playa San Martín (< 1 km) y Parque Nacional Lanín (4,4 km). Muy valorado por parejas.",
-                "calificacion_ia": 9.3,
+                "calificacion_ia": 8.8,
                 "razon_calificacion": "Valoración fantástica de los clientes con excelente puntuación en ubicación y atención del personal.",
                 "datos_faltantes": [
                   "fechas exactas",
@@ -480,7 +480,7 @@
                 "lat": -40.153051,
                 "lng": -71.357109
               },
-              "editado_manualmente": false
+              "editado_manualmente": true
             },
             {
               "id": "mtjdzr6lavdh9",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789313130632
+    "updated_at": 1789313202520
   }
 }
