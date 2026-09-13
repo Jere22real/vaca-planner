@@ -1775,14 +1775,14 @@
                   "https://wa.me/p/27141280178866886/5492944914722"
                 ],
                 "notas_adicionales": "Estadía mínima 2 noches. Check-in 15:00, Check-out 10:00.",
-                "calificacion_ia": 9,
+                "calificacion_ia": 10,
                 "razon_calificacion": "Opción económica con excelentes servicios y vistas.",
                 "datos_faltantes": [],
                 "texto_original_resumido": "Loft N°2 a $80.000 por noche.",
                 "lat": -40.653082,
                 "lng": -71.401788
               },
-              "editado_manualmente": false
+              "editado_manualmente": true
             },
             {
               "id": "mtnnnt7wlkut2",
@@ -1820,14 +1820,14 @@
                   "https://wa.me/p/27018583751116530/5492944914722"
                 ],
                 "notas_adicionales": "Estadía mínima 2 noches. Check-in 15:00, Check-out 10:00.",
-                "calificacion_ia": 9,
+                "calificacion_ia": 10,
                 "razon_calificacion": "Buena relación calidad-precio con servicios completos.",
                 "datos_faltantes": [],
                 "texto_original_resumido": "Coqueta N°3 para 2 personas a $90.000 por noche.",
                 "lat": -40.653082,
                 "lng": -71.401788
               },
-              "editado_manualmente": false
+              "editado_manualmente": true
             },
             {
               "id": "mtnnvfz3h77r9",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789312706584
+    "updated_at": 1789312722146
   }
 }
