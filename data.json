@@ -632,7 +632,7 @@
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/624114682.jpg?k=7d52547bed131b237f6b9fc076046105e6808470f29884d0424e57e4b5b60de8&o="
                 ],
                 "notas_adicionales": "Puntaje de 9.2/10 en Booking. Aeropuerto Aviador Carlos Campos a 27 km.",
-                "calificacion_ia": 9.2,
+                "calificacion_ia": 9.3,
                 "razon_calificacion": "Puntaje alto de usuarios (9.2), excelente ubicación, atención destacada por parte del anfitrión y buenos servicios.",
                 "datos_faltantes": [
                   "capacidad exacta",
@@ -646,7 +646,7 @@
                 "lat": -40.148629,
                 "lng": -71.330385
               },
-              "editado_manualmente": false
+              "editado_manualmente": true
             },
             {
               "id": "mtnnrbctjx50p",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789313410399
+    "updated_at": 1789313490680
   }
 }
