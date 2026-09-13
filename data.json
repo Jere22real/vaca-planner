@@ -524,7 +524,7 @@
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/883218519.jpg?k=b5beec097aea138581e229a725203336e5fe44dd83d2b23a0781ebb0facd9ae7&o="
                 ],
                 "notas_adicionales": "Hotel 2 estrellas de ambiente familiar fundado en 1966. Opción con o sin desayuno (incluye sin TACC a pedido). No apto para cocinar en áreas comunes.",
-                "calificacion_ia": 8,
+                "calificacion_ia": 9,
                 "razon_calificacion": "Excelente ubicación a pocas cuadras del centro, cochera cubierta y buena relación precio/calidad para temporada baja.",
                 "datos_faltantes": [
                   "horario de check-in / check-out",
@@ -537,7 +537,7 @@
                 "lat": -40.148629,
                 "lng": -71.330385
               },
-              "editado_manualmente": false
+              "editado_manualmente": true
             },
             {
               "id": "mtjemhytmn9zn",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789313202520
+    "updated_at": 1789313258329
   }
 }
