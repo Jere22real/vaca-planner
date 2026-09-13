@@ -1563,7 +1563,7 @@
                   "https://lafortalezadeptos.com/uploads/1766229006681-v71ky936a.webp"
                 ],
                 "notas_adicionales": "Sitio web: https://lafortalezadeptos.com/ ; mapa: https://maps.app.goo.gl/UUFHH69xaXqQnJKv9 ; catálogo WhatsApp: https://wa.me/c/5492944392884",
-                "calificacion_ia": 8,
+                "calificacion_ia": 9.3,
                 "razon_calificacion": "Buen equipamiento y ubicación frente al lago con vista panorámica.",
                 "datos_faltantes": [
                   "Fechas exactas de disponibilidad",
@@ -1575,7 +1575,7 @@
                 "lat": -40.653082,
                 "lng": -71.401788
               },
-              "editado_manualmente": false
+              "editado_manualmente": true
             },
             {
               "id": "mtnn405s2zsht",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789311779411
+    "updated_at": 1789311970503
   }
 }
