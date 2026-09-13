@@ -684,7 +684,7 @@
                   "https://wa.me/p/7372294022787955/137610886381815"
                 ],
                 "notas_adicionales": "Ubicación estratégica cerca de supermercado La Anónima.",
-                "calificacion_ia": 8,
+                "calificacion_ia": 9.4,
                 "razon_calificacion": "Excelente ubicación céntrica con servicios completos como pileta y lavarropas.",
                 "datos_faltantes": [
                   "precio_total",
@@ -697,7 +697,7 @@
                 "lat": -40.148629,
                 "lng": -71.330385
               },
-              "editado_manualmente": false
+              "editado_manualmente": true
             },
             {
               "id": "mtno10afo5wm3",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789313490680
+    "updated_at": 1789313554924
   }
 }
