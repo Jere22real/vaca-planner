@@ -405,7 +405,7 @@
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/559302826.jpg?k=48729f5cc6236b456867c0374a817faaa9e66f2b9b36376cc75f1d930e1b96c4&o="
                 ],
                 "notas_adicionales": "Ubicación excelente (9.3/10). A 13 min a pie de Playa de San Martín. El aeropuerto está a 28 km.",
-                "calificacion_ia": 7.7,
+                "calificacion_ia": 9.3,
                 "razon_calificacion": "Buena ubicación y servicios, aunque con valoraciones mixtas sobre la calefacción y detalles en el baño.",
                 "datos_faltantes": [
                   "teléfono de contacto",
@@ -420,7 +420,7 @@
                 "lat": -40.156178,
                 "lng": -71.348822
               },
-              "editado_manualmente": false
+              "editado_manualmente": true
             },
             {
               "id": "mtjc7dikxnda3",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789312978436
+    "updated_at": 1789313130632
   }
 }
