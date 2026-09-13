@@ -1730,14 +1730,14 @@
                   "https://wa.me/p/27095429473474170/5492944914722"
                 ],
                 "notas_adicionales": "Estadía mínima 2 noches. Check-in 15:00, Check-out 10:00. Desayuno opcional con costo adicional.",
-                "calificacion_ia": 9,
+                "calificacion_ia": 10,
                 "razon_calificacion": "Excelente equipamiento, conectividad Starlink y ubicación privilegiada en Villa Traful.",
                 "datos_faltantes": [],
                 "texto_original_resumido": "Dpto N°1 para 2 personas a $100.000 por noche.",
                 "lat": -40.653082,
                 "lng": -71.401788
               },
-              "editado_manualmente": false
+              "editado_manualmente": true
             },
             {
               "id": "mtnnnt7wf92a3",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789312290304
+    "updated_at": 1789312706584
   }
 }
