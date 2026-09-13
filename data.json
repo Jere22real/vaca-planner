@@ -1441,7 +1441,7 @@
                   "https://www.interpatagonia.com/plantillas/grandes/33925-14Gr.jpg"
                 ],
                 "notas_adicionales": "Se admite una mascota por alojamiento (con condiciones). Servicios adicionales disponibles: desayuno, lavandería, limpieza diaria, personal trainer, cabalgatas, caminatas guiadas y traslados.",
-                "calificacion_ia": 8.8,
+                "calificacion_ia": 9.5,
                 "razon_calificacion": "Excelente equipamiento y ubicación privilegiada cerca del lago.",
                 "datos_faltantes": [
                   "precio_total",
@@ -1456,7 +1456,7 @@
                 "lat": -40.65325,
                 "lng": -71.401224
               },
-              "editado_manualmente": false
+              "editado_manualmente": true
             },
             {
               "id": "mtjcop02uxikp",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789311127952
+    "updated_at": 1789311570653
   }
 }
