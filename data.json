@@ -1622,7 +1622,7 @@
                   "https://www.interpatagonia.com/plantillas/grandes/35802-08Gr.jpg"
                 ],
                 "notas_adicionales": "Atendida por sus dueños. Ofrece servicio de transfers pago.",
-                "calificacion_ia": 8,
+                "calificacion_ia": 9.3,
                 "razon_calificacion": "Excelente ubicación céntrica y cercana al lago, con parque, arroyo y equipamiento completo.",
                 "datos_faltantes": [
                   "horario check-in/out",
@@ -1635,7 +1635,7 @@
                 "lat": -40.652558,
                 "lng": -71.401659
               },
-              "editado_manualmente": false
+              "editado_manualmente": true
             },
             {
               "id": "mtnndqn104d39",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789311970503
+    "updated_at": 1789312180711
   }
 }
