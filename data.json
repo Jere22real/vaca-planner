@@ -350,7 +350,7 @@
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/352059137.jpg?k=9be48f9ae4b8c50315aa3d74643f54a899579886140cf7081baf2b7660688c1d&o="
                 ],
                 "notas_adicionales": "No se admiten mascotas. Check-in: 15:00hs / Check-out: 10:00hs. Ubicación excelente (9.8/10). Cerca de Playa San Martín (<1km) y Parque Nacional Lanín (3.7km).",
-                "calificacion_ia": 9,
+                "calificacion_ia": 9.3,
                 "razon_calificacion": "Altamente valorado por los clientes en ubicación, desayuno y atención del personal.",
                 "datos_faltantes": [
                   "fechas exactas de la consulta",
@@ -362,7 +362,7 @@
                 "lat": -40.157346,
                 "lng": -71.350652
               },
-              "editado_manualmente": false
+              "editado_manualmente": true
             },
             {
               "id": "mtjbz4i999w8f",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789312722146
+    "updated_at": 1789312978436
   }
 }
