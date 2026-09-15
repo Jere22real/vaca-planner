@@ -283,7 +283,7 @@
                   "https://barilocheturismo.gob.ar/images/hoteles/878_72z3v.jpg"
                 ],
                 "notas_adicionales": "La casa está sobre lote de 1.400 m2 y comparte terreno con los dueños que tienen mascotas. Distribución: Dormitorio matrimonial, entrepiso con 2 camas, cocina, baño, living y deck con parrilla.",
-                "calificacion_ia": 9,
+                "calificacion_ia": 8.5,
                 "razon_calificacion": "Excelente ubicación sobre el Lago Nahuel Huapi con gran terreno, parrilla y equipamiento completo.",
                 "datos_faltantes": [
                   "política de cancelación",
@@ -297,7 +297,7 @@
                 "lat": -41.132868,
                 "lng": -71.30248
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             }
           ]
         },
@@ -350,7 +350,7 @@
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/352059137.jpg?k=9be48f9ae4b8c50315aa3d74643f54a899579886140cf7081baf2b7660688c1d&o="
                 ],
                 "notas_adicionales": "No se admiten mascotas. Check-in: 15:00hs / Check-out: 10:00hs. Ubicación excelente (9.8/10). Cerca de Playa San Martín (<1km) y Parque Nacional Lanín (3.7km).",
-                "calificacion_ia": 9.3,
+                "calificacion_ia": 9,
                 "razon_calificacion": "Altamente valorado por los clientes en ubicación, desayuno y atención del personal.",
                 "datos_faltantes": [
                   "fechas exactas de la consulta",
@@ -362,7 +362,7 @@
                 "lat": -40.157346,
                 "lng": -71.350652
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtjbz4i999w8f",
@@ -405,7 +405,7 @@
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/559302826.jpg?k=48729f5cc6236b456867c0374a817faaa9e66f2b9b36376cc75f1d930e1b96c4&o="
                 ],
                 "notas_adicionales": "Ubicación excelente (9.3/10). A 13 min a pie de Playa de San Martín. El aeropuerto está a 28 km.",
-                "calificacion_ia": 9.3,
+                "calificacion_ia": 7.7,
                 "razon_calificacion": "Buena ubicación y servicios, aunque con valoraciones mixtas sobre la calefacción y detalles en el baño.",
                 "datos_faltantes": [
                   "teléfono de contacto",
@@ -420,7 +420,7 @@
                 "lat": -40.156178,
                 "lng": -71.348822
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtjc7dikxnda3",
@@ -464,7 +464,7 @@
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/10332445.jpg?k=c060777a8057cbd86c9230d0fbf9c46ebde407b16f22c7f8596d6fb6dd6404b1&o="
                 ],
                 "notas_adicionales": "Ubicación excelente cerca de Playa San Martín (< 1 km) y Parque Nacional Lanín (4,4 km). Muy valorado por parejas.",
-                "calificacion_ia": 8.8,
+                "calificacion_ia": 9.3,
                 "razon_calificacion": "Valoración fantástica de los clientes con excelente puntuación en ubicación y atención del personal.",
                 "datos_faltantes": [
                   "fechas exactas",
@@ -480,7 +480,7 @@
                 "lat": -40.153051,
                 "lng": -71.357109
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtjdzr6lavdh9",
@@ -524,7 +524,7 @@
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/883218519.jpg?k=b5beec097aea138581e229a725203336e5fe44dd83d2b23a0781ebb0facd9ae7&o="
                 ],
                 "notas_adicionales": "Hotel 2 estrellas de ambiente familiar fundado en 1966. Opción con o sin desayuno (incluye sin TACC a pedido). No apto para cocinar en áreas comunes.",
-                "calificacion_ia": 9,
+                "calificacion_ia": 8,
                 "razon_calificacion": "Excelente ubicación a pocas cuadras del centro, cochera cubierta y buena relación precio/calidad para temporada baja.",
                 "datos_faltantes": [
                   "horario de check-in / check-out",
@@ -537,7 +537,7 @@
                 "lat": -40.148629,
                 "lng": -71.330385
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtjemhytmn9zn",
@@ -580,7 +580,7 @@
                   "https://antuken.com.ar/cabanas/16.jpg"
                 ],
                 "notas_adicionales": "Ubicada en 1º piso. Dormitorio triple en planta alta. No incluye desayuno.",
-                "calificacion_ia": 9.5,
+                "calificacion_ia": 8.8,
                 "razon_calificacion": "Excelente variedad de servicios (piscina, spa, quinchos) y ubicación céntrica privilegiada.",
                 "datos_faltantes": [
                   "horario check-in/out",
@@ -591,7 +591,7 @@
                 "lat": -40.148629,
                 "lng": -71.330385
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtnn6nabwgcsa",
@@ -632,7 +632,7 @@
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/624114682.jpg?k=7d52547bed131b237f6b9fc076046105e6808470f29884d0424e57e4b5b60de8&o="
                 ],
                 "notas_adicionales": "Puntaje de 9.2/10 en Booking. Aeropuerto Aviador Carlos Campos a 27 km.",
-                "calificacion_ia": 9.3,
+                "calificacion_ia": 9.2,
                 "razon_calificacion": "Puntaje alto de usuarios (9.2), excelente ubicación, atención destacada por parte del anfitrión y buenos servicios.",
                 "datos_faltantes": [
                   "capacidad exacta",
@@ -646,7 +646,7 @@
                 "lat": -40.148629,
                 "lng": -71.330385
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtnnrbctjx50p",
@@ -678,13 +678,13 @@
                 "contacto": "Tel: +54 9 3364 18-6694",
                 "instagram": null,
                 "fotos_urls": [
+                  "https://wa.me/p/7372294022787955/137610886381815",
                   "https://www.interpatagonia.com/plantillas/grandes/36273-13Gr.jpg",
                   "https://www.interpatagonia.com/plantillas/grandes/36273-07Gr.jpg",
-                  "https://www.interpatagonia.com/plantillas/grandes/36273-00Gr.jpg",
-                  "https://wa.me/p/7372294022787955/137610886381815"
+                  "https://www.interpatagonia.com/plantillas/grandes/36273-00Gr.jpg"
                 ],
                 "notas_adicionales": "Ubicación estratégica cerca de supermercado La Anónima.",
-                "calificacion_ia": 9.4,
+                "calificacion_ia": 8,
                 "razon_calificacion": "Excelente ubicación céntrica con servicios completos como pileta y lavarropas.",
                 "datos_faltantes": [
                   "precio_total",
@@ -697,7 +697,7 @@
                 "lat": -40.148629,
                 "lng": -71.330385
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtno10afo5wm3",
@@ -741,7 +741,7 @@
                   "https://www.arique.com/s/s292/fotos/foto-7-3.webp?date=2026.05.13.12.51.57"
                 ],
                 "notas_adicionales": "Tarifas no incluyen IVA. Descuentos por estadía semanal o clientes frecuentes.",
-                "calificacion_ia": 9.5,
+                "calificacion_ia": 9,
                 "razon_calificacion": "Excelente ubicación residencial cerca del centro y lago, con servicios completos como piscina climatizada.",
                 "datos_faltantes": [
                   "precio total",
@@ -752,7 +752,7 @@
                 "lat": -40.16326,
                 "lng": -71.35222
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtnocr0cvwsib",
@@ -785,13 +785,13 @@
                 "contacto": "WhatsApp: +54 9 2972 406433",
                 "instagram": null,
                 "fotos_urls": [
+                  "https://wa.me/c/5492972406433",
                   "https://www.interpatagonia.com/plantillas/grandes/28-00Gr.jpg",
                   "https://www.interpatagonia.com/plantillas/grandes/28-05Gr.jpg",
-                  "https://www.interpatagonia.com/plantillas/grandes/28-01Gr.jpg",
-                  "https://wa.me/c/5492972406433"
+                  "https://www.interpatagonia.com/plantillas/grandes/28-01Gr.jpg"
                 ],
                 "notas_adicionales": "Descuentos exclusivos en restaurantes, chocolaterías, alquiler de auto y equipos de ski. Parking cubierto con costo adicional.",
-                "calificacion_ia": 9.4,
+                "calificacion_ia": 9,
                 "razon_calificacion": "Hotel con servicios completos, desayuno incluido y beneficios adicionales para huéspedes.",
                 "datos_faltantes": [
                   "ubicación exacta",
@@ -802,7 +802,7 @@
                 "lat": -40.148629,
                 "lng": -71.330385
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtnogzyu7jmo7",
@@ -837,13 +837,13 @@
                 "contacto": "Tel: (02972) 42-7736 / Whatsapp: +54 9 2972 538679",
                 "instagram": null,
                 "fotos_urls": [
+                  "https://www.lafontainehotel.com/alojamiento-en-san-martin-de-los-andes",
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/239188259.jpg?k=e8a461c16c9a76509267d200110ffba09d6695803ab85d7f55a82af3e119ad81&o=",
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/677400003.jpg?k=5facd99a129b5bb4d9ba219a2573d0f07d63f277b0c9b560a164448ecba7de62&o=",
-                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/258346493.jpg?k=427c5744cc4febbd5a7d1302c292d2f66120da6cbad3b0c8b511563f1d538050&o=",
-                  "https://www.lafontainehotel.com/alojamiento-en-san-martin-de-los-andes"
+                  "https://cf.bstatic.com/xdata/images/hotel/max1024x768/258346493.jpg?k=427c5744cc4febbd5a7d1302c292d2f66120da6cbad3b0c8b511563f1d538050&o="
                 ],
                 "notas_adicionales": "Check-in: 15:00hs, Check-out: 10:30hs. Atención personal las 24 hs.",
-                "calificacion_ia": 9.6,
+                "calificacion_ia": 9,
                 "razon_calificacion": "Hotel completo con servicios de alta calidad, piscina climatizada y desayuno incluido.",
                 "datos_faltantes": [
                   "precio_total",
@@ -855,7 +855,7 @@
                 "lat": -40.152874,
                 "lng": -71.337629
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             }
           ]
         },
@@ -901,7 +901,7 @@
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/3979561.jpg?k=247f18169759f8a9fea00bcb4f8f0f5453e7a7ebd3c773dd8711de6cbe9d9a30&o="
                 ],
                 "notas_adicionales": "Diferencial de la opción: Habitación Doble Standard (Planta Baja, sin estacionamiento): $75.000 por noche. Habitación Doble Confort (Planta Alta, incluye Estacionamiento + Aire Acondicionado): $85.000 por noche.",
-                "calificacion_ia": 9,
+                "calificacion_ia": 9.2,
                 "razon_calificacion": "Excelente ubicación céntrica con excelente puntaje de huéspedes (9.8/10 en ubicación), incluye desayuno buffet y opciones adaptadas a si se requiere estacionamiento o no.",
                 "datos_faltantes": [
                   "horario check-in/out",
@@ -913,7 +913,7 @@
                 "lat": -40.762069,
                 "lng": -71.647231
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mt98gywu0aey6",
@@ -972,7 +972,7 @@
                 "lat": -40.762069,
                 "lng": -71.647231
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mt98pd5omm0nw",
@@ -1015,7 +1015,7 @@
                   "https://images-new.pxsol.com/eJR-QD4uMDxor29zf3InFg37nCWUzfOD1SoG_yB9Lc8/rs:fill:1900:910:1/q:80/plain/https%3A%2F%2Ffiles-p.pxsol.com%2F21912%2Fcompany%2Flibrary%2Fuser%2F52808309251129c481a4340d53ec69cc799d47a57a.jpg@jpg"
                 ],
                 "notas_adicionales": "Habitación acogedora de 12 m2 con vista al jardín. Incluye desayuno patagónico artesanal (dulces regionales, budines caseros, etc.). El establecimiento cuenta con recepción 24 horas y área de juegos (pool, ping pong, dardos).",
-                "calificacion_ia": 8.9,
+                "calificacion_ia": 8.5,
                 "razon_calificacion": "Excelente relación calidad-precio con desayuno completo casero, toallas, sábanas y baño privado incluidos.",
                 "datos_faltantes": [
                   "horarios de check-in / check-out",
@@ -1029,7 +1029,7 @@
                 "lat": -40.762355,
                 "lng": -71.651799
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mt99jtuziykjb",
@@ -1072,7 +1072,7 @@
                   "https://www.interpatagonia.com/plantillas/grandes/18524-09Gr.jpg"
                 ],
                 "notas_adicionales": "Todas las tarifas incluyen impuestos. Ubicación con vistas a bosques, lagos y montañas.",
-                "calificacion_ia": 9.8,
+                "calificacion_ia": 8.5,
                 "razon_calificacion": "Excelente propuesta con desayuno, impuestos y amplios servicios de relax e instalaciones incluidas.",
                 "datos_faltantes": [
                   "horario check-in/out",
@@ -1084,7 +1084,7 @@
                 "lat": -40.762069,
                 "lng": -71.647231
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mt99v8karl3a7",
@@ -1124,7 +1124,7 @@
                   "https://static.wixstatic.com/media/efc395_6c89f406121d44c6ae4af9f5cc95b9b1~mv2.jpg/v1/fill/w_690,h_460,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/efc395_6c89f406121d44c6ae4af9f5cc95b9b1~mv2.jpg"
                 ],
                 "notas_adicionales": "Tarifa para 2 pax: 3 noches a $98.000/día; de 4 a 7 noches a $89.000/día. Check-in: 14:30 a 20:30 hs, Check-out: hasta las 10 hs. No se admiten mascotas.",
-                "calificacion_ia": 9.2,
+                "calificacion_ia": 9.1,
                 "razon_calificacion": "Excelente puntuación según opiniones de huéspedes (9.1/10), amplio predio arbolado y buena atención.",
                 "datos_faltantes": [
                   "fechas exactas solicitadas"
@@ -1135,7 +1135,7 @@
                 "lat": -40.749408,
                 "lng": -71.661561
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mt9au2ozt11de",
@@ -1234,7 +1234,7 @@
                   "https://larocadelapatagonia.com.ar/wp-content/uploads/serv12.jpg"
                 ],
                 "notas_adicionales": "A 3 km del Parque Nacional Los Arrayanes y de la carretera a la estación de esquí de Bayo. A 5 minutos a pie de la Terminal de Ómnibus y la plaza principal. En el núcleo comercial de Villa La Angostura, a 150 m de la avenida principal.",
-                "calificacion_ia": 9,
+                "calificacion_ia": 7.5,
                 "razon_calificacion": "Ubicación céntrica con vista panorámica al Cerro Bayo, desayuno incluido y servicios completos en hostería de estilo alpino",
                 "datos_faltantes": [
                   "fechas específicas de disponibilidad",
@@ -1250,7 +1250,7 @@
                 "lat": -40.760983,
                 "lng": -71.641449
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtc9o27zjjhz3",
@@ -1294,7 +1294,7 @@
                   "https://arbolarweb.com.ar/web/wp-content/uploads/photo-gallery/imported_from_media_libray/galeria7-2.jpg?bwg=1568925108"
                 ],
                 "notas_adicionales": "8 unidades en el complejo, cada una con deck y parrilla propia. Estacionamiento frente a cada apart, techado según categoría. Recepción abierta de 9 a 22 hs. No se permite ingreso de mascotas. No hay servicio de desayuno; se deja un desayuno seco de bienvenida (té, café, azúcar, leche en polvo, endulzantes). Blancos completos con recambio cada 3 noches. Mucama diaria (no incluye lavado de vajilla). Club House con piscinas climatizadas (adultos y niños), vestuarios, toallones, sala de juegos (pool, metegol, ping-pong), gimnasio y juegos infantiles al aire libre. El complejo no se responsabiliza por condiciones climáticas siempre que haya al menos un acceso habilitado. Unidad ubicada en planta baja junto a la recepción. Consultar al reservar si se viaja con persona con movilidad reducida. Los números de unidades pueden modificarse por disponibilidad o mantenimiento.",
-                "calificacion_ia": 9.3,
+                "calificacion_ia": 7.5,
                 "razon_calificacion": "Buena infraestructura con piscinas climatizadas, gimnasio y juegos; ubicación en Villa La Angostura con acceso a naturaleza. Punto débil: sin desayuno completo, sin mascotas permitidas y sin referencia de precio en dólares.",
                 "datos_faltantes": [
                   "precio_total (sin especificar cantidad de noches)",
@@ -1309,7 +1309,7 @@
                 "lat": -40.762069,
                 "lng": -71.647231
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtggqbsd3t8s1",
@@ -1441,7 +1441,7 @@
                   "https://www.interpatagonia.com/plantillas/grandes/33925-14Gr.jpg"
                 ],
                 "notas_adicionales": "Se admite una mascota por alojamiento (con condiciones). Servicios adicionales disponibles: desayuno, lavandería, limpieza diaria, personal trainer, cabalgatas, caminatas guiadas y traslados.",
-                "calificacion_ia": 9.5,
+                "calificacion_ia": 8.8,
                 "razon_calificacion": "Excelente equipamiento y ubicación privilegiada cerca del lago.",
                 "datos_faltantes": [
                   "precio_total",
@@ -1456,7 +1456,7 @@
                 "lat": -40.65325,
                 "lng": -71.401224
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtjcop02uxikp",
@@ -1500,7 +1500,7 @@
                   "https://cf.bstatic.com/xdata/images/hotel/max1024x768/783542847.jpg?k=08e57f32f03648066b9758483cab42ba386678f40dc1195e715851bc3ac7c5ca&o="
                 ],
                 "notas_adicionales": "Hostería, Apart & Cabañas 3 estrellas.",
-                "calificacion_ia": 9.3,
+                "calificacion_ia": 8.8,
                 "razon_calificacion": "Cabaña de 45m2 bien equipada con servicios de hostería como piscina y desayuno.",
                 "datos_faltantes": [
                   "precio_total",
@@ -1514,7 +1514,7 @@
                 "lat": -40.653082,
                 "lng": -71.401788
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtmapoa5ie1a3",
@@ -1563,7 +1563,7 @@
                   "https://lafortalezadeptos.com/uploads/1766229006681-v71ky936a.webp"
                 ],
                 "notas_adicionales": "Sitio web: https://lafortalezadeptos.com/ ; mapa: https://maps.app.goo.gl/UUFHH69xaXqQnJKv9 ; catálogo WhatsApp: https://wa.me/c/5492944392884",
-                "calificacion_ia": 9.3,
+                "calificacion_ia": 8,
                 "razon_calificacion": "Buen equipamiento y ubicación frente al lago con vista panorámica.",
                 "datos_faltantes": [
                   "Fechas exactas de disponibilidad",
@@ -1575,7 +1575,7 @@
                 "lat": -40.653082,
                 "lng": -71.401788
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtnn405s2zsht",
@@ -1622,7 +1622,7 @@
                   "https://www.interpatagonia.com/plantillas/grandes/35802-08Gr.jpg"
                 ],
                 "notas_adicionales": "Atendida por sus dueños. Ofrece servicio de transfers pago.",
-                "calificacion_ia": 9.3,
+                "calificacion_ia": 8,
                 "razon_calificacion": "Excelente ubicación céntrica y cercana al lago, con parque, arroyo y equipamiento completo.",
                 "datos_faltantes": [
                   "horario check-in/out",
@@ -1635,7 +1635,7 @@
                 "lat": -40.652558,
                 "lng": -71.401659
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtnndqn104d39",
@@ -1675,7 +1675,7 @@
                   "https://www.interpatagonia.com/plantillas/grandes/37567-15Gr.jpg"
                 ],
                 "notas_adicionales": "Distancia al aeropuerto: 100 km. Check-in: 14:00 h, Check-out: 10:00 h.",
-                "calificacion_ia": 9.5,
+                "calificacion_ia": 8,
                 "razon_calificacion": "Buen precio accesible por noche para capacidad de hasta 8 personas en un entorno natural con parrilla y servicios básicos completos.",
                 "datos_faltantes": [
                   "fechas exactas",
@@ -1724,20 +1724,20 @@
                 "contacto": "Ailen / WhatsApp: +54 9 294 491 4722",
                 "instagram": null,
                 "fotos_urls": [
+                  "https://wa.me/p/27095429473474170/5492944914722",
                   "https://villatraful.com.ar/wp-content/uploads/2023/03/La-soniada-dos-6.jpeg",
                   "https://villatraful.com.ar/wp-content/uploads/2023/03/La-soniada-dos-7.jpeg",
-                  "https://villatraful.com.ar/wp-content/uploads/2023/03/La-soniada-dos-3.jpeg",
-                  "https://wa.me/p/27095429473474170/5492944914722"
+                  "https://villatraful.com.ar/wp-content/uploads/2023/03/La-soniada-dos-3.jpeg"
                 ],
                 "notas_adicionales": "Estadía mínima 2 noches. Check-in 15:00, Check-out 10:00. Desayuno opcional con costo adicional.",
-                "calificacion_ia": 10,
+                "calificacion_ia": 9,
                 "razon_calificacion": "Excelente equipamiento, conectividad Starlink y ubicación privilegiada en Villa Traful.",
                 "datos_faltantes": [],
                 "texto_original_resumido": "Dpto N°1 para 2 personas a $100.000 por noche.",
                 "lat": -40.653082,
                 "lng": -71.401788
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtnnnt7wf92a3",
@@ -1775,14 +1775,14 @@
                   "https://wa.me/p/27141280178866886/5492944914722"
                 ],
                 "notas_adicionales": "Estadía mínima 2 noches. Check-in 15:00, Check-out 10:00.",
-                "calificacion_ia": 10,
+                "calificacion_ia": 9,
                 "razon_calificacion": "Opción económica con excelentes servicios y vistas.",
                 "datos_faltantes": [],
                 "texto_original_resumido": "Loft N°2 a $80.000 por noche.",
                 "lat": -40.653082,
                 "lng": -71.401788
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtnnnt7wlkut2",
@@ -1820,14 +1820,14 @@
                   "https://wa.me/p/27018583751116530/5492944914722"
                 ],
                 "notas_adicionales": "Estadía mínima 2 noches. Check-in 15:00, Check-out 10:00.",
-                "calificacion_ia": 10,
+                "calificacion_ia": 9,
                 "razon_calificacion": "Buena relación calidad-precio con servicios completos.",
                 "datos_faltantes": [],
                 "texto_original_resumido": "Coqueta N°3 para 2 personas a $90.000 por noche.",
                 "lat": -40.653082,
                 "lng": -71.401788
               },
-              "editado_manualmente": true
+              "editado_manualmente": false
             },
             {
               "id": "mtnnvfz3h77r9",
@@ -1881,6 +1881,6 @@
     }
   ],
   "meta": {
-    "updated_at": 1789425325533
+    "updated_at": 1789430558165
   }
 }
